@@ -78,3 +78,163 @@ model Verification {
 
   @@map("verification")
 }
+
+model users {
+  id                                  String                @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  username                            String                @unique @db.VarChar(100)
+  email                               String                @unique @db.VarChar(255)
+  password_hash                       String
+  created_at                          DateTime              @default(now()) @db.Timestamp(6)  
+  comment_mentions                    comment_mentions[]
+  comment_reactions                   comment_reactions[]
+  comments                            comments[]
+  project_permissions                 project_permissions[]
+  projects_projects_created_by projects[]            @relation("projects_created_by")
+  projects_projects_owner      projects[]            @relation("projects_owner")
+  projects_history                    projects_history[]
+  tags                                tags[]
+  tasks_tasks_assigned_to      tasks[]               @relation("tasks_assigned_to")
+  tasks_tasks_created_by       tasks[]               @relation("tasks_created_by")
+  tasks_history                       tasks_history[]
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model projects {
+  id                               String                @id @db.Uuid
+  name                             String                @db.VarChar
+  project_code                     String                @unique @db.VarChar
+  description                      String?
+  start_date                       DateTime?             @db.Date
+  end_date                         DateTime?             @db.Date
+  status                           String                @db.VarChar
+  priority                         String                @db.VarChar
+  color_code                       String                @db.VarChar
+  owner                            String                @db.Uuid
+  created_by                       String                @db.Uuid
+  created_at                       DateTime?             @default(now()) @db.Timestamp(6)
+  updated_at                       DateTime?             @default(now()) @db.Timestamp(6)
+  is_deleted                       Boolean?              @default(false)
+  project_permissions              project_permissions[]
+  users_projects_created_by users                 @relation("projects_created_by", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users_projects_owner      users                 @relation("projects_owner", fields: [owner], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  projects_history                 projects_history[]
+  tasks                            tasks[]
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model project_permissions {
+  id         String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  project_id String    @db.Uuid
+  user_id    String    @db.Uuid
+  role       String    @db.VarChar
+  created_at DateTime? @default(now()) @db.Timestamp(6)
+  updated_at DateTime? @default(now()) @db.Timestamp(6)
+  projects   projects  @relation(fields: [project_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  users      users     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+model tasks {
+  id                             String          @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  project_id                     String          @db.Uuid
+  title                          String          @db.VarChar(255)
+  description                    String?
+  status                         String          @db.VarChar(20)
+  priority                       String          @db.VarChar(10)
+  color_code                     String          @db.VarChar(7)
+  due_date                       DateTime?       @db.Date
+  created_by                     String          @db.Uuid
+  assigned_to                    String?         @db.Uuid
+  created_at                     DateTime?       @default(now()) @db.Timestamp(6)
+  updated_at                     DateTime?       @default(now()) @db.Timestamp(6)
+  is_deleted                     Boolean?        @default(false)
+  comments                       comments[]
+  task_tags                      task_tags[]
+  users_tasks_assigned_to users?          @relation("tasks_assigned_to", fields: [assigned_to], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users_tasks_created_by  users           @relation("tasks_created_by", fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  projects                       projects        @relation(fields: [project_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  tasks_history                  tasks_history[]
+}
+
+model comments {
+  id                String              @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  task_id           String              @db.Uuid
+  user_id           String              @db.Uuid
+  content           String
+  created_at        DateTime?           @default(now()) @db.Timestamp(6)
+  updated_at        DateTime?           @default(now()) @db.Timestamp(6)
+  is_deleted        Boolean?            @default(false)
+  comment_mentions  comment_mentions[]
+  comment_reactions comment_reactions[]
+  tasks             tasks               @relation(fields: [task_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  users             users               @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  projects_history  projects_history[]
+  tasks_history     tasks_history[]
+}
+
+model comment_mentions {
+  id                String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  comment_id        String   @db.Uuid
+  mentioned_user_id String   @db.Uuid
+  comments          comments @relation(fields: [comment_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  users             users    @relation(fields: [mentioned_user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model comment_reactions {
+  id            String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  comment_id    String   @db.Uuid
+  user_id       String   @db.Uuid
+  reaction_type String   @db.VarChar(50)
+  created_at    DateTime @default(now()) @db.Timestamp(6)
+  comments      comments @relation(fields: [comment_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  users         users    @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+}
+
+model tags {
+  id         String      @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name       String      @unique @db.VarChar(50)
+  color_code String      @db.VarChar(7)
+  created_by String      @db.Uuid
+  created_at DateTime    @default(now()) @db.Timestamp(6)
+  users      users       @relation(fields: [created_by], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  task_tags  task_tags[]
+}
+
+model task_tags {
+  id      String @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  task_id String @db.Uuid
+  tag_id  String @db.Uuid
+  tags    tags   @relation(fields: [tag_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+  tasks   tasks  @relation(fields: [task_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model projects_history {
+  id               String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  project_id       String    @db.Uuid
+  change_type      String    @db.VarChar
+  changed_by       String    @db.Uuid
+  previous_values  Json?
+  new_values       Json?
+  comment_id       String?   @db.Uuid
+  change_timestamp DateTime  @default(now()) @db.Timestamp(6)
+  users            users     @relation(fields: [changed_by], references: [id], onDelete: Restrict , onUpdate: NoAction)
+  comments         comments? @relation(fields: [comment_id], references: [id], onUpdate: NoAction)
+  projects         projects  @relation(fields: [project_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+model tasks_history {
+  id              String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  task_id         String    @db.Uuid
+  change_type     String    @db.VarChar(50)
+  changed_by      String    @db.Uuid
+  previous_values Json?
+  new_values      Json?
+  comment_id      String?   @db.Uuid
+  created_at      DateTime  @default(now()) @db.Timestamp(6)
+  users           users     @relation(fields: [changed_by], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  comments        comments? @relation(fields: [comment_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  tasks           tasks     @relation(fields: [task_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+}
+
+
+
