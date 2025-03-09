@@ -1,5 +1,3 @@
-import { promises as fs } from "fs"
-import path from "path"
 import { Metadata } from "next"
 import Image from "next/image"
 import { z } from "zod"
@@ -9,6 +7,8 @@ import { DataTable } from "./components/data-table"
 import { UserNav } from "./components/user-nav"
 import { taskSchema } from "./data/schema"
 
+import { TaskDAO } from "@/lib/dao/TaskDAO";
+
 export const metadata: Metadata = {
   title: "Tasks",
   description: "A task and issue tracker build using Tanstack Table.",
@@ -16,11 +16,10 @@ export const metadata: Metadata = {
 
 // Simulate a database read for tasks.
 async function getTasks() {
-  const data = await fs.readFile(
-    path.join(process.cwd(), "app/dashboard/tasks/data/tasks.json")
-  )
 
-  const tasks = JSON.parse(data.toString())
+  const data = await TaskDAO.getTasksByProjectId('7f04e41f-87a8-4561-8fa8-01de820931aa'); 
+  console.log(data)
+  const tasks = data
 
   return z.array(taskSchema).parse(tasks)
 }
