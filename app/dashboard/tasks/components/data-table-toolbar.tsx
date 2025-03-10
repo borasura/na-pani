@@ -1,7 +1,7 @@
 "use client"
 
 import { Table } from "@tanstack/react-table"
-import { X, FilePlus } from "lucide-react"
+import { X } from "lucide-react"
 
 
 import { Button } from "@/components/ui/button"
@@ -24,10 +24,7 @@ export function DataTableToolbar<TData>({
   return (
     <div className="flex items-center justify-between">
       <div className="flex flex-1 items-center space-x-2">
-        <Button variant="outline" size="sm" className="h-8 border-dashed">
-          <FilePlus />
-          New Task <NewTask />
-        </Button>
+      <NewTask />
         <Input
           placeholder="Filter tasks..."
           value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}

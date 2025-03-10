@@ -18,7 +18,8 @@ export const metadata: Metadata = {
 async function getTasks() {
 
   const data = await TaskDAO.getTasksByProjectId('7f04e41f-87a8-4561-8fa8-01de820931aa'); 
-  console.log(data)
+  console.log("Read tasks records from the database")
+  console.log(data[0])
   const tasks = data
 
   return z.array(taskSchema).parse(tasks)

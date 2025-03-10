@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button"
 import { useState } from "react";
 import { NewTaskDialog } from "./new-task-dialog"
+import { X, FilePlus } from "lucide-react"
 
 export const NewTask = () => {
 
@@ -10,8 +11,12 @@ export const NewTask = () => {
 
     return (
         <>
-        <Button onClick={() => setOpen(true)}>New Task</Button>
-        <NewTaskDialog open={open} setOpen={setOpen} />
+            <Button variant="outline" size="sm"
+                className="h-8 border-dashed"
+                onClick={() => setOpen(true)}>
+                <FilePlus />New Task
+            </Button>
+            <NewTaskDialog open={open} setOpen={setOpen} />
         </>
     )
 }

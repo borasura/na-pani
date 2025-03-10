@@ -7,8 +7,8 @@ export const taskSchema = z.object({
   project_id: z.string().uuid(),
   title: z.string().min(1).max(255),
   description: z.string().nullable(),
-  status: z.enum(["todo", "in_progress", "done", "blocked"]).default("todo"), // Adjust status values as per your app
-  priority: z.enum(["low", "medium", "high"]).default("medium"),
+  status: z.enum(["Backlog", "Todo", "In Progress", "Done", "Blocked"]).default("Todo"), // Adjust status values as per your app
+  priority: z.enum(["Low", "Medium", "High"]).default("Medium"),
   color_code: z.string(), 
   due_date: z.date().nullable(),
   created_by: z.string().uuid(),

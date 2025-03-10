@@ -10,6 +10,8 @@ import { Task } from "../data/schema"
 import { DataTableColumnHeader } from "./data-table-column-header"
 import { DataTableRowActions } from "./data-table-row-actions"
 
+import { formatDateWithMonthName } from "@/lib/utils/date-utils"
+
 export const columns: ColumnDef<Task>[] = [
   {
     id: "select",
@@ -164,7 +166,9 @@ export const columns: ColumnDef<Task>[] = [
         <div className="flex space-x-2">
           {label && <Badge variant="outline">{label.label}</Badge>}
           <span className="max-w-[200px] truncate font-medium">
-            {row.getValue("due_date")}
+            {/* {row.getValue("due_date")?.toString()} */
+              formatDateWithMonthName(row.getValue("due_date"))            
+            } 
           </span>
         </div>
       )

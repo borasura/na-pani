@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { ProfileForm } from "./new-task-form"
+import { NewTaskForm } from "./new-task-form"
 
 export function NewTaskDialog({open, setOpen}) {
 
@@ -27,10 +27,10 @@ export function NewTaskDialog({open, setOpen}) {
         <DialogHeader>
           <DialogTitle>New Task</DialogTitle>
           <DialogDescription>
-            Enter Task details and save
+            Enter Task details and submit to save
           </DialogDescription>
         </DialogHeader>
-        <ProfileForm onSave={handleCloseDialog}></ProfileForm>
+        <NewTaskForm onSave={handleCloseDialog}></NewTaskForm>
       </DialogContent>
     </Dialog>
   )

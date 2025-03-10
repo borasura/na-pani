@@ -1,6 +1,7 @@
 'use server'
 
 import prisma from "@/lib/prisma";
+import { revalidatePath } from "next/cache"
 
 export async function getTasksByProjectId(project_id: string) {
     return await prisma.tasks.findMany({
@@ -16,9 +17,11 @@ export async function getTaskById(taskId: string) {
 
 // Create a new task priority, color_code, created_by
 export async function createTask(title: string, description: string | null, status: string, due_date: Date | null, project_id: string, priority: string | "Medium", color_code: string | "", created_by: string) {
-    return await prisma.tasks.create({
+    await prisma.tasks.create({
         data: { title, description, status, due_date, project_id, priority, color_code, created_by },
     });
+    revalidatePath("dashboard/tasks")
+    return
 }
 
 // Update a task
