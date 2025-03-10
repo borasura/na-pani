@@ -40,6 +40,7 @@ const formSchema = z.object({
   status: z.enum(["Backlog", "Todo", "In Progress", "Done", "Blocked"]).default("Todo"),
   priority: z.enum(["Low", "Medium", "High"]).default("Medium"),
   due_date: z.date(),
+  assigned_to: z.string()
 
 })
 
@@ -55,7 +56,7 @@ export function NewTaskForm({onSave}) {
       title: "",
       description: "",
       status: "Backlog",
-      priority: "Medium",
+      priority: "Medium",      
     },
   })
  
@@ -86,7 +87,7 @@ export function NewTaskForm({onSave}) {
     // const user_id = '7b782ab7-ca01-47c8-8232-948e65d90ea0';
     // console.log(project_id)
     // console.log(values)
-    createTask(values.title, values.description, values.status, values.due_date, values.project_id, values.priority, "", values.user_id); 
+    createTask(values.title, values.description, values.status, values.due_date, values.project_id, values.priority, "", values.user_id, '7b782ab7-ca01-47c8-8232-948e65d90ea0'); 
     console.log("Created new task ")
     onSave()
     
@@ -102,7 +103,7 @@ export function NewTaskForm({onSave}) {
             <FormItem>
               <FormLabel>Title</FormLabel>
               <FormControl>
-                <Input placeholder="shadcn" {...field} />
+                <Input placeholder="" {...field} />
               </FormControl>
               {/* <FormDescription>
                 This is your public display name.
@@ -119,7 +120,7 @@ export function NewTaskForm({onSave}) {
             <FormItem>
               <FormLabel>Description</FormLabel>
               <FormControl>
-                <Input placeholder="shadcn" {...field} />
+                <Input placeholder="" {...field} />
               </FormControl>
               <FormDescription>
                 Enter a description for the Task
@@ -179,6 +180,23 @@ export function NewTaskForm({onSave}) {
               {/* <FormDescription>
                 You can manage email addresses in your{" "}
                 <Link href="/examples/forms">email settings</Link>.
+              </FormDescription> */}
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+    <FormField
+          control={form.control}
+          name="assigned_to"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Assigned To</FormLabel>
+              <FormControl>
+                <Input placeholder="" {...field} />
+              </FormControl>
+              {/* <FormDescription>
+                This is your public display name.
               </FormDescription> */}
               <FormMessage />
             </FormItem>

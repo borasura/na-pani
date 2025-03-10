@@ -16,9 +16,10 @@ export async function getTaskById(taskId: string) {
 }
 
 // Create a new task priority, color_code, created_by
-export async function createTask(title: string, description: string | null, status: string, due_date: Date | null, project_id: string, priority: string | "Medium", color_code: string | "", created_by: string) {
+export async function createTask(title: string, description: string | null, status: string, due_date: Date | null, 
+    project_id: string, priority: string | "Medium", color_code: string | "", created_by: string, assigned_to: string) {
     await prisma.tasks.create({
-        data: { title, description, status, due_date, project_id, priority, color_code, created_by },
+        data: { title, description, status, due_date, project_id, priority, color_code, assigned_to, created_by },
     });
     revalidatePath("dashboard/tasks")
     return
