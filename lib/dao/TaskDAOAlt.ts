@@ -2,12 +2,69 @@
 
 import prisma from "@/lib/prisma";
 import { revalidatePath } from "next/cache"
+import { auth } from "../auth";
+import { headers } from "next/headers";
+import { redirect } from "next/navigation";
+
+export async function getUserId() {
+    const session = await auth.api.getSession({
+        headers: await headers()
+    });
+    
+    if (!session) {
+        return redirect('/')
+    }
+
+    const user_email = session?.user.email;
+    const profile = await prisma.users.findUniqueOrThrow({where: {email: user_email}});
+    return profile.id
+}
 
 export async function getTasksByProjectId(project_id: string) {
     return await prisma.tasks.findMany({
         where: { project_id },
         orderBy: { created_at: "desc" },
     });
+}
+
+export async function getProjectsForCurrentUser(){
+    return await getProjects(await getUserId());
+}
+
+export async function getProjects(userId: string){
+    //return await prisma.projects.findMany({ where: {}});
+
+    const projects = await prisma.projects.findMany({
+        where: {
+          project_permissions: {
+            some: {
+              user_id: userId,  // Filter based on user_id in the project_permissions
+            },
+          },
+        },
+        select: {
+          id: true,
+          name: true,
+          project_code: true,
+          project_permissions: {
+            where: {
+              user_id: userId,  // Ensure that we fetch the role for this specific user
+            },
+            select: {
+              role: true,  // Select the role from the permission table
+            },
+          },
+        },
+      });
+  
+      //return projects;
+      // Map the results to flatten the `role` into the project object
+    return projects.map(project => ({
+        id: project.id,
+        name: project.name,
+        project_code: project.project_code,
+        role: project.project_permissions[0]?.role || null,  // Extract the role, assuming one permission per project
+      }));
 }
 
 // Get a single task by ID
