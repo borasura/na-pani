@@ -34,6 +34,8 @@ export async function getProjectsForCurrentUser(){
 export async function getProjects(userId: string){
     //return await prisma.projects.findMany({ where: {}});
 
+    console.log("Inside getProjects for id - " + userId)
+
     const projects = await prisma.projects.findMany({
         where: {
           project_permissions: {
@@ -80,6 +82,24 @@ export async function createTask(title: string, description: string | null, stat
     });
     revalidatePath("dashboard/tasks")
     return
+}
+
+
+// Create a new task priority, color_code, created_by
+export async function createProject(name: string, description: string | null, status: string, priority: string | "Medium",
+  color_code: string | "", owner: string,  
+  start_date: Date | null, end_date: Date | null) {
+
+  const created_by = await getUserId() //Get from context
+  const project_code = name
+
+  await prisma.projects.create({
+      data: { name, description, project_code, status, priority, color_code, owner, created_by, start_date, end_date },
+  });
+
+  console.log("Created project")
+  revalidatePath("dashboard/")
+  return
 }
 
 // Update a task
