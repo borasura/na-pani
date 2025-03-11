@@ -15,9 +15,10 @@ export const metadata: Metadata = {
 }
 
 // Simulate a database read for tasks.
-async function getTasks() {
+async function getTasks(id: string) {
 
-  const data = await TaskDAO.getTasksByProjectId('7f04e41f-87a8-4561-8fa8-01de820931aa'); 
+  //const data = await TaskDAO.getTasksByProjectId('7f04e41f-87a8-4561-8fa8-01de820931aa'); 
+  const data = await TaskDAO.getTasksByProjectId(id); 
   console.log("Read tasks records from the database")
   console.log(data[0])
   const tasks = data
@@ -25,8 +26,11 @@ async function getTasks() {
   return z.array(taskSchema).parse(tasks)
 }
 
-export default async function TaskPage() {
-  const tasks = await getTasks()
+export default async function TaskPage({params}) {
+
+  const {id} = await params
+  console.log("Received project id as " + id)
+  const tasks = await getTasks(id)
 
   return (
     <>

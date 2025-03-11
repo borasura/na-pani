@@ -47,7 +47,9 @@ export async function getProjects(userId: string){
         select: {
           id: true,
           name: true,
-          project_code: true,
+          description: true,
+          status: true,
+          priority: true,          
           project_permissions: {
             where: {
               user_id: userId,  // Ensure that we fetch the role for this specific user
@@ -64,7 +66,9 @@ export async function getProjects(userId: string){
     return projects.map(project => ({
         id: project.id,
         name: project.name,
-        project_code: project.project_code,
+        description: project.description,
+        status: project.status,
+        prioity: project.priority,        
         role: project.project_permissions[0]?.role || null,  // Extract the role, assuming one permission per project
       }));
 }
@@ -76,7 +80,8 @@ export async function getTaskById(taskId: string) {
 
 // Create a new task priority, color_code, created_by
 export async function createTask(title: string, description: string | null, status: string, due_date: Date | null, 
-    project_id: string, priority: string | "Medium", color_code: string | "", created_by: string, assigned_to: string) {
+    project_id: string, priority: string | "Medium", color_code: string | "", assigned_to: string) {
+      const created_by = await getUserId() //Get from context
     await prisma.tasks.create({
         data: { title, description, status, due_date, project_id, priority, color_code, assigned_to, created_by },
     });
@@ -93,11 +98,19 @@ export async function createProject(name: string, description: string | null, st
   const created_by = await getUserId() //Get from context
   const project_code = name
 
-  await prisma.projects.create({
+  const project = await prisma.projects.create({
       data: { name, description, project_code, status, priority, color_code, owner, created_by, start_date, end_date },
   });
 
-  console.log("Created project")
+  console.log("Created project - " + project.id)
+
+  await prisma.project_permissions.create({
+    data: { project_id: project.id, user_id: created_by, role: "Owner"},
+  });
+
+  console.log("Created Project permissions")
+
+  
   revalidatePath("dashboard/")
   return
 }

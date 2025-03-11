@@ -1,5 +1,7 @@
 import { Copy } from "lucide-react"
 
+import { useRouter, usePathname, useSearchParams } from 'next/navigation'
+
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -21,6 +23,13 @@ export function NewTaskDialog({open, setOpen}) {
         setOpen(false)
     }
 
+    const pathname = usePathname()
+      console.log("Project Id from query is " + pathname)
+      const match = pathname.match(/\/dashboard\/project\/([a-f0-9\-]{36})\/tasks/);  // Regex to extract the UUID
+    
+      const url_project_id = match ? match[1] : null;
+      console.log("Extracted id is " + url_project_id)
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent className="sm:max-w-md">
@@ -30,7 +39,7 @@ export function NewTaskDialog({open, setOpen}) {
             Enter Task details and submit to save
           </DialogDescription>
         </DialogHeader>
-        <NewTaskForm onSave={handleCloseDialog}></NewTaskForm>
+        <NewTaskForm onSave={handleCloseDialog} url_project_id={url_project_id}></NewTaskForm>
       </DialogContent>
     </Dialog>
   )

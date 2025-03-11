@@ -3,6 +3,8 @@
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
+//import { useRouter } from 'next/router';
+
 
 import { Button } from "@/components/ui/button"
 import {
@@ -32,51 +34,41 @@ import { cn } from "@/lib/utils"
 
 
 const formSchema = z.object({
-  user_id: z.string().uuid({ message: "Invalid project" }),
-  project_id: z.string().uuid({ message: "Invalid project" }),
+
   title: z.string().min(2, { message: "Title must be at least 2 characters." })
     .max(255, { message: "Title must be at most 255 characters." }),
   description: z.string().min(2, { message: "Description must be at least 2 characters." }), 
   status: z.enum(["Backlog", "Todo", "In Progress", "Done", "Blocked"]).default("Todo"),
   priority: z.enum(["Low", "Medium", "High"]).default("Medium"),
-  due_date: z.date(),
-  assigned_to: z.string()
+  due_date: z.date().optional(),
+  assigned_to: z.string().optional(),
 
 })
 
-export function NewTaskForm({onSave}) {
+export function NewTaskForm({onSave, url_project_id}) {
   // ...
+
+  // const pathname = usePathname()
+  // console.log("Project Id from query is " + pathname)
+  // const match = pathname.match(/\/dashboard\/project\/([a-f0-9\-]{36})\/tasks/);  // Regex to extract the UUID
+
+  // const url_project_id = match ? match[1] : null;
+  console.log("Extracted id is " + url_project_id)
 
   // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      project_id: '7f04e41f-87a8-4561-8fa8-01de820931aa',
-      user_id: '7b782ab7-ca01-47c8-8232-948e65d90ea0',
+      //project_id: url_project_id,
+      //user_id: '7b782ab7-ca01-47c8-8232-948e65d90ea0',
       title: "",
       description: "",
       status: "Backlog",
       priority: "Medium",      
     },
   })
- 
-  /*
-
-  due_date: z.preprocess((arg) => {
-    if (typeof arg === "string" || arg instanceof Date) {
-      const date = new Date(arg);
-      if (!isNaN(date.getTime())) return date;
-    }
-    return undefined;
-  }, z.date({ message: "Due date must be a valid date." })),
 
 
-  assigned_to: z.string(),
-
-
-})
-
-  */
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
@@ -87,7 +79,7 @@ export function NewTaskForm({onSave}) {
     // const user_id = '7b782ab7-ca01-47c8-8232-948e65d90ea0';
     // console.log(project_id)
     // console.log(values)
-    createTask(values.title, values.description, values.status, values.due_date, values.project_id, values.priority, "", values.user_id, '7b782ab7-ca01-47c8-8232-948e65d90ea0'); 
+    createTask(values.title, values.description, values.status, values.due_date, url_project_id, values.priority, "", '7b782ab7-ca01-47c8-8232-948e65d90ea0'); 
     console.log("Created new task ")
     onSave()
     
