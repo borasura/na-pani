@@ -78,6 +78,80 @@ export async function getTaskById(taskId: string) {
     return await prisma.tasks.findUnique({ where: { id: taskId } });
 }
 
+export async function getTaskCommentsByTaskId(taskId: string) {
+  return await prisma.comments.findMany({where: { task_id: taskId}});
+  //return await prisma.tasks.findUnique({ where: { id: taskId } });
+}
+
+export async function getTaskActivitiesByTaskId(taskId: string) {
+  //return await prisma.comments.findMany({where: { task_id: taskId}});
+  const taskWithChildren = await prisma.tasks.findUnique({
+    where: {
+      id: taskId, // Replace with your taskId
+    },
+    select: {
+      title: true,
+      description: true,
+      status: true,
+      priority: true,
+      color_code: true,
+      due_date: true,
+      assigned_to: true, 
+      comments: {  
+        select: {
+          content: true,
+          created_at: true,
+          users: {
+            select: {
+              username: true,
+              email: true
+            },
+          },
+        },     
+        orderBy: {
+          created_at: 'desc',
+        },
+      },
+      tasks_history: {
+        select: {
+          change_type: true,
+          previous_values: true,
+          new_values: true,
+          created_at: true,
+        },
+        orderBy: {
+          created_at: 'desc',
+        },
+      },
+    },
+  });
+
+  const combinedChildItems = [
+    ...(taskWithChildren?.comments ?? []).map(comment => ({
+      type: 'comment',
+      content: comment.content,
+      created_date: comment.created_at,
+      username: comment.users?.username, // Use optional chaining for user
+    })),
+    ...(taskWithChildren?.tasks_history ?? []).map(taskHistory => ({
+      type: 'task_history',
+      change_type: taskHistory.change_type,
+      previous_values: taskHistory.previous_values,
+      new_values: taskHistory.new_values,
+      created_date: taskHistory.created_at,
+    })),
+  ];
+  
+  const taskWithCombinedChildren = {
+    ...taskWithChildren, // Spread the original object properties
+    combinedChildItems,  // Add the combinedChildItems array
+  };
+
+  console.log("Fecthing tasks with children -" + taskWithChildren)
+  //return await prisma.tasks.findUnique({ where: { id: taskId } });
+  return taskWithCombinedChildren
+}
+
 // Create a new task priority, color_code, created_by
 export async function createTask(title: string, description: string | null, status: string, due_date: Date | null, 
     project_id: string, priority: string | "Medium", color_code: string | "", assigned_to: string) {

@@ -26,40 +26,41 @@ export default async function Page() {
   return (
     <>
       <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
+      <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min">
+          <div className="mb-0">
+            <h1 className="text-3xl font-bold mb-2">My Projects</h1>
+            <p className="text-muted-foreground">Manage and access your projects</p>
+            <NewProject />
+          </div>
+          <ProjectCards proj={projects} />
+        </div>
         <div className="grid auto-rows-min gap-4 md:grid-cols-3">
           <div className="aspect-video rounded-xl bg-muted/50">
-          <div className='mt-10 text-center'>
-                <h1 className='text-2xl font-bold underline'>Welcome to the dashboard</h1>
-                <ul>
-                  <li>Name: {user.name}</li>
-                  <li>Email: {user.email}</li>
-                </ul>
-                <ClientComponent />
-              </div>
+            <div className='mt-10 text-center'>
+              <h1 className='text-2xl font-bold underline'>Welcome to the dashboard</h1>
+              <ul>
+                <li>Name: {user.name}</li>
+                <li>Email: {user.email}</li>
+              </ul>
+              <ClientComponent />
+            </div>
           </div>
           <div className="aspect-video rounded-xl bg-muted/50">
-          <ul>
-            {
-              projects.map((project, index) => (
-                <li key={index}>
-                  {project.name}
-                </li>
-              ))
-            }
-          </ul>
+            <ul>
+              {
+                projects.map((project, index) => (
+                  <li key={index}>
+                    {project.name}
+                  </li>
+                ))
+              }
+            </ul>
           </div>
           <div className="aspect-video rounded-xl bg-muted/50" >
-          {/* <ProjectCards /> */}
+            {/* <ProjectCards /> */}
           </div>
         </div>
-        <div className="min-h-[100vh] flex-1 rounded-xl bg-muted/50 md:min-h-min">
-        <div className="mb-0">
-        <h1 className="text-3xl font-bold mb-2">My Projects</h1>
-        <p className="text-muted-foreground">Manage and access your projects</p>
-        <NewProject />
-        </div>
-        <ProjectCards proj={projects} />
-        </div>
+        
       </div>
     </>
   )
