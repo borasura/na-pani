@@ -17,6 +17,7 @@ import { Calendar } from "@/components/ui/calendar"
 import { format } from "date-fns"
 import { cn } from "@/lib/utils"
 import { SidebarProvider, Sidebar, SidebarContent } from "@/components/ui/sidebar"
+import { createComment, updateTaskAttributes, updateTaskDescription, updateTaskTitle } from "@/lib/dao/TaskDAOAlt"
 
 // Types
 type ActivityType = "comment" | "update"
@@ -33,12 +34,13 @@ interface UserType {
 interface Activity {
   id: string
   type: ActivityType
-  user: UserType
-  timestamp: Date
   content: string
-  field?: string
-  oldValue?: string
-  newValue?: string
+  username: string
+  email: string
+  change_type?: string
+  new_values?: string
+  previous_values?: string
+  created_date: Date
 }
 
 interface Task {
@@ -47,8 +49,8 @@ interface Task {
   description: string
   status: Status
   priority: Priority
-  assignedTo: UserType | null
-  dueDate: Date | null
+  assigned_to: string | null
+  due_date: Date | null
   activities: Activity[]
 }
 
@@ -80,49 +82,47 @@ const sampleTask: Task = {
   description: "Create a new authentication flow with social login options and improved security measures.",
   status: "in-progress",
   priority: "high",
-  assignedTo: users[0],
-  dueDate: new Date(2025, 2, 15), // March 15, 2025
+  assigned_to: "test user",
+  due_date: new Date(2025, 2, 15), // March 15, 2025
   activities: [
     {
       id: "act-1",
       type: "comment",
-      user: users[1],
-      timestamp: new Date(2025, 2, 10, 14, 30), // March 10, 2025, 2:30 PM
       content: "I've started working on the OAuth integration. Should be ready for review by tomorrow.",
+      username: "username@",
+      email: "email@a",
+      created_date: new Date(2025, 2, 10, 14, 30), // March 10, 2025, 2:30 PM
+      
     },
     {
       id: "act-2",
       type: "update",
-      user: users[2],
-      timestamp: new Date(2025, 2, 8, 10, 15), // March 8, 2025, 10:15 AM
       content: "updated Priority from Medium to High",
-      field: "priority",
-      oldValue: "medium",
-      newValue: "high",
+      change_type: "priority",
+      previous_values: "medium",
+      new_values: "high",
+      username: "username@",
+      email: "email@a",
+      created_date: new Date(2025, 2, 10, 14, 30), 
     },
-    {
-      id: "act-3",
-      type: "update",
-      user: users[0],
-      timestamp: new Date(2025, 2, 7, 16, 45), // March 7, 2025, 4:45 PM
-      content: "updated Status from Todo to In Progress",
-      field: "status",
-      oldValue: "todo",
-      newValue: "in-progress",
-    },
-    {
-      id: "act-4",
-      type: "comment",
-      user: users[0],
-      timestamp: new Date(2025, 2, 7, 9, 0), // March 7, 2025, 9:00 AM
-      content:
-        "I'll be taking this task. Planning to use Auth0 for the social login integration. Let me know if there are any specific requirements I should be aware of.",
-    },
+   
   ],
 }
 
-export default function EditTaskPage() {
-  const [task, setTask] = useState<Task>(sampleTask)
+export default function EditTaskPage({taskActivities}) {
+  console.log(taskActivities)
+
+  // taskActivities.activities.forEach(activity => {
+  //   if (activity.activity_type && activity.activity_type === 'task_history') {
+  //     activity.content = `${activity.previous_values} - ${activity.new_values}`;
+  //   }
+  // });
+
+  // console.log("Updated task activities ---------------")
+  // console.log(taskActivities)
+  // console.log(JSON.stringify(taskActivities))
+
+  const [task, setTask] = useState<Task>(taskActivities)
   const [newComment, setNewComment] = useState("")
   const [isTitleEditing, setIsTitleEditing] = useState(false)
   const [isDescriptionEditing, setIsDescriptionEditing] = useState(false)
@@ -131,24 +131,29 @@ export default function EditTaskPage() {
   const [isStarred, setIsStarred] = useState(false)
 
   const handleFieldChange = (field: keyof Task, value: any) => {
+    console.log("Updating value: " + field + " - " + value)
     setTask((prev) => ({ ...prev, [field]: value }))
   }
 
-  const handleAddComment = () => {
+  const handleAddComment = async () => {
     if (!newComment.trim()) return
 
     const comment: Activity = {
       id: `act-${task.activities.length + 1}`,
       type: "comment",
-      user: users[0], // Current user
-      timestamp: new Date(),
+      username: "CURRENT USER", // Current user
+      email: "USER EMAIL",
+      created_date: new Date(),
       content: newComment,
     }
+
+    await createComment(task.id, comment.content, comment.created_date)
 
     setTask((prev) => ({
       ...prev,
       activities: [comment, ...prev.activities],
     }))
+
     setNewComment("")
   }
 
@@ -168,11 +173,13 @@ export default function EditTaskPage() {
 
   const handleTitleSave = () => {
     handleFieldChange("title", editedTitle)
+    updateTaskTitle(task.id, editedTitle)
     setIsTitleEditing(false)
   }
 
   const handleDescriptionSave = () => {
     handleFieldChange("description", editedDescription)
+    updateTaskDescription(task.id, editedDescription)
     setIsDescriptionEditing(false)
   }
 
@@ -192,6 +199,14 @@ export default function EditTaskPage() {
         setIsDescriptionEditing(false)
       }
     }
+  }
+
+  async function saveTaskProperties(event: FormEvent<HTMLButtonElement>): void {
+    console.log(event)
+    console.log("Updating task activities")
+    console.log(task.id, " - ", task.status, " - ", task.priority, " - ", task.due_date)
+    updateTaskAttributes(task.id, task.status, task.priority, task.due_date)
+    //throw new Error("Function not implemented.")
   }
 
   return (
@@ -237,7 +252,8 @@ export default function EditTaskPage() {
                         autoFocus
                       />
                     ) : (
-                      <div className="flex items-center justify-between p-2 border rounded-md bg-background hover:bg-muted/50">
+                      // <div className="flex items-center justify-between p-2 border rounded-md bg-background hover:bg-muted/50">
+                      <div className="flex items-center justify-between p-2 border rounded-md bg-muted/50">
                         <div className="font-medium">{task.title}</div>
                         <Button
                           variant="ghost"
@@ -267,7 +283,7 @@ export default function EditTaskPage() {
                         autoFocus
                       />
                     ) : (
-                      <div className="flex items-start justify-between p-2 border rounded-md bg-background hover:bg-muted/50">
+                      <div className="flex items-start justify-between p-2 border rounded-md bg-muted/50">
                         <div className="whitespace-pre-wrap">{task.description}</div>
                         <Button
                           variant="ghost"
@@ -299,26 +315,28 @@ export default function EditTaskPage() {
                   </div>
                 </div>
 
-                <div className="space-y-4">
+                <div className="space-y-2">
                   {task.activities.map((activity) => (
-                    <Card key={activity.id}>
-                      <CardContent className={cn("p-4", activity.type === "update" ? "bg-muted/50" : "")}>
+                    <Card key={activity.id} className="py-0">
+                      <CardContent className={cn("p-2", activity.type === "update" ? "bg-muted/50" : "")}>
                         <div className="flex items-start gap-3">
-                          <Avatar className="h-8 w-8">
-                            <AvatarImage src={activity.user.avatar} alt={activity.user.name} />
-                            <AvatarFallback>{activity.user.name.charAt(0)}</AvatarFallback>
+                          <Avatar className="h-6 w-6">
+                            {/* <AvatarImage src={activity.user.avatar} alt={activity.user.name} /> */}
+                            <AvatarFallback>{activity.username.charAt(0)}</AvatarFallback>
                           </Avatar>
 
                           <div className="flex-1">
                             <div className="flex items-center justify-between">
-                              <p className="font-medium">{activity.user.name}</p>
-                              <p className="text-xs text-muted-foreground">{formatActivityDate(activity.timestamp)}</p>
+                              <p className="font-medium">{activity.username}</p>
+                              <p className="text-xs text-muted-foreground">{formatActivityDate(activity.created_date)}</p>
                             </div>
 
                             {activity.type === "comment" ? (
                               <p className="mt-1">{activity.content}</p>
                             ) : (
-                              <p className="mt-1 text-sm text-muted-foreground">{activity.content}</p>
+                              <p className="mt-1 text-sm text-muted-foreground">
+                                <b>{activity.username}</b> updated {activity.change_type} from {activity.previous_values} to <b>{activity.new_values}</b>
+                              </p>
                             )}
                           </div>
                         </div>
@@ -343,10 +361,11 @@ export default function EditTaskPage() {
                       <SelectValue placeholder="Select status" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="todo">To Do</SelectItem>
-                      <SelectItem value="in-progress">In Progress</SelectItem>
-                      <SelectItem value="in-review">In Review</SelectItem>
-                      <SelectItem value="done">Done</SelectItem>
+                    <SelectItem value="Backlog">Backlog</SelectItem>
+                    <SelectItem value="Todo">Todo</SelectItem>
+                    <SelectItem value="In Progress">In Progress</SelectItem>
+                    <SelectItem value="Done">Done</SelectItem>
+                    <SelectItem value="Canceled">Canceled</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -361,10 +380,9 @@ export default function EditTaskPage() {
                       <SelectValue placeholder="Select priority" />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="low">Low</SelectItem>
-                      <SelectItem value="medium">Medium</SelectItem>
-                      <SelectItem value="high">High</SelectItem>
-                      <SelectItem value="urgent">Urgent</SelectItem>
+                    <SelectItem value="High">High</SelectItem>
+                    <SelectItem value="Medium">Medium</SelectItem>
+                    <SelectItem value="Low">Low</SelectItem>
                     </SelectContent>
                   </Select>
                 </div>
@@ -372,10 +390,10 @@ export default function EditTaskPage() {
                 <div>
                   <Label htmlFor="assignedTo">Assigned To</Label>
                   <Select
-                    value={task.assignedTo?.id || ""}
+                    value={task.assigned_to || ""}
                     onValueChange={(value) => {
                       const user = users.find((u) => u.id === value) || null
-                      handleFieldChange("assignedTo", user)
+                      handleFieldChange("assigned_to", user)
                     }}
                   >
                     <SelectTrigger id="assignedTo" className="mt-1">
@@ -405,18 +423,18 @@ export default function EditTaskPage() {
                         variant="outline"
                         className={cn(
                           "w-full mt-1 justify-start text-left font-normal",
-                          !task.dueDate && "text-muted-foreground",
+                          !task.due_date && "text-muted-foreground",
                         )}
                       >
                         <CalendarIcon className="mr-2 h-4 w-4" />
-                        {task.dueDate ? format(task.dueDate, "PPP") : "Select date"}
+                        {task.due_date ? format(task.due_date, "PPP") : "Select date"}
                       </Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-auto p-0">
                       <Calendar
                         mode="single"
-                        selected={task.dueDate || undefined}
-                        onSelect={(date) => handleFieldChange("dueDate", date)}
+                        selected={task.due_date || undefined}
+                        onSelect={(date) => handleFieldChange("due_date", date)}
                         initialFocus
                       />
                     </PopoverContent>
@@ -426,7 +444,7 @@ export default function EditTaskPage() {
                 <Separator className="my-6" />
 
                 <div className="flex gap-2">
-                  <Button className="flex-1">Save Changes</Button>
+                  <Button onClick={saveTaskProperties} className="flex-1">Save Changes</Button>
                   <Button variant="outline">Cancel</Button>
                 </div>
               </div>

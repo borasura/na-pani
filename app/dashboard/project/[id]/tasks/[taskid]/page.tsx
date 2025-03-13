@@ -24,12 +24,12 @@ export default async function TaskPage() {
     console.log(await getTaskById("e9aa08bf-66d9-4c44-a062-e828b3701ffa"))
     //console.log(await getTaskCommentsByTaskId("e9aa08bf-66d9-4c44-a062-e828b3701ffa"))
     console.log("Fetching all together")
-    const temp = await getTaskActivitiesByTaskId("e9aa08bf-66d9-4c44-a062-e828b3701ffa")
-    console.log(temp)
-    console.log(temp.comments[0].users)
+    const taskActivities = await getTaskActivitiesByTaskId("e9aa08bf-66d9-4c44-a062-e828b3701ffa")
+    console.log(taskActivities)
+    //console.log(temp.comments[0].users)
     
     return (
-        <EditTaskPage />
+        <EditTaskPage taskActivities={taskActivities} />
     );
   }
   

@@ -147,6 +147,7 @@ model tasks {
   assigned_to                    String?         @db.Uuid
   created_at                     DateTime?       @default(now()) @db.Timestamp(6)
   updated_at                     DateTime?       @default(now()) @db.Timestamp(6)
+  updated_by                     String?         @db.Uuid
   is_deleted                     Boolean?        @default(false)
   comments                       comments[]
   task_tags                      task_tags[]
@@ -213,8 +214,8 @@ model projects_history {
   project_id       String    @db.Uuid
   change_type      String    @db.VarChar
   changed_by       String    @db.Uuid
-  previous_values  Json?
-  new_values       Json?
+  previous_values  String
+  new_values       String
   comment_id       String?   @db.Uuid
   change_timestamp DateTime  @default(now()) @db.Timestamp(6)
   users            users     @relation(fields: [changed_by], references: [id], onDelete: Restrict , onUpdate: NoAction)
@@ -227,8 +228,8 @@ model tasks_history {
   task_id         String    @db.Uuid
   change_type     String    @db.VarChar(50)
   changed_by      String    @db.Uuid
-  previous_values Json?
-  new_values      Json?
+  previous_values String
+  new_values      String
   comment_id      String?   @db.Uuid
   created_at      DateTime  @default(now()) @db.Timestamp(6)
   users           users     @relation(fields: [changed_by], references: [id], onDelete: NoAction, onUpdate: NoAction)
