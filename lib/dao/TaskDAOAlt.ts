@@ -193,7 +193,7 @@ export async function createProject(name: string, description: string | null, st
   console.log("Created project - " + project.id)
 
   await prisma.project_permissions.create({
-    data: { project_id: project.id, user_id: created_by, role: "Owner"},
+    data: { project_id: project.id, user_id: created_by, role: "owner"},
   });
 
   console.log("Created Project permissions")
@@ -253,4 +253,37 @@ export async function createComment(task_id: string, content: string, created_at
   });
   //revalidatePath("dashboard/tasks")
   return
+}
+
+export async function createUser(username: string, email: string) {
+    
+  const password_hash = ""
+  await prisma.users.create({
+      data: { username, email, password_hash },
+  });
+  return
+}
+
+export async function getUsers(search: string | null) {
+  console.log("returning users " )
+  let users;
+  if (search) {
+    users = await prisma.users.findMany({
+      where: {
+        OR: [
+          { username: { contains: search, mode: 'insensitive' } },
+          { email: { contains: search, mode: 'insensitive' } },
+        ],
+      },
+      take: 5,
+    });
+  }else{
+    users = await prisma.users.findMany({
+      take: 5,
+    });
+  }
+
+console.log("Returning users " + JSON.stringify(users))
+return users
+  
 }

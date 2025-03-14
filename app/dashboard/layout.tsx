@@ -14,6 +14,7 @@ import {
     SidebarProvider,
     SidebarTrigger,
 } from "@/components/ui/sidebar"
+import NextBreadcrumb from "./components/bread-crumb";
 
 export default function DashboardLayout({
     children,
@@ -28,21 +29,24 @@ export default function DashboardLayout({
                     <div className="flex items-center gap-2 px-4">
                         <SidebarTrigger className="-ml-1" />
                         <Separator orientation="vertical" className="mr-2 h-4" />
-                        <Breadcrumb>
-                            <BreadcrumbList>
-                                <BreadcrumbItem className="hidden md:block">
-                                    <BreadcrumbLink href="#">
-                                        Building Your Application
-                                    </BreadcrumbLink>
-                                </BreadcrumbItem>
-                                <BreadcrumbSeparator className="hidden md:block" />
-                                <BreadcrumbItem>
-                                    <BreadcrumbPage>Data Fetching</BreadcrumbPage>
-                                </BreadcrumbItem>
-                            </BreadcrumbList>
-                        </Breadcrumb>
+                        <NextBreadcrumb
+          homeElement={'Home'}
+          separator={<span> | </span>}
+          activeClasses='text-amber-500'
+          containerClasses='flex py-5 bg-gradient-to-r from-purple-600 to-blue-600' 
+          listClasses='hover:underline mx-2 font-bold'
+          capitalizeLinks
+        />
                     </div>
                 </header>
+                {/* <NextBreadcrumb
+          homeElement={'Home'}
+          separator={<span> | </span>}
+          activeClasses='text-amber-500'
+          containerClasses='flex py-5 bg-gradient-to-r from-purple-600 to-blue-600' 
+          listClasses='hover:underline mx-2 font-bold'
+          capitalizeLinks
+        /> */}
                 {children}
                 
             </SidebarInset>

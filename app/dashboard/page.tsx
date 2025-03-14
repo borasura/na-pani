@@ -1,11 +1,13 @@
 import ClientComponent from "@/components/client-component";
 import { auth } from "@/lib/auth";
-import { getProjectsForCurrentUser } from "@/lib/dao/TaskDAOAlt";
+import { getProjectsForCurrentUser, getUsers } from "@/lib/dao/TaskDAOAlt";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import ProjectCards from "./project-cards";
 
 import { NewProject } from './components/new-project'
+import { UserSelectCombobox }  from "@/components/PersonCombobox";
+import { AutocompleteExample } from "./autocomplete-example";
 
 
 export default async function Page() {
@@ -23,6 +25,16 @@ export default async function Page() {
   const projects = await getProjectsForCurrentUser()
   console.log(projects)
 
+  const initialUsers = await getUsers("")
+
+  console.log("returning initial users " + initialUsers.length)
+  console.log(initialUsers)
+
+  const handleUserSelect = (user) => {
+    console.log("Selected user:", user)
+    // Do something with the selected user
+  }
+
   return (
     <>
       <div className="flex flex-1 flex-col gap-4 p-4 pt-0">
@@ -32,9 +44,12 @@ export default async function Page() {
             <p className="text-muted-foreground">Manage and access your projects</p>
             <NewProject />
           </div>
-          <ProjectCards proj={projects} />
+          {/* <ProjectCards proj={projects} /> */}
+          {/* <UserSelectCombobox 
+        initialUsers={initialUsers}  */}
+       <AutocompleteExample initialUsers={initialUsers}/>
         </div>
-        <div className="grid auto-rows-min gap-4 md:grid-cols-3">
+        {/* <div className="grid auto-rows-min gap-4 md:grid-cols-3">
           <div className="aspect-video rounded-xl bg-muted/50">
             <div className='mt-10 text-center'>
               <h1 className='text-2xl font-bold underline'>Welcome to the dashboard</h1>
@@ -57,9 +72,9 @@ export default async function Page() {
             </ul>
           </div>
           <div className="aspect-video rounded-xl bg-muted/50" >
-            {/* <ProjectCards /> */}
+            
           </div>
-        </div>
+        </div> */}
 
       </div>
     </>

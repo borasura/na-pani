@@ -14,6 +14,7 @@ import { authClient } from "@/lib/auth-client";
 import { toast } from "sonner";
 import { redirect } from "next/navigation";
 //import { toast } from "@/hooks/use-toast";
+import { createUser } from "@/lib/dao/TaskDAOAlt"
 
 export default function SignUp() {
   const form = useForm<z.infer<typeof formSchema>>({
@@ -36,9 +37,11 @@ export default function SignUp() {
       onRequest: () => {
         toast("Please wait...")
       },
-      onSuccess: () => {
+      onSuccess: async () => {
         console.log('Registration successful')
+        // Create user profile here
         form.reset()
+        await createUser(name, email)
         redirect('/sign-in')
       },
       onError: (ctx) => {
