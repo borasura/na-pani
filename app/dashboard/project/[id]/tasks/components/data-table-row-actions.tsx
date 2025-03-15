@@ -20,6 +20,8 @@ import {
 
 import { labels } from "../data/data"
 import { taskSchema } from "../data/schema"
+import Link from "next/link"
+import { useRouter } from "next/router"
 
 interface DataTableRowActionsProps<TData> {
   row: Row<TData>
@@ -29,6 +31,10 @@ export function DataTableRowActions<TData>({
   row,
 }: DataTableRowActionsProps<TData>) {
   const task = taskSchema.parse(row.original)
+  //console.log(">> Task is ", task)
+
+  // const router = useRouter()
+  // console.log(router.asPath)
 
   return (
     <DropdownMenu>
@@ -42,7 +48,10 @@ export function DataTableRowActions<TData>({
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end" className="w-[160px]">
-        <DropdownMenuItem>Edit</DropdownMenuItem>
+        <Link href={`tasks/${task.id}`}>
+          <DropdownMenuItem>Go to Task</DropdownMenuItem>
+        </Link>
+        <DropdownMenuItem>Edit</DropdownMenuItem> {/** This is reserved for future inline edit */}        
         <DropdownMenuItem>Make a copy</DropdownMenuItem>
         <DropdownMenuItem>Favorite</DropdownMenuItem>
         <DropdownMenuSeparator />

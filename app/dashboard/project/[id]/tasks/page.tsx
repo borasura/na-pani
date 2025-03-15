@@ -8,6 +8,7 @@ import { UserNav } from "./components/user-nav"
 import { taskSchema } from "./data/schema"
 
 import { TaskDAO } from "@/lib/dao/TaskDAO";
+import { headers } from "next/headers"
 
 export const metadata: Metadata = {
   title: "Tasks",
@@ -16,6 +17,8 @@ export const metadata: Metadata = {
 
 // Simulate a database read for tasks.
 async function getTasks(id: string) {
+
+  
 
   //const data = await TaskDAO.getTasksByProjectId('7f04e41f-87a8-4561-8fa8-01de820931aa'); 
   const data = await TaskDAO.getTasksByProjectId(id); 
@@ -28,6 +31,8 @@ async function getTasks(id: string) {
 
 export default async function TaskPage({params}) {
 
+  const currentUrl = (await headers()).get('x-nextjs-page-url');
+  console.log("params are", currentUrl)
   const {id} = await params
   console.log("Received project id as " + id)
   const tasks = await getTasks(id)
