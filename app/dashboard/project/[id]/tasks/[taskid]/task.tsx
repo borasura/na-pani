@@ -359,7 +359,7 @@ export default function EditTaskPage({taskActivities}) {
                   </Select>
                 </div>
 
-                <div>
+                {/* <div>
                   <Label htmlFor="assignedTo">Assigned To</Label>
                   <Select
                     value={task.assigned_to || ""}
@@ -385,11 +385,12 @@ export default function EditTaskPage({taskActivities}) {
                       ))}
                     </SelectContent>
                   </Select>
-                </div>
+                </div> */}
 
                 <div>
+                <Label htmlFor="assignedTo">Assigned To</Label>
                 <UserSearchAutocomplete
-                      value={task.assigned_to_username}
+                      initValue={task.assigned_to_username}
                       onChange={(selectedUser) => {
                         console.log(">> Selected user - ", selectedUser)
                         console.log(">> This is good")

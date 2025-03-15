@@ -292,7 +292,7 @@ export async function createUser(username: string, email: string) {
 }
 
 export async function getUsers(search: string | null) {
-  console.log("returning users " )
+  console.log("?>?>> returning users with search term as ", search)
   let users;
   if (search) {
     users = await prisma.users.findMany({

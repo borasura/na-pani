@@ -25,7 +25,8 @@ export type UserOption = {
 //   userSelected: (username: string, id: string) => void; // Specify the function type
 // }
 
-export function UserSearchAutocomplete({ value, onChange }) {
+export function UserSearchAutocomplete({ initValue, onChange }) {
+  console.log(">> value is ", initValue)
   const inputRef = useRef<HTMLInputElement>(null);
   const [isOpen, setOpen] = useState(false);
   const [isLoading, setLoading] = useState(false);
@@ -55,6 +56,19 @@ export function UserSearchAutocomplete({ value, onChange }) {
     } finally {
       setLoading(false);
     }
+
+    // if (initValue && initValue !== "") {
+    //   console.log(">> Finding options to select")
+    //   console.log(options)
+    //   const optionToSelect = options.find(
+    //     (option) => option.label === initValue
+    //   );
+    //   if (optionToSelect) {
+    //     console.log(">> Option selected")
+    //     setSelected(optionToSelect);
+    //     //console.log("user selected ", optionToSelect.label, ", ", optionToSelect.value)
+    //   }
+    // }
   };
 
   // Handle input value changes with debouncing
@@ -76,7 +90,9 @@ export function UserSearchAutocomplete({ value, onChange }) {
 
   // Load initial users on mount
   useEffect(() => {
-    loadUsers("");
+    console.log(">>> Inside INITIAL use effect with value as ", initValue)
+    loadUsers(initValue);
+    
   }, []);
 
   const handleKeyDown = useCallback(
@@ -135,7 +151,7 @@ export function UserSearchAutocomplete({ value, onChange }) {
             onValueChange={isLoading ? undefined : setInputValue}
             onBlur={handleBlur}
             onFocus={() => setOpen(true)}
-            placeholder="Search for users..."
+            placeholder={initValue}
             disabled={false}
             className="text-base"
           />
