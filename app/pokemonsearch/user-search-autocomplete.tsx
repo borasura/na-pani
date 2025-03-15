@@ -20,7 +20,12 @@ export type UserOption = {
   email: string;
 };
 
-export function UserSearchAutocomplete() {
+// Define the type for the props, including the userSelected function
+// interface ClientComponentProps {
+//   userSelected: (username: string, id: string) => void; // Specify the function type
+// }
+
+export function UserSearchAutocomplete({ value, onChange }) {
   const inputRef = useRef<HTMLInputElement>(null);
   const [isOpen, setOpen] = useState(false);
   const [isLoading, setLoading] = useState(false);
@@ -91,6 +96,7 @@ export function UserSearchAutocomplete() {
         );
         if (optionToSelect) {
           setSelected(optionToSelect);
+          //console.log("user selected ", optionToSelect.label, ", ", optionToSelect.value)
         }
       }
 
@@ -109,6 +115,9 @@ export function UserSearchAutocomplete() {
   const handleSelectOption = useCallback((selectedOption: UserOption) => {
     setInputValue(selectedOption.label);
     setSelected(selectedOption);
+    console.log("user selected in CC ", selectedOption.label, ", ", selectedOption.value)
+    //userSelected(selectedOption.label, selectedOption.value)
+    onChange(selectedOption.value)
 
     // Close the dropdown after selection
     setTimeout(() => {

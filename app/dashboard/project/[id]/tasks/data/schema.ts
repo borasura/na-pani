@@ -11,11 +11,13 @@ export const taskSchema = z.object({
   priority: z.enum(["Low", "Medium", "High"]).default("Medium"),
   color_code: z.string(), 
   due_date: z.date().nullable(),
-  created_by: z.string().uuid(),
+  created_by: z.string().uuid().optional(),
   assigned_to: z.string().uuid().nullable(),
   created_at: z.date().default(new Date()),
   updated_at: z.date().default(new Date()),
   is_deleted: z.boolean().default(false),
+  assigned_to_id: z.string().uuid().optional(),
+  assigned_to_username: z.string().optional(),
 })
 
 export type Task = z.infer<typeof taskSchema>

@@ -44,10 +44,10 @@ export default async function Page() {
             <p className="text-muted-foreground">Manage and access your projects</p>
             <NewProject />
           </div>
-          {/* <ProjectCards proj={projects} /> */}
+          <ProjectCards proj={projects} />
           {/* <UserSelectCombobox 
         initialUsers={initialUsers}  */}
-       <AutocompleteExample initialUsers={initialUsers}/>
+       {/* <AutocompleteExample initialUsers={initialUsers}/> */}
         </div>
         {/* <div className="grid auto-rows-min gap-4 md:grid-cols-3">
           <div className="aspect-video rounded-xl bg-muted/50">

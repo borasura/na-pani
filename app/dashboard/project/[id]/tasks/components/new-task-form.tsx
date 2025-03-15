@@ -31,6 +31,7 @@ import { Calendar } from "@/components/ui/calendar"
 import { CalendarIcon } from "lucide-react"
 import { format } from "date-fns"
 import { cn } from "@/lib/utils"
+import { UserSearchAutocomplete } from "@/app/pokemonsearch/user-search-autocomplete"
 
 
 const formSchema = z.object({
@@ -44,6 +45,8 @@ const formSchema = z.object({
   assigned_to: z.string().optional(),
 
 })
+
+
 
 export function NewTaskForm({onSave, url_project_id}) {
   // ...
@@ -78,8 +81,8 @@ export function NewTaskForm({onSave, url_project_id}) {
     // const project_id = '7f04e41f-87a8-4561-8fa8-01de820931aa';
     // const user_id = '7b782ab7-ca01-47c8-8232-948e65d90ea0';
     // console.log(project_id)
-    // console.log(values)
-    createTask(values.title, values.description, values.status, values.due_date, url_project_id, values.priority, "", '7b782ab7-ca01-47c8-8232-948e65d90ea0'); 
+    console.log(values)
+    createTask(values.title, values.description, values.status, values.due_date, url_project_id, values.priority, "", values.assigned_to); 
     console.log("Created new task ")
     onSave()
     
@@ -185,7 +188,12 @@ export function NewTaskForm({onSave, url_project_id}) {
             <FormItem>
               <FormLabel>Assigned To</FormLabel>
               <FormControl>
-                <Input placeholder="" {...field} />
+                {/* <Input placeholder="" {...field} /> */}
+                {/* <UserSearchAutocomplete userSelected={() => {}}/> */}
+                <UserSearchAutocomplete
+                value={field.value}
+                onChange={(selectedUser) => field.onChange(selectedUser)}
+                />
               </FormControl>
               {/* <FormDescription>
                 This is your public display name.
@@ -195,7 +203,9 @@ export function NewTaskForm({onSave, url_project_id}) {
           )}
         />
 
-<FormField
+        <UserSearchAutocomplete userSelected={() => {}}/>
+
+      <FormField
           control={form.control}
           name="due_date"
           render={({ field }) => (

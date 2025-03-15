@@ -137,7 +137,7 @@ export const columns: ColumnDef<Task>[] = [
     },
   },
   {
-    accessorKey: "assigned_to",
+    accessorKey: "assigned_to_username",
     header: ({ column }) => (
       <DataTableColumnHeader column={column} title="Assigned To" />
     ),
@@ -148,7 +148,7 @@ export const columns: ColumnDef<Task>[] = [
         <div className="flex space-x-2">
           {label && <Badge variant="outline">{label.label}</Badge>}
           <span className="max-w-[200px] truncate font-medium">
-            {row.getValue("assigned_to")}
+            {row.getValue("assigned_to_username")}
           </span>
         </div>
       )
