@@ -239,6 +239,16 @@ export async function updateTaskAttributes(id: string, status?: string, priority
   });
 }
 
+export async function updateTaskAttributes1(id: string, status?: string, priority?: string, due_date?: Date, assigned_to?: string) {
+  console.log("TaskDAO - Inside updating task attributes")
+  console.log(status, "-", priority, "-", due_date)
+  const updated_by = await getUserId()
+  return await prisma.tasks.update({
+      where: { id },
+      data: { status, priority, due_date, assigned_to, updated_by },
+  });
+}
+
 export async function updateTaskTitle(id: string, title: string) {
   console.log("TaskDAO - Inside updating task title")
   const updated_by = await getUserId()

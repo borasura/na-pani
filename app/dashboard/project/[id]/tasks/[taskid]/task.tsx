@@ -17,7 +17,8 @@ import { Calendar } from "@/components/ui/calendar"
 import { format } from "date-fns"
 import { cn } from "@/lib/utils"
 import { SidebarProvider, Sidebar, SidebarContent } from "@/components/ui/sidebar"
-import { createComment, updateTaskAttributes, updateTaskDescription, updateTaskTitle } from "@/lib/dao/TaskDAOAlt"
+import { createComment, updateTaskAttributes, updateTaskAttributes1, updateTaskDescription, updateTaskTitle } from "@/lib/dao/TaskDAOAlt"
+import { UserSearchAutocomplete } from "@/app/pokemonsearch/user-search-autocomplete"
 
 // Types
 type ActivityType = "comment" | "update"
@@ -45,12 +46,15 @@ interface Activity {
 
 interface Task {
   id: string
+  project_id: string
   title: string
   description: string
   status: Status
   priority: Priority
   assigned_to: string | null
   due_date: Date | null
+  assigned_to_id: string
+  assigned_to_username: string
   activities: Activity[]
 }
 
@@ -171,8 +175,9 @@ export default function EditTaskPage({taskActivities}) {
   async function saveTaskProperties(event: FormEvent<HTMLButtonElement>): void {
     console.log(event)
     console.log("Updating task activities")
-    console.log(task.id, " - ", task.status, " - ", task.priority, " - ", task.due_date)
-    updateTaskAttributes(task.id, task.status, task.priority, task.due_date)
+    console.log(task.id, " - ", task.status, " - ", task.priority, " - ", task.due_date, " - ", task.assigned_to, " - ", task.assigned_to_username)
+    //updateTaskAttributes(task.id, task.status, task.priority, task.due_date)
+    updateTaskAttributes1(task.id, task.status, task.priority, task.due_date, task.assigned_to)
     //throw new Error("Function not implemented.")
   }
 
@@ -380,6 +385,17 @@ export default function EditTaskPage({taskActivities}) {
                       ))}
                     </SelectContent>
                   </Select>
+                </div>
+
+                <div>
+                <UserSearchAutocomplete
+                      value={task.assigned_to_username}
+                      onChange={(selectedUser) => {
+                        console.log(">> Selected user - ", selectedUser)
+                        console.log(">> This is good")
+                        handleFieldChange("assigned_to", selectedUser)
+                      }}
+                      />
                 </div>
 
                 <div>
