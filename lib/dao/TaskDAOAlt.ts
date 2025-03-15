@@ -6,17 +6,23 @@ import { auth } from "../auth";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
+import { logger } from "@/lib/logger";
+const log = logger.child({ module: "TaskDAOAlt" });
+
 export async function getUserId() {
+    log.debug("called");
     const session = await auth.api.getSession({
         headers: await headers()
     });
     
     if (!session) {
+      log.debug("Session not found. Rediring user to main");
         return redirect('/')
     }
 
     const user_email = session?.user.email;
     const profile = await prisma.users.findUniqueOrThrow({where: {email: user_email}});
+    log.debug("Returning user profile.id");
     return profile.id
 }
 
@@ -34,7 +40,7 @@ export async function getProjectsForCurrentUser(){
 export async function getProjects(userId: string){
     //return await prisma.projects.findMany({ where: {}});
 
-    console.log("Inside getProjects for id - " + userId)
+    log.debug("Inside getProjects for id - " + userId)
 
     const projects = await prisma.projects.findMany({
         where: {

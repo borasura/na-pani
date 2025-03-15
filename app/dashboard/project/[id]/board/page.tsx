@@ -1,5 +1,5 @@
 export default async function ProjectBoard({ params }) {
-  const { id } = params;
+  const { id } = await params;
 
   return (
     <div>

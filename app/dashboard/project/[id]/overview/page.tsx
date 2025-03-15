@@ -1,5 +1,5 @@
 export default async function ProjectOverview({ params }) {
-  const { id } = params;
+  const { id } = await params;
 
   return (
     <div>
