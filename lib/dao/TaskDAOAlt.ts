@@ -91,13 +91,25 @@ export async function getTaskActivitiesByTaskId(taskId: string) {
     },
     select: {
       id: true,
-      title: true,
-      description: true,
-      status: true,
-      priority: true,
-      color_code: true,
-      due_date: true,
-      assigned_to: true, 
+          project_id: true,
+          title: true,
+          description: true,
+          status: true,
+          priority: true,
+          color_code: true,
+          due_date: true,
+          created_by: true,
+          assigned_to: true,
+          created_at: true,
+          updated_at: true,
+          updated_by: true,
+          is_deleted: true,
+          users_tasks_assigned_to: {
+              select: {
+                  username: true,
+                  id: true,
+              },
+          }, 
       comments: {  
         select: {
           content: true,
@@ -159,10 +171,15 @@ export async function getTaskActivitiesByTaskId(taskId: string) {
   const taskWithCombinedChildren = {
     ...taskWithChildren, // Spread the original object properties
     activities,  // Add the combinedChildItems array
+    assigned_to_id: taskWithChildren?.users_tasks_assigned_to?.id,
+    assigned_to_username: taskWithChildren?.users_tasks_assigned_to?.username
   };
 
   console.log("Fecthing tasks with children -" + taskWithChildren)
   //return await prisma.tasks.findUnique({ where: { id: taskId } });
+  
+  
+  
   return taskWithCombinedChildren
 }
 

@@ -76,41 +76,8 @@ const users: UserType[] = [
   },
 ]
 
-const sampleTask: Task = {
-  id: "task-123",
-  title: "Implement new authentication flow",
-  description: "Create a new authentication flow with social login options and improved security measures.",
-  status: "in-progress",
-  priority: "high",
-  assigned_to: "test user",
-  due_date: new Date(2025, 2, 15), // March 15, 2025
-  activities: [
-    {
-      id: "act-1",
-      type: "comment",
-      content: "I've started working on the OAuth integration. Should be ready for review by tomorrow.",
-      username: "username@",
-      email: "email@a",
-      created_date: new Date(2025, 2, 10, 14, 30), // March 10, 2025, 2:30 PM
-      
-    },
-    {
-      id: "act-2",
-      type: "update",
-      content: "updated Priority from Medium to High",
-      change_type: "priority",
-      previous_values: "medium",
-      new_values: "high",
-      username: "username@",
-      email: "email@a",
-      created_date: new Date(2025, 2, 10, 14, 30), 
-    },
-   
-  ],
-}
-
 export default function EditTaskPage({taskActivities}) {
-  console.log(taskActivities)
+  console.log("Inside Edit Task Page", taskActivities)
 
   // taskActivities.activities.forEach(activity => {
   //   if (activity.activity_type && activity.activity_type === 'task_history') {
