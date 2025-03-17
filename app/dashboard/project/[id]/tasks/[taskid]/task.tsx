@@ -20,6 +20,8 @@ import { SidebarProvider, Sidebar, SidebarContent } from "@/components/ui/sideba
 import { createComment, updateTaskAttributes, updateTaskAttributes1, updateTaskDescription, updateTaskTitle } from "@/lib/dao/TaskDAOAlt"
 import { UserSearchAutocomplete } from "@/app/pokemonsearch/user-search-autocomplete"
 
+import { useRouter } from 'next/compat/router'
+
 // Types
 type ActivityType = "comment" | "update"
 type Priority = "low" | "medium" | "high" | "urgent"
@@ -101,6 +103,13 @@ export default function EditTaskPage({taskActivities}) {
   const [editedDescription, setEditedDescription] = useState(task.description)
   const [isStarred, setIsStarred] = useState(false)
 
+  const router = useRouter();
+
+  const handleBackClick = () => {
+    // This will go to the previous page in the browser's history
+    router.back();
+  };
+  
   const handleFieldChange = (field: keyof Task, value: any) => {
     console.log("Updating value: " + field + " - " + value)
     setTask((prev) => ({ ...prev, [field]: value }))
@@ -144,13 +153,15 @@ export default function EditTaskPage({taskActivities}) {
 
   const handleTitleSave = () => {
     handleFieldChange("title", editedTitle)
-    updateTaskTitle(task.id, editedTitle)
+    const currentpath = "/dashboard/project" + task.project_id + "/tasks"
+    updateTaskTitle(task.id, editedTitle, currentpath)
     setIsTitleEditing(false)
   }
 
   const handleDescriptionSave = () => {
     handleFieldChange("description", editedDescription)
-    updateTaskDescription(task.id, editedDescription)
+    const currentpath = "/dashboard/project" + task.project_id + "/tasks"
+    updateTaskDescription(task.id, editedDescription, currentpath)
     setIsDescriptionEditing(false)
   }
 
@@ -177,7 +188,8 @@ export default function EditTaskPage({taskActivities}) {
     console.log("Updating task activities")
     console.log(task.id, " - ", task.status, " - ", task.priority, " - ", task.due_date, " - ", task.assigned_to, " - ", task.assigned_to_username)
     //updateTaskAttributes(task.id, task.status, task.priority, task.due_date)
-    updateTaskAttributes1(task.id, task.status, task.priority, task.due_date, task.assigned_to)
+    const currentpath = "/dashboard/project" + task.project_id + "/tasks"
+    updateTaskAttributes1(task.id, task.status, task.priority, task.due_date, task.assigned_to, currentpath)
     //throw new Error("Function not implemented.")
   }
 
@@ -190,7 +202,7 @@ export default function EditTaskPage({taskActivities}) {
             <div className="mb-8">
               <div className="flex items-center mb-6">
                 <div className="flex items-center gap-2 mr-4">
-                  <Button variant="ghost" size="icon" className="h-8 w-8" aria-label="Back">
+                  <Button variant="ghost" size="icon" className="h-8 w-8" aria-label="Back" onClick={handleBackClick}>
                     <ArrowLeft className="h-4 w-4" />
                   </Button>
                   <Button variant="ghost" size="icon" className="h-8 w-8" aria-label="Refresh">

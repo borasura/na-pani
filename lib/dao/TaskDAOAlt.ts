@@ -245,32 +245,45 @@ export async function updateTaskAttributes(id: string, status?: string, priority
   });
 }
 
-export async function updateTaskAttributes1(id: string, status?: string, priority?: string, due_date?: Date, assigned_to?: string) {
+export async function updateTaskAttributes1(id: string, status?: string, 
+    priority?: string, due_date?: Date, assigned_to?: string, currentpath?: string) {
   console.log("TaskDAO - Inside updating task attributes")
   console.log(status, "-", priority, "-", due_date)
   const updated_by = await getUserId()
-  return await prisma.tasks.update({
+  await prisma.tasks.update({
       where: { id },
       data: { status, priority, due_date, assigned_to, updated_by },
   });
+  if(currentpath){
+    revalidatePath(currentpath)
+  }
+  return
 }
 
-export async function updateTaskTitle(id: string, title: string) {
+export async function updateTaskTitle(id: string, title: string, currentpath?: string) {
   console.log("TaskDAO - Inside updating task title")
   const updated_by = await getUserId()
-  return await prisma.tasks.update({
+  await prisma.tasks.update({
       where: { id },
       data: { title, updated_by },
   });
+  if(currentpath){
+    revalidatePath(currentpath)
+  }
+  return
 }
 
-export async function updateTaskDescription(id: string, description: string) {
+export async function updateTaskDescription(id: string, description: string, currentpath?: string) {
   console.log("TaskDAO - Inside updating task description")
   const updated_by = await getUserId()
-  return await prisma.tasks.update({
+  await prisma.tasks.update({
       where: { id },
       data: { description, updated_by },
   });
+  if(currentpath){
+    revalidatePath(currentpath)
+  }
+  return
 }
 
 // Delete a task
