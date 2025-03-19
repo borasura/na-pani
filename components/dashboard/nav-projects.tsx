@@ -24,17 +24,45 @@ import {
   SidebarMenuItem,
   useSidebar,
 } from "@/components/ui/sidebar"
+import { useState } from "react"
+import ConfirmDeleteDialog from "./delete-dialog"
 
 export function NavProjects({
   projects,
 }: {
   projects: {
+    id: string
     name: string
-    url: string
-    icon: LucideIcon
+    description: string
+    status: string
+    priority: string
+    //url: string
+    //icon: LucideIcon
   }[]
 }) {
+
+  const [isDialogOpen, setDialogOpen] = useState(false);
+
   const { isMobile } = useSidebar()
+
+  const handleDelete = async () => {
+    try {
+      // Call your API or server function to delete the project
+      // const response = await fetch(`/api/projects/${projectId}`, {
+      //   method: "DELETE",
+      // });
+
+      // if (!response.ok) {
+      //   throw new Error("Failed to delete project");
+      // }
+
+      // Handle success, maybe show a notification or update the UI
+      alert("Project deleted successfully");
+    } catch (error) {
+      // Handle error, show a notification, etc.
+      alert("Failed to delete project");
+    }
+  };
 
   return (
     <SidebarGroup className="group-data-[collapsible=icon]:hidden">
@@ -43,8 +71,8 @@ export function NavProjects({
         {projects.map((item) => (
           <SidebarMenuItem key={item.name}>
             <SidebarMenuButton asChild>
-              <a href={item.url}>
-                <item.icon />
+              <a href={`/dashboard/project/${item.id}/tasks`}>
+                {/* <item.icon /> */}
                 <span>{item.name}</span>
               </a>
             </SidebarMenuButton>
@@ -62,17 +90,22 @@ export function NavProjects({
               >
                 <DropdownMenuItem>
                   <Folder className="text-muted-foreground" />
-                  <span>View Project</span>
+                  <a href={`/dashboard/project/${item.id}/tasks`}>
+                {/* <item.icon /> */}
+                <span>View Project</span>
+              </a>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
                   <Forward className="text-muted-foreground" />
                   <span>Share Project</span>
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>
+                <DropdownMenuItem onClick={() => setDialogOpen(true)}>
                   <Trash2 className="text-muted-foreground" />
                   <span>Delete Project</span>
-                </DropdownMenuItem>
+                  
+                </DropdownMenuItem>               
+                
               </DropdownMenuContent>
             </DropdownMenu>
           </SidebarMenuItem>
@@ -84,6 +117,9 @@ export function NavProjects({
           </SidebarMenuButton>
         </SidebarMenuItem>
       </SidebarMenu>
+      <ConfirmDeleteDialog isOpen={isDialogOpen} onClose={() => setDialogOpen(false)}
+                  onConfirm={handleDelete}
+                  />
     </SidebarGroup>
   )
 }

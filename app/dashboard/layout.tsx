@@ -1,13 +1,5 @@
 
 import { AppSidebar } from "@/components/dashboard/app-sidebar"
-import {
-    Breadcrumb,
-    BreadcrumbItem,
-    BreadcrumbLink,
-    BreadcrumbList,
-    BreadcrumbPage,
-    BreadcrumbSeparator,
-} from "@/components/ui/breadcrumb"
 import { Separator } from "@/components/ui/separator"
 import {
     SidebarInset,
@@ -15,15 +7,21 @@ import {
     SidebarTrigger,
 } from "@/components/ui/sidebar"
 import NextBreadcrumb from "./components/bread-crumb";
+import { getProjectsForCurrentUser } from "@/lib/dao/TaskDAOAlt";
 
-export default function DashboardLayout({
+export default async function DashboardLayout({
     children,
 }: Readonly<{
     children: React.ReactNode;
 }>) {
+
+
+    const projects = await getProjectsForCurrentUser();
+    //console.log("Inside Layout, fetches projects ", projects)
+    
     return (
         <SidebarProvider>
-            <AppSidebar />
+            <AppSidebar projects={projects} />
             <SidebarInset>
                 <header className="flex h-12 shrink-0 items-center gap-2 transition-[width,height] ease-linear group-has-[[data-collapsible=icon]]/sidebar-wrapper:h-12">
                     <div className="flex items-center gap-2 px-4">
