@@ -32,6 +32,7 @@ import { format } from 'date-fns';
 import { cn } from '@/lib/utils';
 import { createProject, updateProject } from '@/lib/dao/TaskDAOAlt';
 import { ColorPicker } from '@/components/color-picker';
+import { UserSearchAutocomplete } from '@/app/pokemonsearch/user-search-autocomplete';
 
 const newProjectFormSchema = z.object({
   name: z
@@ -219,7 +220,11 @@ export function NewProjectForm({ initialValues, isEditMode, onSave }) {
             <FormItem>
               <FormLabel>Project Owner</FormLabel>
               <FormControl>
-                <Input placeholder="" {...field} />
+                {/* <Input placeholder="" {...field} /> */}
+                <UserSearchAutocomplete
+                                value={field.value}
+                                onChange={(selectedUser) => field.onChange(selectedUser)} initValue={isEditMode ? initialValues.owner_username : null}
+                                />
               </FormControl>
               {/* <FormDescription>
                 This is your public display name.
@@ -319,7 +324,7 @@ export function NewProjectForm({ initialValues, isEditMode, onSave }) {
           )}
         />
 
-        <Button type="submit">Submit</Button>
+        <Button type="submit">{isEditMode ? 'Save' : 'Submit'}</Button>
       </form>
     </Form>
   );

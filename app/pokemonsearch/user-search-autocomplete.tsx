@@ -142,7 +142,7 @@ export function UserSearchAutocomplete({ initValue, onChange }) {
   }, []);
 
   return (
-    <div className="not-prose mt-8 flex flex-col gap-4">
+    <div className="not-prose flex flex-col gap-4">
       <CommandPrimitive onKeyDown={handleKeyDown}>
         <div>
           <CommandInput
