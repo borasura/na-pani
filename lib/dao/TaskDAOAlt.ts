@@ -104,6 +104,61 @@ export async function getProjects(userId: string){
       }));
 }
 
+export async function getProjectById(id: string){
+  //return await prisma.projects.findMany({ where: {}});
+
+  log.debug("Inside getProjectById for id - " + id)
+
+  const projects = await prisma.projects.findUnique({
+      where: {
+        id: id
+      },
+      select: {
+        id: true,
+        name: true,
+        description: true,
+        status: true,
+        priority: true, 
+        color_code: true, 
+        start_date: true,
+        end_date: true,
+        owner: true  ,      
+        users_projects_owner: {
+          select: {
+            username: true,  // Select the role from the permission table
+            email: true,
+          },
+        },
+      },
+    });
+
+    //return projects;
+    // Map the results to flatten the `role` into the project object
+  // return projects.map(project => ({
+  //     id: project.id,
+  //     name: project.name,
+  //     description: project.description,
+  //     status: project.status,
+  //     prioity: project.priority,     
+  //     color_code: project.color_code,   
+  //     start_date: project.start_date,
+  //     end_date: project.end_date,
+  //     owner: project.owner,
+  //     owner_username: project.users_projects_owner.username,
+  //     owner_email: project.users_projects_owner.email,
+  //   }))[0];
+
+    const projectDetails = {
+      ...projects, // Spread the original object properties
+      owner_username: projects?.users_projects_owner.username,
+      owner_email: projects?.users_projects_owner.email
+    };
+
+    delete projectDetails.users_projects_owner
+    
+    return projectDetails
+}
+
 // Get a single task by ID
 export async function getTaskById(taskId: string) {
     return await prisma.tasks.findUnique({ where: { id: taskId } });
@@ -248,6 +303,24 @@ export async function createProject(name: string, description: string | null, st
 
   
   revalidatePath("dashboard/")
+  return
+}
+
+// Create a new task priority, color_code, created_by
+export async function updateProject(id: string, name: string, description: string | null, status: string, priority: string | "Medium",
+  color_code: string, owner: string,  
+  start_date: Date | null, end_date: Date | null) {
+
+    //TODO Does this user even have permission to update?
+  //const updated_by = await getUserId() //Get from context
+
+  // TODO Updated_by field is missing. Needs implementation
+
+  await prisma.projects.update({
+    where: { id },
+    data: { name, description, status, priority, color_code, owner, start_date, end_date},
+  });
+  
   return
 }
 
