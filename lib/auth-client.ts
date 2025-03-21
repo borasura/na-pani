@@ -4,7 +4,7 @@ import { createAuthClient } from "better-auth/react"
 //     baseURL: "https://na-pani.vercel.app"
 // })
 
-
+console.log("process.env.REACT_APP_BASE_URL is ", process.env.REACT_APP_BASE_URL)
 export const authClient = createAuthClient({
     baseURL: process.env.REACT_APP_BASE_URL || "http://localhost:3000" // Fallback to the default URL if the env variable is not set
 });
