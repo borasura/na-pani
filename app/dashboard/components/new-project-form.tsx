@@ -8,6 +8,7 @@ import { Button } from "@/components/ui/button"
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -25,6 +26,7 @@ import { CalendarIcon } from "lucide-react"
 import { format } from "date-fns"
 import { cn } from "@/lib/utils"
 import { createProject } from "@/lib/dao/TaskDAOAlt"
+import { ColorPicker } from "@/components/color-picker"
 
 
 const newProjectFormSchema = z.object({
@@ -32,6 +34,7 @@ const newProjectFormSchema = z.object({
   description: z.string().min(2, { message: "Description must be at least 2 characters." }), 
   start_date: z.date().optional(),
   end_date: z.date().optional(),
+  color_code: z.string().optional(),
   status: z.enum(["Planning", "Execution", "Closed"]).default("Planning"),
   priority: z.enum(["Low", "Medium", "High"]).default("Medium"),
   owner: z.string().uuid({ message: "Invalid project" }),
@@ -49,7 +52,8 @@ export function NewProjectForm({onSave}) {
       name: "",
       description: "",
       status: "Planning",
-      priority: "Medium",      
+      priority: "Medium", 
+      color_code: "#d3d3d3",     
     },
   })
  
@@ -81,7 +85,7 @@ export function NewProjectForm({onSave}) {
     // console.log(project_id)
     console.log(values)
     //createTask(values.title, values.description, values.status, values.due_date, values.project_id, values.priority, "", values.user_id, '7b782ab7-ca01-47c8-8232-948e65d90ea0'); 
-    createProject(values.name, values.description, values.status, values.priority, "", values.owner, values.start_date, values.end_date)
+    createProject(values.name, values.description, values.status, values.priority, values.color_code, values.owner, values.start_date, values.end_date)
     console.log("Created new project ")
     onSave()
     
@@ -177,6 +181,26 @@ export function NewProjectForm({onSave}) {
             </FormItem>
           )}
         />
+
+        <FormField
+              control={form.control}
+              name="color_code"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Task Color</FormLabel>
+                  <FormControl>
+                    <ColorPicker value={field.value} onChange={field.onChange} onBlur={field.onBlur} />
+                  </FormControl>
+                  {/* <FormDescription>
+                    <div className="flex items-center gap-2 mt-2">
+                      <div className="h-4 w-4 rounded-full" style={{ backgroundColor: field.value }} />
+                      <span className="text-sm">Selected color: {field.value}</span>
+                    </div>
+                  </FormDescription> */}
+                  <FormMessage />
+                </FormItem>
+              )}
+            />    
 
     <FormField
           control={form.control}

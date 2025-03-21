@@ -78,7 +78,8 @@ export async function getProjects(userId: string){
           name: true,
           description: true,
           status: true,
-          priority: true,          
+          priority: true, 
+          color_code: true,         
           project_permissions: {
             where: {
               user_id: userId,  // Ensure that we fetch the role for this specific user
@@ -97,7 +98,8 @@ export async function getProjects(userId: string){
         name: project.name,
         description: project.description,
         status: project.status,
-        prioity: project.priority,        
+        prioity: project.priority,     
+        color_code: project.color_code,   
         role: project.project_permissions[0]?.role || null,  // Extract the role, assuming one permission per project
       }));
 }

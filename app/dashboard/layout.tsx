@@ -18,6 +18,14 @@ export default async function DashboardLayout({
 
     const projects = await getProjectsForCurrentUser();
     const userProfile = await getUserDetails();
+    //TODO - wrap this in promiseall
+
+    /**
+     * const projects = await getProjectsForCurrentUser();
+     * const userProfile = await getUserDetails();
+     * 
+     * await Promise.all(projects, userProfile)
+     */
     //console.log("Inside Layout, fetches projects ", projects)
     
     return (

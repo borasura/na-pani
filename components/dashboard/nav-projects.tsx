@@ -2,6 +2,7 @@
 
 import {
   Folder,
+  FolderPlus,
   Forward,
   MoreHorizontal,
   Trash2,
@@ -36,6 +37,7 @@ export function NavProjects({
     description: string
     status: string
     priority: string
+    color_code: string
     //url: string
     //icon: LucideIcon
   }[]
@@ -73,6 +75,8 @@ export function NavProjects({
             <SidebarMenuButton asChild>
               <a href={`/dashboard/project/${item.id}/tasks`}>
                 {/* <item.icon /> */}
+                {/* <div className="h-4 w-4 rounded-full" style={{ backgroundColor: item.color_code }} /> */}
+                <FolderPlus color={item.color_code} />
                 <span>{item.name}</span>
               </a>
             </SidebarMenuButton>

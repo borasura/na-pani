@@ -7,7 +7,7 @@ export default function AuthLayout({
   }>) {
     return (
       <main>
-        <Navbar />
+        {/* <Navbar /> */}
         <div className="h-screen flex flex-col items-center justify-center">
           {children}
         </div>
