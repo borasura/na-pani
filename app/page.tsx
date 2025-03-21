@@ -48,7 +48,7 @@ export default function Home() {
           </div>
           <div className="flex flex-1 items-center justify-end space-x-4">
             <nav className="flex items-center space-x-2">
-              <Link href="#" className="text-sm font-medium text-muted-foreground hover:text-foreground">
+              <Link href="/dashboard" className="text-sm font-medium text-muted-foreground hover:text-foreground">
                 Get Started
               </Link>
               <NavbarMini />

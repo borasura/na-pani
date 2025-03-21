@@ -10,20 +10,43 @@ import { logger } from "@/lib/logger";
 const log = logger.child({ module: "TaskDAOAlt" });
 
 export async function getUserId() {
-    log.debug("called");
-    const session = await auth.api.getSession({
-        headers: await headers()
-    });
-    
-    if (!session) {
-      log.debug("Session not found. Rediring user to main");
-        return redirect('/')
-    }
+  log.debug('called');
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
 
-    const user_email = session?.user.email;
-    const profile = await prisma.users.findUniqueOrThrow({where: {email: user_email}});
-    log.debug("Returning user profile.id");
-    return profile.id
+  if (!session) {
+    log.debug('Session not found. Rediring user to main');
+    return redirect('/');
+  }
+
+  const user_email = session?.user.email;
+  const profile = await prisma.users.findUniqueOrThrow({
+    where: { email: user_email },
+  });
+  log.debug('Returning user profile.id');
+  return profile.id;
+}
+
+export async function getUserDetails() {
+
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
+
+  if (!session) {
+    log.debug('Session not found. Rediring user to main');
+    return redirect('/');
+  }
+
+  const user_email = session?.user.email;
+  const profile = await prisma.users.findUniqueOrThrow({
+    where: { email: user_email },
+    select: { id: true, username: true, email: true },
+  });
+  log.debug('getUserDetails - ', profile);
+  log.debug(profile);
+  return profile;
 }
 
 export async function getTasksByProjectId(project_id: string) {

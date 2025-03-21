@@ -156,7 +156,7 @@ const data = {
   ],
 }
 
-export function AppSidebar({projects, ...props }: React.ComponentProps<typeof Sidebar>) {
+export function AppSidebar({projects, userProfile, ...props }: React.ComponentProps<typeof Sidebar>) {
   console.log("Inside App Sidebar, received projects - ", projects)
   console.log(projects)
   return (
@@ -169,7 +169,7 @@ export function AppSidebar({projects, ...props }: React.ComponentProps<typeof Si
         <NavProjects projects={projects} />
       </SidebarContent>
       <SidebarFooter>
-        <NavUser user={data.user} />
+        <NavUser user={userProfile} />
       </SidebarFooter>
       <SidebarRail />
     </Sidebar>
