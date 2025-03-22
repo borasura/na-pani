@@ -349,6 +349,7 @@ export default function EditTaskPage({taskActivities}) {
                     <SelectItem value="Todo">Todo</SelectItem>
                     <SelectItem value="In Progress">In Progress</SelectItem>
                     <SelectItem value="Done">Done</SelectItem>
+                    <SelectItem value="Blocked">Blocked</SelectItem>
                     <SelectItem value="Canceled">Canceled</SelectItem>
                     </SelectContent>
                   </Select>

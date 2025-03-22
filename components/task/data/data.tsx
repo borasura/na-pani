@@ -7,6 +7,7 @@ import {
     CircleOff,
     HelpCircle,
     Timer,
+    ShieldBan,
   } from "lucide-react"
   
   export const labels = [
@@ -44,6 +45,11 @@ import {
       value: "Done",
       label: "Done",
       icon: CheckCircle,
+    },
+    {
+      value: "Blocked",
+      label: "Blocked",
+      icon: ShieldBan,
     },
     {
       value: "Canceled",
