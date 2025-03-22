@@ -2,20 +2,14 @@
 
 import * as React from "react"
 import {
-  AudioWaveform,
-  BookOpen,
-  Bot,
+  AudioWaveform, Bot,
   Command,
   Frame,
   GalleryVerticalEnd,
   Map,
-  PieChart,
-  Settings2,
-  SquareTerminal,
+  PieChart, SquareTerminal
 } from "lucide-react"
 
-import { NavMain } from "./nav-main"
-import { NavProjects } from "./nav-projects"
 import { NavUser } from "./nav-user"
 import { TeamSwitcher } from "./team-switcher"
 import {
@@ -32,40 +26,24 @@ import {
   SidebarRail,
 } from "@/components/ui/sidebar"
 
-import * as React from "react"
 import { usePathname } from "next/navigation"
 import Link from "next/link"
 import {
   Bell,
   Calendar,
-  CheckCircle,
-  ChevronDown,
-  Clock,
-  Cog,
-  Filter,
+  CheckCircle, Clock, Filter,
   Flag,
-  Home,
-  LayoutDashboard,
-  LogOut,
-  Plus,
+  Home, Plus,
   Star,
-  Tag,
-  User,
-  Users,
+  Tag, Users
 } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { ScrollArea } from "@/components/ui/scroll-area"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import {
   DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuGroup,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
+  DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu"
 
 
