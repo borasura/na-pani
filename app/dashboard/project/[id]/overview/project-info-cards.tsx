@@ -86,7 +86,7 @@ export default function ProjectInfoCards({ projectData, projectStats }) {
   return (
        
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card>
+        <Card className="py-4">
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium">Status</CardTitle>
           </CardHeader>
@@ -102,7 +102,7 @@ export default function ProjectInfoCards({ projectData, projectStats }) {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="py-4">
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium">Timeline</CardTitle>
           </CardHeader>
@@ -121,7 +121,7 @@ export default function ProjectInfoCards({ projectData, projectStats }) {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="py-4">
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium">Progress</CardTitle>
           </CardHeader>
@@ -138,7 +138,7 @@ export default function ProjectInfoCards({ projectData, projectStats }) {
           </CardContent>
         </Card>
 
-        <Card>
+        <Card className="py-4">
           <CardHeader className="pb-2">
             <CardTitle className="text-sm font-medium">Owner</CardTitle>
           </CardHeader>

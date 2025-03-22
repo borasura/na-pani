@@ -287,6 +287,185 @@ export async function getProjectStatsById(project_id: string){
 
 
 }
+
+
+export async function getAttentionNeededTasks (project_id: string){
+  
+  const currentDate = new Date();
+  const oneWeekAgo = new Date();
+  oneWeekAgo.setDate(currentDate.getDate() - 7);
+
+  const pastDueTasks = await prisma.tasks.findMany({
+    where: {
+      project_id: project_id,
+      is_deleted: false,
+      due_date: {
+        lt: currentDate,
+      },
+    },
+    orderBy: {
+      due_date: 'asc',
+    },
+    take: 4,
+  });
+
+  const unassignedTasks = await prisma.tasks.findMany({
+    where: {
+      project_id: project_id,
+      is_deleted: false,
+      assigned_to: null,
+    },
+    orderBy: [
+      {
+        priority: 'desc',
+      },
+    ],
+    take: 4,
+  });
+
+  const noUpdatesTasks = await prisma.tasks.findMany({
+    where: {
+      project_id: project_id,
+      is_deleted: false,
+      updated_at: {
+        lt: oneWeekAgo,
+      },
+    },
+    orderBy: {
+      updated_at: 'asc',
+    },
+    take: 4,
+  });
+
+  const blockedTasks = await prisma.tasks.findMany({
+    where: {
+      project_id: project_id,
+      is_deleted: false,
+      status: 'Blocked',
+    },
+    orderBy: [
+      {
+        priority: 'desc',
+      },
+    ],
+    take: 4,
+  });
+
+  return {
+    past_due: pastDueTasks.map((task) => ({
+      id: task.id,
+      title: task.title,
+      due_date: task.due_date,
+      priority: task.priority,
+    })),
+    unassigned: unassignedTasks.map((task) => ({
+      id: task.id,
+      title: task.title,
+      priority: task.priority,
+    })),
+    no_updates: noUpdatesTasks.map((task) => ({
+      id: task.id,
+      title: task.title,
+      last_update: task.updated_at,
+      priority: task.priority,
+    })),
+    blocked: blockedTasks.map((task) => ({
+      id: task.id,
+      title: task.title,
+      blocker: task.description, // Assuming description contains blocker reason. Adjust if needed.
+      priority: task.priority,
+    })),
+  };
+
+}
+
+export async function getRecentActivitiesByProject   (project_id: string){
+
+  console.log("getRecentActivitiesByProject ")
+  const comments = await prisma.comments.findMany({
+    where: {
+      tasks: {
+        project_id: project_id,
+      },
+    },
+    select: {
+      id: true,
+      content: true,
+      users: {
+        select: {
+          username: true,
+          email: true,
+        },
+      },
+      updated_at: true,
+    },
+    orderBy: {
+      updated_at: 'desc',
+    },
+    take: 10,
+  });
+
+  console.log("Found comments " + comments.length)
+  const history = await prisma.tasks_history.findMany({
+    where: {
+      tasks: {
+        project_id: project_id,
+      },
+    },
+    select: {
+      id: true,
+      change_type: true,
+      previous_values: true,
+      new_values: true,
+      created_at: true,
+      users: {
+        select: {
+          username: true,
+          email: true,
+        },
+      },
+      tasks: {
+        select: {
+          title: true,
+        },
+      },
+    },
+    orderBy: {
+      created_at: 'desc',
+    },
+    take: 10,
+  });
+
+  const formattedComments = comments.map((comment) => ({
+    id: comment.id,
+    type: 'comment',
+    content: comment.content,
+    username: comment.users?.username,
+    email: comment.users?.email,
+    created_date: comment.updated_at,
+  }));
+
+  const formattedHistory = history.map((item) => ({
+    id: item.id,
+    type: 'task_history',
+    content: `Changed ${item.change_type} from '${item.previous_values}' to '${item.new_values}'`,
+    task_title: item.tasks?.title,
+    username: item.users?.username,
+    email: item.users?.email,
+    change_type: item.change_type,
+    new_values: item.new_values,
+    previous_values: item.previous_values,
+    created_date: item.created_at,
+  }));
+
+  const combinedActivities = [...formattedComments, ...formattedHistory];
+
+  const sortedActivities = combinedActivities
+    .sort((a, b) => b.created_date.getTime() - a.created_date.getTime())
+    .slice(0, 10);
+
+  return sortedActivities;
+}
 // Get a single task by ID
 export async function getTaskById(taskId: string) {
     return await prisma.tasks.findUnique({ where: { id: taskId } });

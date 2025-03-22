@@ -23,42 +23,25 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 import { useState } from "react";
 
-const taskStats = {
-  total: 124,
-  by_status: [
-    { name: "Backlog", count: 32, color: "bg-slate-400" },
-    { name: "Todo", count: 18, color: "bg-blue-400" },
-    { name: "In Progress", count: 27, color: "bg-amber-400" },
-    { name: "Done", count: 42, color: "bg-green-400" },
-    { name: "Blocked", count: 5, color: "bg-red-400" },
-  ],
-  by_priority: [
-    { name: "Low", count: 35, color: "bg-blue-400" },
-    { name: "Medium", count: 56, color: "bg-amber-400" },
-    { name: "High", count: 33, color: "bg-red-400" },
-  ],
-  completion_rate: 34,
-}
-
-const attentionNeeded = {
-  past_due: [
-    { id: "task1", title: "Update homepage hero section", due_date: new Date(2023, 11, 15), priority: "High" },
-    { id: "task2", title: "Finalize color palette", due_date: new Date(2023, 11, 20), priority: "Medium" },
-  ],
-  unassigned: [
-    { id: "task3", title: "Create mobile wireframes", priority: "High" },
-    { id: "task4", title: "SEO optimization plan", priority: "Medium" },
-    { id: "task5", title: "Performance testing", priority: "Low" },
-  ],
-  no_updates: [
-    { id: "task6", title: "Content migration strategy", last_update: new Date(2023, 9, 10), priority: "Medium" },
-    { id: "task7", title: "Analytics integration", last_update: new Date(2023, 9, 15), priority: "Low" },
-  ],
-  blocked: [
-    { id: "task8", title: "Payment gateway integration", blocker: "Waiting for API credentials", priority: "High" },
-    { id: "task9", title: "User testing", blocker: "Need final designs", priority: "Medium" },
-  ],
-}
+// const attentionNeeded = {
+//   past_due: [
+//     { id: "task1", title: "Update homepage hero section", due_date: new Date(2023, 11, 15), priority: "High" },
+//     { id: "task2", title: "Finalize color palette", due_date: new Date(2023, 11, 20), priority: "Medium" },
+//   ],
+//   unassigned: [
+//     { id: "task3", title: "Create mobile wireframes", priority: "High" },
+//     { id: "task4", title: "SEO optimization plan", priority: "Medium" },
+//     { id: "task5", title: "Performance testing", priority: "Low" },
+//   ],
+//   no_updates: [
+//     { id: "task6", title: "Content migration strategy", last_update: new Date(2023, 9, 10), priority: "Medium" },
+//     { id: "task7", title: "Analytics integration", last_update: new Date(2023, 9, 15), priority: "Low" },
+//   ],
+//   blocked: [
+//     { id: "task8", title: "Payment gateway integration", blocker: "Waiting for API credentials", priority: "High" },
+//     { id: "task9", title: "User testing", blocker: "Need final designs", priority: "Medium" },
+//   ],
+// }
 
 const teamMembers = [
   {
@@ -103,65 +86,65 @@ const teamMembers = [
   },
 ]
 
-const recentActivities = [
-  {
-    id: "act1",
-    type: "comment",
-    content: "I've updated the color scheme based on client feedback. Please review.",
-    username: "Sam Taylor",
-    email: "sam@example.com",
-    avatar: "/placeholder.svg?height=40&width=40",
-    created_date: new Date(2023, 11, 28, 14, 35),
-  },
-  {
-    id: "act2",
-    type: "task_history",
-    content: "Changed status from 'Todo' to 'In Progress'",
-    task_title: "Implement new navigation menu",
-    username: "Jordan Lee",
-    email: "jordan@example.com",
-    avatar: "/placeholder.svg?height=40&width=40",
-    change_type: "status",
-    new_values: "In Progress",
-    previous_values: "Todo",
-    created_date: new Date(2023, 11, 28, 11, 20),
-  },
-  {
-    id: "act3",
-    type: "comment",
-    content: "The client has approved the final mockups. We can proceed with development.",
-    username: "Alex Johnson",
-    email: "alex@example.com",
-    avatar: "/placeholder.svg?height=40&width=40",
-    created_date: new Date(2023, 11, 27, 16, 45),
-  },
-  {
-    id: "act4",
-    type: "task_history",
-    content: "Changed priority from 'Medium' to 'High'",
-    task_title: "Fix responsive layout issues",
-    username: "Alex Johnson",
-    email: "alex@example.com",
-    avatar: "/placeholder.svg?height=40&width=40",
-    change_type: "priority",
-    new_values: "High",
-    previous_values: "Medium",
-    created_date: new Date(2023, 11, 27, 10, 15),
-  },
-  {
-    id: "act5",
-    type: "task_history",
-    content: "Assigned task to Riley Smith",
-    task_title: "Conduct cross-browser testing",
-    username: "Alex Johnson",
-    email: "alex@example.com",
-    avatar: "/placeholder.svg?height=40&width=40",
-    change_type: "assigned_to",
-    new_values: "Riley Smith",
-    previous_values: null,
-    created_date: new Date(2023, 11, 26, 14, 30),
-  },
-]
+// const recentActivities = [
+//   {
+//     id: "act1",
+//     type: "comment",
+//     content: "I've updated the color scheme based on client feedback. Please review.",
+//     username: "Sam Taylor",
+//     email: "sam@example.com",
+//     avatar: "/placeholder.svg?height=40&width=40",
+//     created_date: new Date(2023, 11, 28, 14, 35),
+//   },
+//   {
+//     id: "act2",
+//     type: "task_history",
+//     content: "Changed status from 'Todo' to 'In Progress'",
+//     task_title: "Implement new navigation menu",
+//     username: "Jordan Lee",
+//     email: "jordan@example.com",
+//     avatar: "/placeholder.svg?height=40&width=40",
+//     change_type: "status",
+//     new_values: "In Progress",
+//     previous_values: "Todo",
+//     created_date: new Date(2023, 11, 28, 11, 20),
+//   },
+//   {
+//     id: "act3",
+//     type: "comment",
+//     content: "The client has approved the final mockups. We can proceed with development.",
+//     username: "Alex Johnson",
+//     email: "alex@example.com",
+//     avatar: "/placeholder.svg?height=40&width=40",
+//     created_date: new Date(2023, 11, 27, 16, 45),
+//   },
+//   {
+//     id: "act4",
+//     type: "task_history",
+//     content: "Changed priority from 'Medium' to 'High'",
+//     task_title: "Fix responsive layout issues",
+//     username: "Alex Johnson",
+//     email: "alex@example.com",
+//     avatar: "/placeholder.svg?height=40&width=40",
+//     change_type: "priority",
+//     new_values: "High",
+//     previous_values: "Medium",
+//     created_date: new Date(2023, 11, 27, 10, 15),
+//   },
+//   {
+//     id: "act5",
+//     type: "task_history",
+//     content: "Assigned task to Riley Smith",
+//     task_title: "Conduct cross-browser testing",
+//     username: "Alex Johnson",
+//     email: "alex@example.com",
+//     avatar: "/placeholder.svg?height=40&width=40",
+//     change_type: "assigned_to",
+//     new_values: "Riley Smith",
+//     previous_values: null,
+//     created_date: new Date(2023, 11, 26, 14, 30),
+//   },
+// ]
 
 // Helper function to get priority badge color
 // TODO put this in a util helper function. Remove duplicates
@@ -178,9 +161,9 @@ const getPriorityColor = (priority: string) => {
   }
 }
 
-export default function ProjectTabs({ id }) {
+export default function ProjectTabs({ taskStats, attentionNeededTasks, recentActivities }) {
 
-  console.log('The URL param projectID is ' + id);
+  //console.log('The URL param projectID is ' + id);
   const [activeTab, setActiveTab] = useState("overview")
 
 
@@ -257,7 +240,7 @@ export default function ProjectTabs({ id }) {
             </Card>
           </div>
 
-          {/* Completion Trend and Upcoming Milestones */}
+          {/* Completion Trend and Upcoming Milestones TODO - this is not true fix this*/}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <Card>
               <CardHeader>
@@ -291,7 +274,7 @@ export default function ProjectTabs({ id }) {
                       <Flag className="h-3 w-3" />
                     </div>
                     <div>
-                      <p className="font-medium">Design Approval</p>
+                      <p className="font-medium">Negotiate Settlement Terms</p>
                       <p className="text-sm text-muted-foreground">Due in 3 days</p>
                     </div>
                   </div>
@@ -300,8 +283,8 @@ export default function ProjectTabs({ id }) {
                       <Flag className="h-3 w-3" />
                     </div>
                     <div>
-                      <p className="font-medium">Development Phase 1 Complete</p>
-                      <p className="text-sm text-muted-foreground">Due in 2 weeks</p>
+                      <p className="font-medium">File Legal Motions</p>
+                      <p className="text-sm text-muted-foreground">Due in 1 weeks</p>
                     </div>
                   </div>
                   <div className="flex items-start gap-3">
@@ -309,8 +292,8 @@ export default function ProjectTabs({ id }) {
                       <Flag className="h-3 w-3" />
                     </div>
                     <div>
-                      <p className="font-medium">User Testing</p>
-                      <p className="text-sm text-muted-foreground">Due in 3 weeks</p>
+                      <p className="font-medium">Finalize Settlement Agreement</p>
+                      <p className="text-sm text-muted-foreground">Due in 2 weeks</p>
                     </div>
                   </div>
                 </div>
@@ -330,7 +313,7 @@ export default function ProjectTabs({ id }) {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* Past Due Tasks */}
             <Card>
-              <CardHeader className="bg-red-50 dark:bg-red-950/20">
+              <CardHeader className="bg-red-50 dark:bg-red-950/20 py-2">
                 <div className="flex items-center gap-2">
                   <AlertCircle className="h-5 w-5 text-red-500" />
                   <CardTitle>Past Due Tasks</CardTitle>
@@ -338,9 +321,9 @@ export default function ProjectTabs({ id }) {
                 <CardDescription>Tasks that have exceeded their due date</CardDescription>
               </CardHeader>
               <CardContent className="pt-6">
-                {attentionNeeded.past_due.length > 0 ? (
+                {attentionNeededTasks.past_due.length > 0 ? (
                   <div className="space-y-4">
-                    {attentionNeeded.past_due.map((task) => (
+                    {attentionNeededTasks.past_due.map((task) => (
                       <div key={task.id} className="flex justify-between items-start">
                         <div>
                           <p className="font-medium">{task.title}</p>
@@ -365,7 +348,7 @@ export default function ProjectTabs({ id }) {
 
             {/* Unassigned Tasks */}
             <Card>
-              <CardHeader className="bg-amber-50 dark:bg-amber-950/20">
+              <CardHeader className="bg-amber-50 dark:bg-amber-950/20 py-2">
                 <div className="flex items-center gap-2">
                   <User className="h-5 w-5 text-amber-500" />
                   <CardTitle>Unassigned Tasks</CardTitle>
@@ -373,9 +356,9 @@ export default function ProjectTabs({ id }) {
                 <CardDescription>Tasks that need to be assigned to team members</CardDescription>
               </CardHeader>
               <CardContent className="pt-6">
-                {attentionNeeded.unassigned.length > 0 ? (
+                {attentionNeededTasks.unassigned.length > 0 ? (
                   <div className="space-y-4">
-                    {attentionNeeded.unassigned.map((task) => (
+                    {attentionNeededTasks.unassigned.map((task) => (
                       <div key={task.id} className="flex justify-between items-start">
                         <div>
                           <p className="font-medium">{task.title}</p>
@@ -401,7 +384,7 @@ export default function ProjectTabs({ id }) {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             {/* No Recent Updates */}
             <Card>
-              <CardHeader className="bg-blue-50 dark:bg-blue-950/20">
+              <CardHeader className="bg-blue-50 dark:bg-blue-950/20 py-2">
                 <div className="flex items-center gap-2">
                   <Clock className="h-5 w-5 text-blue-500" />
                   <CardTitle>No Recent Updates</CardTitle>
@@ -409,9 +392,9 @@ export default function ProjectTabs({ id }) {
                 <CardDescription>Tasks with no activity in the past 7 weeks</CardDescription>
               </CardHeader>
               <CardContent className="pt-6">
-                {attentionNeeded.no_updates.length > 0 ? (
+                {attentionNeededTasks.no_updates.length > 0 ? (
                   <div className="space-y-4">
-                    {attentionNeeded.no_updates.map((task) => (
+                    {attentionNeededTasks.no_updates.map((task) => (
                       <div key={task.id} className="flex justify-between items-start">
                         <div>
                           <p className="font-medium">{task.title}</p>
@@ -438,7 +421,7 @@ export default function ProjectTabs({ id }) {
 
             {/* Blocked Tasks */}
             <Card>
-              <CardHeader className="bg-purple-50 dark:bg-purple-950/20">
+              <CardHeader className="bg-purple-50 dark:bg-purple-950/20 py-2">
                 <div className="flex items-center gap-2">
                   <AlertCircle className="h-5 w-5 text-purple-500" />
                   <CardTitle>Blocked Tasks</CardTitle>
@@ -446,9 +429,9 @@ export default function ProjectTabs({ id }) {
                 <CardDescription>Tasks that are currently blocked</CardDescription>
               </CardHeader>
               <CardContent className="pt-6">
-                {attentionNeeded.blocked.length > 0 ? (
+                {attentionNeededTasks.blocked.length > 0 ? (
                   <div className="space-y-4">
-                    {attentionNeeded.blocked.map((task) => (
+                    {attentionNeededTasks.blocked.map((task) => (
                       <div key={task.id} className="flex justify-between items-start">
                         <div>
                           <p className="font-medium">{task.title}</p>
@@ -474,6 +457,9 @@ export default function ProjectTabs({ id }) {
         </TabsContent>
 
         {/* Recent Activity Tab */}
+        {/* TODO Fix multiple things. The Reply should work for comment. Also for comment mention what Task it belongs to. 
+            View Task should work for Task_activity. Also Reply should only be enabled if the user has permission. If not, no
+            so its better to only display view task and nothing else. We could add it progressively. */}
         <TabsContent value="activity">
           <Card>
             <CardHeader>

@@ -1,4 +1,4 @@
-import { getProjectById, getProjectStatsById } from '@/lib/dao/TaskDAOAlt';
+import { getAttentionNeededTasks, getProjectById, getProjectStatsById, getRecentActivities, getRecentActivitiesByProject } from '@/lib/dao/TaskDAOAlt';
 
 import ProjectHeader from './project-header';
 import ProjectInfoCards from "./project-info-cards";
@@ -27,6 +27,12 @@ export default async function ProjectSettings({
   const projectStats = await getProjectStatsById(id);
   console.log(projectStats)
 
+  const attentionNeededTasks = await getAttentionNeededTasks(id);
+  console.log(attentionNeededTasks)
+
+  const recentActivities = await getRecentActivitiesByProject(id);
+  console.log(recentActivities)
+  
   return (
     <div className="container mx-auto p-4 space-y-6">
           {/* Project Header */}
@@ -36,7 +42,7 @@ export default async function ProjectSettings({
           <ProjectInfoCards projectData={projectDetails} projectStats={projectStats} />    
         
           {/* Main Content Tabs */}
-          <ProjectTabs id={23423} />
+          <ProjectTabs taskStats={projectStats} attentionNeededTasks={attentionNeededTasks} recentActivities={recentActivities} />
         </div>
   );
 }
