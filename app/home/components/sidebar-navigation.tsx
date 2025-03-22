@@ -1,38 +1,6 @@
 "use client"
 
 import * as React from "react"
-import {
-  AudioWaveform,
-  BookOpen,
-  Bot,
-  Command,
-  Frame,
-  GalleryVerticalEnd,
-  Map,
-  PieChart,
-  Settings2,
-  SquareTerminal,
-} from "lucide-react"
-
-import { NavMain } from "./nav-main"
-import { NavProjects } from "./nav-projects"
-import { NavUser } from "./nav-user"
-import { TeamSwitcher } from "./team-switcher"
-import {
-  Sidebar,
-  SidebarContent,
-  SidebarFooter,
-  SidebarGroup,
-  SidebarGroupContent,
-  SidebarGroupLabel,
-  SidebarHeader,
-  SidebarMenu,
-  SidebarMenuButton,
-  SidebarMenuItem,
-  SidebarRail,
-} from "@/components/ui/sidebar"
-
-import * as React from "react"
 import { usePathname } from "next/navigation"
 import Link from "next/link"
 import {
@@ -67,137 +35,20 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-
-
-// This is sample data.
-const data = {
-  user: {
-    name: "shadcn",
-    email: "m@example.com",
-    avatar: "/avatars/shadcn.jpg",
-  },
-  teams: [
-    {
-      name: "Acme Inc",
-      logo: GalleryVerticalEnd,
-      plan: "Enterprise",
-    },
-    {
-      name: "Acme Corp.",
-      logo: AudioWaveform,
-      plan: "Startup",
-    },
-    {
-      name: "Evil Corp.",
-      logo: Command,
-      plan: "Free",
-    },
-  ],
-  navMain: [
-    {
-      title: "My Items",
-      url: "#",
-      icon: SquareTerminal,
-      isActive: true,
-      items: [
-        {
-          title: "Home",
-          url: "/dashboard",
-        },
-        {
-          title: "My Tasks",
-          url: "/dashboard/tasks",
-        },
-        {
-          title: "Notifications",
-          url: "/notifications",
-        },
-      ],
-    },
-    {
-      title: "Projects",
-      url: "#",
-      icon: Bot,
-      items: [
-        {
-          title: "All Projects",
-          url: "/dashboard/projects",
-        },
-        // {
-        //   title: "Explorer",
-        //   url: "#",
-        // },
-        // {
-        //   title: "Quantum",
-        //   url: "#",
-        // },
-      ],
-    },
-    // {
-    //   title: "Documentation",
-    //   url: "#",
-    //   icon: BookOpen,
-    //   items: [
-    //     {
-    //       title: "Introduction",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Get Started",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Tutorials",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Changelog",
-    //       url: "#",
-    //     },
-    //   ],
-    // },
-    // {
-    //   title: "Settings",
-    //   url: "#",
-    //   icon: Settings2,
-    //   items: [
-    //     {
-    //       title: "General",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Team",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Billing",
-    //       url: "#",
-    //     },
-    //     {
-    //       title: "Limits",
-    //       url: "#",
-    //     },
-    //   ],
-    // },
-  ],
-  projects: [
-    {
-      name: "Design Engineering",
-      url: "#",
-      icon: Frame,
-    },
-    {
-      name: "Sales & Marketing",
-      url: "#",
-      icon: PieChart,
-    },
-    {
-      name: "Travel",
-      url: "#",
-      icon: Map,
-    },
-  ],
-}
+import {
+  Sidebar,
+  SidebarContent,
+  SidebarGroup,
+  SidebarGroupContent,
+  SidebarGroupLabel,
+  SidebarHeader,
+  SidebarMenu,
+  SidebarMenuButton,
+  SidebarMenuItem,
+  SidebarProvider,
+  SidebarRail,
+  SidebarTrigger,
+} from "@/components/ui/sidebar"
 
 // Mock data for demonstration
 const userData = {
@@ -224,27 +75,36 @@ const taskFilters = [
   { id: "overdue", name: "Overdue", color: "bg-rose-500" },
 ]
 
-export function AppSidebar({projects, userProfile, ...props }: React.ComponentProps<typeof Sidebar>) {
-  //console.log("Inside App Sidebar, received projects - ", projects)
-  //console.log(projects)
-    const pathname = usePathname()
-    const [searchQuery, setSearchQuery] = React.useState("")
-    const [isExpanded, setIsExpanded] = React.useState(true)
-  
-    // Filter projects based on search query
-    const filteredProjects = userProjects.filter((project) =>
-      project.name.toLowerCase().includes(searchQuery.toLowerCase()),
-    )
-  
+export function SidebarNavigation() {
+  const pathname = usePathname()
+  const [searchQuery, setSearchQuery] = React.useState("")
+  const [isExpanded, setIsExpanded] = React.useState(true)
+
+  // Filter projects based on search query
+  const filteredProjects = userProjects.filter((project) =>
+    project.name.toLowerCase().includes(searchQuery.toLowerCase()),
+  )
+
   return (
-    <Sidebar collapsible="icon" {...props}>
-      <SidebarHeader>
-        <TeamSwitcher teams={data.teams} />
-      </SidebarHeader>
-      <SidebarContent>
-        {/* <NavMain items={data.navMain} />
-        <NavProjects projects={projects} /> */}
-        <ScrollArea className="h-[calc(100vh-12rem)]">
+    <SidebarProvider>
+      <Sidebar className="border-r">
+        <SidebarHeader className="px-2 py-2">
+          <div className="flex items-center px-2">
+            <div className="flex h-10 w-10 items-center justify-center rounded-md bg-primary text-primary-foreground">
+              <LayoutDashboard className="h-5 w-5" />
+            </div>
+            <div className="ml-2 text-lg font-semibold">TaskFlow</div>
+            {/* <SidebarTrigger asChild className="ml-auto"> */}
+            <SidebarTrigger className="ml-auto">
+              <Button variant="ghost" size="icon">
+                <ChevronDown className="h-4 w-4" />
+              </Button>
+            </SidebarTrigger>
+          </div>
+        </SidebarHeader>
+
+        <SidebarContent className="px-2">
+          <ScrollArea className="h-[calc(100vh-12rem)]">
             {/* User Navigation Section */}
             <SidebarGroup>
               <SidebarGroupLabel>Navigation</SidebarGroupLabel>
@@ -425,11 +285,53 @@ export function AppSidebar({projects, userProfile, ...props }: React.ComponentPr
               </SidebarGroupContent>
             </SidebarGroup>
           </ScrollArea>
-      </SidebarContent>
-      <SidebarFooter>
-        <NavUser user={userProfile} />
-      </SidebarFooter>
-      <SidebarRail />
-    </Sidebar>
+        </SidebarContent>
+
+        {/* User Profile Section at Bottom */}
+        <div className="mt-auto border-t p-2">
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <Button variant="ghost" className="w-full justify-start px-2">
+                <Avatar className="h-6 w-6 mr-2">
+                  <AvatarImage src={userData.avatar} alt={userData.name} />
+                  <AvatarFallback>
+                    {userData.name
+                      .split(" ")
+                      .map((n) => n[0])
+                      .join("")}
+                  </AvatarFallback>
+                </Avatar>
+                <div className="flex flex-col items-start text-sm">
+                  <span className="font-medium">{userData.name}</span>
+                  <span className="text-xs text-muted-foreground">{userData.role}</span>
+                </div>
+                <ChevronDown className="ml-auto h-4 w-4 opacity-50" />
+              </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end" className="w-56">
+              <DropdownMenuLabel>My Account</DropdownMenuLabel>
+              <DropdownMenuSeparator />
+              <DropdownMenuGroup>
+                <DropdownMenuItem>
+                  <User className="mr-2 h-4 w-4" />
+                  <span>Profile</span>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Cog className="mr-2 h-4 w-4" />
+                  <span>Settings</span>
+                </DropdownMenuItem>
+              </DropdownMenuGroup>
+              <DropdownMenuSeparator />
+              <DropdownMenuItem>
+                <LogOut className="mr-2 h-4 w-4" />
+                <span>Log out</span>
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
+        </div>
+        <SidebarRail />
+      </Sidebar>
+    </SidebarProvider>
   )
 }
+
