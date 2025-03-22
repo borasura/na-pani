@@ -211,6 +211,82 @@ export async function getProjectById(id: string){
     return projectDetails
 }
 
+
+export async function getProjectStatsById(project_id: string){
+  //return await prisma.projects.findMany({ where: {}});
+  const [totalTasks, statusCounts, priorityCounts, doneTasks] = await Promise.all([
+    prisma.tasks.count({
+      where: {
+        project_id: project_id,
+        is_deleted: false,
+      },
+    }),
+    prisma.tasks.groupBy({
+      by: ['status'],
+      _count: {
+        status: true,
+      },
+      where: {
+        project_id: project_id,
+        is_deleted: false,
+      },
+    }),
+    prisma.tasks.groupBy({
+      by: ['priority'],
+      _count: {
+        priority: true,
+      },
+      where: {
+        project_id: project_id,
+        is_deleted: false,
+      },
+    }),
+    prisma.tasks.count({
+      where: {
+        project_id: project_id,
+        is_deleted: false,
+        status: 'Done',
+      },
+    }),
+  ]);
+
+  const statusMap = {
+    Backlog: 'bg-slate-400',
+    Todo: 'bg-blue-400',
+    'In Progress': 'bg-amber-400',
+    Done: 'bg-green-400',
+    Blocked: 'bg-red-400',
+  };
+
+  const priorityMap = {
+    Low: 'bg-blue-400',
+    Medium: 'bg-amber-400',
+    High: 'bg-red-400',
+  };
+
+  const by_status = statusCounts.map((item) => ({
+    name: item.status,
+    count: item._count.status,
+    color: statusMap[item.status],
+  }));
+
+  const by_priority = priorityCounts.map((item) => ({
+    name: item.priority,
+    count: item._count.priority,
+    color: priorityMap[item.priority],
+  }));
+
+  const completion_rate = totalTasks > 0 ? Math.round((doneTasks / totalTasks) * 100) : 0;
+
+  return {
+    total: totalTasks,
+    by_status: by_status,
+    by_priority: by_priority,
+    completion_rate: completion_rate,
+  };
+
+
+}
 // Get a single task by ID
 export async function getTaskById(taskId: string) {
     return await prisma.tasks.findUnique({ where: { id: taskId } });
