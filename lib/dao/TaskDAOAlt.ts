@@ -289,15 +289,25 @@ export async function createProject(name: string, description: string | null, st
   const created_by = await getUserId() //Get from context
   const project_code = name
 
+  console.log("Creating project with owner as " + owner + ", and created_by as " + created_by)
   const project = await prisma.projects.create({
       data: { name, description, project_code, status, priority, color_code, owner, created_by, start_date, end_date },
   });
 
   console.log("Created project - " + project.id)
 
+  console.log("Creating project permission of owner for " + owner)
   await prisma.project_permissions.create({
-    data: { project_id: project.id, user_id: created_by, role: "owner"},
+    data: { project_id: project.id, user_id: owner, role: "owner"},
   });
+
+  // If Owner is different from Creator, then the creator atlesat gets to be the editor on the project
+  if (owner != created_by){
+    console.log("Creating project editr permission for " + created_by)
+    await prisma.project_permissions.create({
+      data: { project_id: project.id, user_id: created_by, role: "editor"},
+    });
+  }
 
   console.log("Created Project permissions")
 
