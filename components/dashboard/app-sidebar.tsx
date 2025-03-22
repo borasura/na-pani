@@ -247,21 +247,21 @@ export function AppSidebar({projects, userProfile, ...props }: React.ComponentPr
         <ScrollArea className="h-[calc(100vh-12rem)]">
             {/* User Navigation Section */}
             <SidebarGroup>
-              <SidebarGroupLabel>Navigation</SidebarGroupLabel>
+              <SidebarGroupLabel>My Items</SidebarGroupLabel>
               <SidebarGroupContent>
                 <SidebarMenu>
                   <SidebarMenuItem>
-                    <Link href="/" passHref legacyBehavior>
-                      <SidebarMenuButton isActive={pathname === "/"} className="flex items-center">
+                    <Link href="/dashboard/home" passHref legacyBehavior>
+                      <SidebarMenuButton isActive={pathname === "/dashboard/home"} className="flex items-center">
                         <Home className="mr-2 h-4 w-4" />
                         <span>Home</span>
                       </SidebarMenuButton>
                     </Link>
                   </SidebarMenuItem>
                   <SidebarMenuItem>
-                    <Link href="/my-tasks" passHref legacyBehavior>
+                    <Link href="/dashboard/tasks" passHref legacyBehavior>
                       <SidebarMenuButton
-                        isActive={pathname === "/my-tasks"}
+                        isActive={pathname === "/dashboard/tasks"}
                         className="flex items-center justify-between w-full"
                       >
                         <div className="flex items-center">
@@ -273,9 +273,9 @@ export function AppSidebar({projects, userProfile, ...props }: React.ComponentPr
                     </Link>
                   </SidebarMenuItem>
                   <SidebarMenuItem>
-                    <Link href="/notifications" passHref legacyBehavior>
+                    <Link href="/dashboard/notifications" passHref legacyBehavior>
                       <SidebarMenuButton
-                        isActive={pathname === "/notifications"}
+                        isActive={pathname === "/dashboard/notifications"}
                         className="flex items-center justify-between w-full"
                       >
                         <div className="flex items-center">
@@ -287,8 +287,8 @@ export function AppSidebar({projects, userProfile, ...props }: React.ComponentPr
                     </Link>
                   </SidebarMenuItem>
                   <SidebarMenuItem>
-                    <Link href="/calendar" passHref legacyBehavior>
-                      <SidebarMenuButton isActive={pathname === "/calendar"} className="flex items-center">
+                    <Link href="/dashboard/calendar" passHref legacyBehavior>
+                      <SidebarMenuButton isActive={pathname === "/dashboard/calendar"} className="flex items-center">
                         <Calendar className="mr-2 h-4 w-4" />
                         <span>Calendar</span>
                       </SidebarMenuButton>

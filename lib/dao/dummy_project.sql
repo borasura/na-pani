@@ -442,3 +442,138 @@ WHERE title = 'Prepare Closing Arguments';
 UPDATE tasks
 SET description = 'Final negotiations complete, waiting for final agreement.', status = 'Todo', updated_at = CURRENT_TIMESTAMP, changed_by = '8b26d04b-5dec-4a31-a12b-cd4d206392bd'
 WHERE title = 'Negotiate Final Terms';
+
+
+
+
+-- More Tasks for 'Suits' Project
+
+-- Tasks 81-90
+INSERT INTO tasks (project_id, title, description, status, priority, color_code, due_date, created_by, assigned_to)
+VALUES ('9a7b1c2d-3e4f-5061-7283-94a5b6c7d8e9', 'Prepare Summary Judgment Motion', 'Draft and file the summary judgment motion.', 'Todo', 'High', '#ef4444', '2024-05-05', '8b26d04b-5dec-4a31-a12b-cd4d206392bd', '08496e5f-e6c3-4859-b38f-17bbee45f3c4');
+
+INSERT INTO tasks (project_id, title, description, status, priority, color_code, due_date, created_by, assigned_to)
+VALUES ('9a7b1c2d-3e4f-5061-7283-94a5b6c7d8e9', 'Review Real Estate Documents', 'Analyze property deeds and agreements.', 'In Progress', 'Medium', '#f97316', '2024-05-10', '072203a2-89e7-482c-8c0f-cc1694f3eb49', '08496e5f-e6c3-4859-b38f-17bbee45f3c4');
+
+INSERT INTO tasks (project_id, title, description, status, priority, color_code, due_date, created_by, assigned_to)
+VALUES ('9a7b1c2d-3e4f-5061-7283-94a5b6c7d8e9', 'Draft Lease Agreement', 'Prepare the lease agreement for client review.', 'Backlog', 'Low', '#d3d3d3', '2024-05-15', '8b26d04b-5dec-4a31-a12b-cd4d206392bd', '14db61ee-dca1-486b-8718-4f685613c06b');
+
+INSERT INTO tasks (project_id, title, description, status, priority, color_code, due_date, created_by, assigned_to)
+VALUES ('9a7b1c2d-3e4f-5061-7283-94a5b6c7d8e9', 'Prepare for Closing', 'Organize all closing documents and requirements.', 'In Progress', 'Medium', '#f59e0b', '2024-05-20', '08496e5f-e6c3-4859-b38f-17bbee45f3c4', '2c8c456a-fa57-41cd-bc64-398d52265909');
+
+INSERT INTO tasks (project_id, title, description, status, priority, color_code, due_date, created_by, assigned_to)
+VALUES ('9a7b1c2d-3e4f-5061-7283-94a5b6c7d8e9', 'Finalize Property Transfer', 'Complete all final steps for property transfer.', 'Done', 'High', '#10b981', '2024-05-25', '8b26d04b-5dec-4a31-a12b-cd4d206392bd', '072203a2-89e7-482c-8c0f-cc1694f3eb49');
+
+INSERT INTO tasks (project_id, title, description, status, priority, color_code, due_date, created_by, assigned_to)
+VALUES ('9a7b1c2d-3e4f-5061-7283-94a5b6c7d8e9', 'Research Zoning Laws', 'Investigate relevant zoning regulations.', 'Todo', 'Medium', '#3b82f6', '2024-05-30', '072203a2-89e7-482c-8c0f-cc1694f3eb49', '834e16b9-8b2d-4122-aecf-797f6d281120');
+
+INSERT INTO tasks (project_id, title, description, status, priority, color_code, due_date, created_by, assigned_to)
+VALUES ('9a7b1c2d-3e4f-5061-7283-94a5b6c7d8e9', 'Prepare Environmental Impact Report', 'Compile and review environmental impact data.', 'In Progress', 'High', '#6366f1', '2024-06-05', '08496e5f-e6c3-4859-b38f-17bbee45f3c4', 'b44f1307-e310-4326-972b-8dc543bcbcf7');
+
+INSERT INTO tasks (project_id, title, description, status, priority, color_code, due_date, created_by, assigned_to)
+VALUES ('9a7b1c2d-3e4f-5061-7283-94a5b6c7d8e9', 'Negotiate Property Acquisition', 'Discuss terms of property acquisition with seller.', 'In Progress', 'Medium', '#a855f7', '2024-06-10', '8b26d04b-5dec-4a31-a12b-cd4d206392bd', 'bfc92523-e055-49e6-979b-06830b0fe754');
+
+INSERT INTO tasks (project_id, title, description, status, priority, color_code, due_date, created_by, assigned_to)
+VALUES ('9a7b1c2d-3e4f-5061-7283-94a5b6c7d8e9', 'File Permit Applications', 'Submit all necessary permit applications.', 'Done', 'High', '#ec4899', '2024-06-15', '072203a2-89e7-482c-8c0f-cc1694f3eb49', 'f9880ccb-9fbc-4a7c-82c3-4e236bf1151f');
+
+INSERT INTO tasks (project_id, title, description, status, priority, color_code, due_date, created_by, assigned_to)
+VALUES ('9a7b1c2d-3e4f-5061-7283-94a5b6c7d8e9', 'Review Title Report', 'Analyze the title report for any issues.', 'Todo', 'Low', '#d3d3d3', '2024-06-20', '8b26d04b-5dec-4a31-a12b-cd4d206392bd', '072203a2-89e7-482c-8c0f-cc1694f3eb49');
+
+INSERT INTO tasks (project_id, title, description, status, priority, color_code, due_date, created_by, assigned_to)
+VALUES ('9a7b1c2d-3e4f-5061-7283-94a5b6c7d8e9', 'Prepare Closing Statement', 'Draft the final closing statement for client review.', 'In Progress', 'High', '#ef4444', '2024-06-25', '08496e5f-e6c3-4859-b38f-17bbee45f3c4', '072203a2-89e7-482c-8c0f-cc1694f3eb49');
+
+INSERT INTO tasks (project_id, title, description, status, priority, color_code, due_date, created_by, assigned_to)
+VALUES ('9a7b1c2d-3e4f-5061-7283-94a5b6c7d8e9', 'Conduct Due Diligence', 'Perform thorough due diligence on the property.', 'Todo', 'Medium', '#f97316', '2024-06-30', '072203a2-89e7-482c-8c0f-cc1694f3eb49', '08496e5f-e6c3-4859-b38f-17bbee45f3c4');
+
+INSERT INTO tasks (project_id, title, description, status, priority, color_code, due_date, created_by, assigned_to)
+VALUES ('9a7b1c2d-3e4f-5061-7283-94a5b6c7d8e9', 'Draft Purchase Agreement', 'Prepare the purchase agreement for the property.', 'Backlog', 'Low', '#d3d3d3', '2024-07-05', '8b26d04b-5dec-4a31-a12b-cd4d206392bd', '14db61ee-dca1-486b-8718-4f685613c06b');
+
+INSERT INTO tasks (project_id, title, description, status, priority, color_code, due_date, created_by, assigned_to)
+VALUES ('9a7b1c2d-3e4f-5061-7283-94a5b6c7d8e9', 'Secure Financing', 'Obtain necessary financing for the property purchase.', 'In Progress', 'Medium', '#f59e0b', '2024-07-10', '08496e5f-e6c3-4859-b38f-17bbee45f3c4', '2c8c456a-fa57-41cd-bc64-398d52265909');
+
+INSERT INTO tasks (project_id, title, description, status, priority, color_code, due_date, created_by, assigned_to)
+VALUES ('9a7b1c2d-3e4f-5061-7283-94a5b6c7d8e9', 'Complete Property Inspection', 'Conduct a thorough inspection of the property.', 'Done', 'High', '#10b981', '2024-07-15', '8b26d04b-5dec-4a31-a12b-cd4d206392bd', '072203a2-89e7-482c-8c0f-cc1694f3eb49');
+
+INSERT INTO tasks (project_id, title, description, status, priority, color_code, due_date, created_by, assigned_to)
+VALUES ('9a7b1c2d-3e4f-5061-7283-94a5b6c7d8e9', 'Review Survey Results', 'Analyze the survey results of the property.', 'Todo', 'Medium', '#3b82f6', '2024-07-20', '072203a2-89e7-482c-8c0f-cc1694f3eb49', '834e16b9-8b2d-4122-aecf-797f6d281120');
+
+INSERT INTO tasks (project_id, title, description, status, priority, color_code, due_date, created_by, assigned_to)
+VALUES ('9a7b1c2d-3e4f-5061-7283-94a5b6c7d8e9', 'Prepare Closing Documents', 'Organize all necessary closing documents.', 'In Progress', 'High', '#6366f1', '2024-07-25', '08496e5f-e6c3-4859-b38f-17bbee45f3c4', 'b44f1307-e310-4326-972b-8dc543bcbcf7');
+
+INSERT INTO tasks (project_id, title, description, status, priority, color_code, due_date, created_by, assigned_to)
+VALUES ('9a7b1c2d-3e4f-5061-7283-94a5b6c7d8e9', 'Finalize Closing', 'Complete the final closing of the property transaction.', 'In Progress', 'Medium', '#a855f7', '2024-07-30', '8b26d04b-5dec-4a31-a12b-cd4d206392bd', 'bfc92523-e055-49e6-979b-06830b0fe754');
+
+INSERT INTO tasks (project_id, title, description, status, priority, color_code, due_date, created_by, assigned_to)
+VALUES ('9a7b1c2d-3e4f-5061-7283-94a5b6c7d8e9', 'Review Post-Closing Documents', 'Analyze all post-closing documents for accuracy.', 'Done', 'High', '#ec4899', '2024-08-05', '072203a2-89e7-482c-8c0f-cc1694f3eb49', 'f9880ccb-9fbc-4a7c-82c3-4e236bf1151f');
+
+INSERT INTO tasks (project_id, title, description, status, priority, color_code, due_date, created_by, assigned_to)
+VALUES ('9a7b1c2d-3e4f-5061-7283-94a5b6c7d8e9', 'Prepare Final Report', 'Compile a final report of the property transaction.', 'Todo', 'Low', '#d3d3d3', '2024-08-10', '8b26d04b-5dec-4a31-a12b-cd4d206392bd', '072203a2-89e7-482c-8c0f-cc1694f3eb49');
+
+
+INSERT INTO tasks (project_id, title, description, status, priority, color_code, due_date, created_by, assigned_to)
+VALUES ('9a7b1c2d-3e4f-5061-7283-94a5b6c7d8e9', 'Draft Commercial Lease Agreement', 'Prepare the commercial lease agreement for tenant.', 'Todo', 'High', '#ef4444', '2024-08-15', '8b26d04b-5dec-4a31-a12b-cd4d206392bd', '08496e5f-e6c3-4859-b38f-17bbee45f3c4');
+
+INSERT INTO tasks (project_id, title, description, status, priority, color_code, due_date, created_by, assigned_to)
+VALUES ('9a7b1c2d-3e4f-5061-7283-94a5b6c7d8e9', 'Review Tenant Credit Report', 'Analyze tenant creditworthiness for lease agreement.', 'In Progress', 'Medium', '#f97316', '2024-08-20', '072203a2-89e7-482c-8c0f-cc1694f3eb49', '08496e5f-e6c3-4859-b38f-17bbee45f3c4');
+
+INSERT INTO tasks (project_id, title, description, status, priority, color_code, due_date, created_by, assigned_to)
+VALUES ('9a7b1c2d-3e4f-5061-7283-94a5b6c7d8e9', 'Negotiate Lease Terms', 'Discuss and agree on lease terms with the tenant.', 'Backlog', 'Low', '#d3d3d3', '2024-08-25', '8b26d04b-5dec-4a31-a12b-cd4d206392bd', '14db61ee-dca1-486b-8718-4f685613c06b');
+
+INSERT INTO tasks (project_id, title, description, status, priority, color_code, due_date, created_by, assigned_to)
+VALUES ('9a7b1c2d-3e4f-5061-7283-94a5b6c7d8e9', 'Prepare Lease Amendments', 'Draft any necessary amendments to the lease agreement.', 'In Progress', 'Medium', '#f59e0b', '2024-08-30', '08496e5f-e6c3-4859-b38f-17bbee45f3c4', '2c8c456a-fa57-41cd-bc64-398d52265909');
+
+INSERT INTO tasks (project_id, title, description, status, priority, color_code, due_date, created_by, assigned_to)
+VALUES ('9a7b1c2d-3e4f-5061-7283-94a5b6c7d8e9', 'Finalize Lease Agreement', 'Obtain final signatures on the lease agreement.', 'Done', 'High', '#10b981', '2024-09-05', '8b26d04b-5dec-4a31-a12b-cd4d206392bd', '072203a2-89e7-482c-8c0f-cc1694f3eb49');
+
+INSERT INTO tasks (project_id, title, description, status, priority, color_code, due_date, created_by, assigned_to)
+VALUES ('9a7b1c2d-3e4f-5061-7283-94a5b6c7d8e9', 'Review Property Insurance', 'Analyze the property insurance coverage.', 'Todo', 'Medium', '#3b82f6', '2024-09-10', '072203a2-89e7-482c-8c0f-cc1694f3eb49', '834e16b9-8b2d-4122-aecf-797f6d281120');
+
+INSERT INTO tasks (project_id, title, description, status, priority, color_code, due_date, created_by, assigned_to)
+VALUES ('9a7b1c2d-3e4f-5061-7283-94a5b6c7d8e9', 'Prepare Property Maintenance Schedule', 'Create a maintenance schedule for the property.', 'In Progress', 'High', '#6366f1', '2024-09-15', '08496e5f-e6c3-4859-b38f-17bbee45f3c4', 'b44f1307-e310-4326-972b-8dc543bcbcf7');
+
+INSERT INTO tasks (project_id, title, description, status, priority, color_code, due_date, created_by, assigned_to)
+VALUES ('9a7b1c2d-3e4f-5061-7283-94a5b6c7d8e9', 'Negotiate Property Management Agreement', 'Discuss terms of property management with the agency.', 'In Progress', 'Medium', '#a855f7', '2024-09-20', '8b26d04b-5dec-4a31-a12b-cd4d206392bd', 'bfc92523-e055-49e6-979b-06830b0fe754');
+
+INSERT INTO tasks (project_id, title, description, status, priority, color_code, due_date, created_by, assigned_to)
+VALUES ('9a7b1c2d-3e4f-5061-7283-94a5b6c7d8e9', 'File Property Tax Documents', 'Submit all necessary property tax documentation.', 'Done', 'High', '#ec4899', '2024-09-25', '072203a2-89e7-482c-8c0f-cc1694f3eb49', 'f9880ccb-9fbc-4a7c-82c3-4e236bf1151f');
+
+INSERT INTO tasks (project_id, title, description, status, priority, color_code, due_date, created_by, assigned_to)
+VALUES ('9a7b1c2d-3e4f-5061-7283-94a5b6c7d8e9', 'Review HOA Documents', 'Analyze homeowners association documents.', 'Todo', 'Low', '#d3d3d3', '2024-09-30', '8b26d04b-5dec-4a31-a12b-cd4d206392bd', '072203a2-89e7-482c-8c0f-cc1694f3eb49');
+
+
+INSERT INTO tasks (project_id, title, description, status, priority, color_code, due_date, created_by, assigned_to)
+VALUES ('9a7b1c2d-3e4f-5061-7283-94a5b6c7d8e9', 'Prepare Eviction Notice', 'Draft an eviction notice for non-compliant tenants.', 'In Progress', 'High', '#ef4444', '2024-10-05', '08496e5f-e6c3-4859-b38f-17bbee45f3c4', '072203a2-89e7-482c-8c0f-cc1694f3eb49');
+
+
+INSERT INTO tasks (project_id, title, description, status, priority, color_code, due_date, created_by, assigned_to)
+VALUES ('9a7b1c2d-3e4f-5061-7283-94a5b6c7d8e9', 'Review Construction Contracts', 'Analyze the construction contracts for the property.', 'Todo', 'Medium', '#f97316', '2024-10-10', '072203a2-89e7-482c-8c0f-cc1694f3eb49', '08496e5f-e6c3-4859-b38f-17bbee45f3c4');
+
+INSERT INTO tasks (project_id, title, description, status, priority, color_code, due_date, created_by, assigned_to)
+VALUES ('9a7b1c2d-3e4f-5061-7283-94a5b6c7d8e9', 'Draft Construction Change Orders', 'Prepare change orders for construction modifications.', 'Backlog', 'Low', '#d3d3d3', '2024-10-15', '8b26d04b-5dec-4a31-a12b-cd4d206392bd', '14db61ee-dca1-486b-8718-4f685613c06b');
+
+INSERT INTO tasks (project_id, title, description, status, priority, color_code, due_date, created_by, assigned_to)
+VALUES ('9a7b1c2d-3e4f-5061-7283-94a5b6c7d8e9', 'Prepare Payment Applications', 'Compile payment applications for construction progress.', 'In Progress', 'Medium', '#f59e0b', '2024-10-20', '08496e5f-e6c3-4859-b38f-17bbee45f3c4', '2c8c456a-fa57-41cd-bc64-398d52265909');
+
+INSERT INTO tasks (project_id, title, description, status, priority, color_code, due_date, created_by, assigned_to)
+VALUES ('9a7b1c2d-3e4f-5061-7283-94a5b6c7d8e9', 'Finalize Construction Project', 'Complete all final steps of the construction project.', 'Done', 'High', '#10b981', '2024-10-25', '8b26d04b-5dec-4a31-a12b-cd4d206392bd', '072203a2-89e7-482c-8c0f-cc1694f3eb49');
+
+INSERT INTO tasks (project_id, title, description, status, priority, color_code, due_date, created_by, assigned_to)
+VALUES ('9a7b1c2d-3e4f-5061-7283-94a5b6c7d8e9', 'Review Warranty Documents', 'Analyze warranty documents for construction work.', 'Todo', 'Medium', '#3b82f6', '2024-10-30', '072203a2-89e7-482c-8c0f-cc1694f3eb49', '834e16b9-8b2d-4122-aecf-797f6d281120');
+
+INSERT INTO tasks (project_id, title, description, status, priority, color_code, due_date, created_by, assigned_to)
+VALUES ('9a7b1c2d-3e4f-5061-7283-94a5b6c7d8e9', 'Prepare Punch List', 'Create a punch list for outstanding construction items.', 'In Progress', 'High', '#6366f1', '2024-11-05', '08496e5f-e6c3-4859-b38f-17bbee45f3c4', 'b44f1307-e310-4326-972b-8dc543bcbcf7');
+
+INSERT INTO tasks (project_id, title, description, status, priority, color_code, due_date, created_by, assigned_to)
+VALUES ('9a7b1c2d-3e4f-5061-7283-94a5b6c7d8e9', 'Negotiate Contractor Disputes', 'Discuss and resolve disputes with construction contractors.', 'In Progress', 'Medium', '#a855f7', '2024-11-10', '8b26d04b-5dec-4a31-a12b-cd4d206392bd', 'bfc92523-e055-49e6-979b-06830b0fe754');
+
+INSERT INTO tasks (project_id, title, description, status, priority, color_code, due_date, created_by, assigned_to)
+VALUES ('9a7b1c2d-3e4f-5061-7283-94a5b6c7d8e9', 'File Lien Releases', 'Submit lien releases for completed construction work.', 'Done', 'High', '#ec4899', '2024-11-15', '072203a2-89e7-482c-8c0f-cc1694f3eb49', 'f9880ccb-9fbc-4a7c-82c3-4e236bf1151f');
+
+INSERT INTO tasks (project_id, title, description, status, priority, color_code, due_date, created_by, assigned_to)
+VALUES ('9a7b1c2d-3e4f-5061-7283-94a5b6c7d8e9', 'Review As-Built Drawings', 'Analyze as-built drawings for construction documentation.', 'Todo', 'Low', '#d3d3d3', '2024-11-20', '8b26d04b-5dec-4a31-a12b-cd4d206392bd', '072203a2-89e7-482c-8c0f-cc1694f3eb49');
+
+INSERT INTO tasks (project_id, title, description, status, priority, color_code, due_date, created_by, assigned_to)
+VALUES ('9a7b1c2d-3e4f-5061-7283-94a5b6c7d8e9', 'Prepare Final Construction Report', 'Compile a final report of the construction project.', 'In Progress', 'High', '#ef4444', '2024-11-25', '08496e5f-e6c3-4859-b38f-17bbee45f3c4', '072203a2-89e7-482c-8c0f-cc1694f3eb49');
+
+INSERT INTO tasks (project_id, title, description, status, priority, color_code, due_date, created_by, assigned_to)
+VALUES ('9a7b1c2d-3e4f-5061-7283-94a5b6c7d8e9', 'Draft Commercial Purchase Contract', 'Prepare the purchase agreement for a commercial property.', 'Todo', 'Medium', '#f97316', '2024-11-30', '072203a2-89e7-482c-8c0f-cc1694f3eb49', '072203a2-89e7-482c-8c0f-cc1694f3eb49');
