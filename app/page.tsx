@@ -86,11 +86,11 @@ export default function Home() {
                   </Button>
                 </div>
               </div>
-              <div className="mx-auto w-full max-w-[600px] rounded-lg border bg-background p-2 shadow-lg">
+              <div className="mx-auto w-full max-w-[1000px] rounded-lg border bg-background p-2 shadow-lg">
                 <Image
-                  src="/placeholder.svg?height=600&width=1200"
-                  width={1200}
-                  height={600}
+                  src="/ProjectView.png"
+                  width={1600}
+                  height={800}
                   alt="TaskFlow Dashboard"
                   className="aspect-[2/1] rounded-md object-cover"
                 />
@@ -156,6 +156,12 @@ export default function Home() {
                   </div>
                 </div>
               </div>
+            </div>
+            <div>
+              <br />
+            <p className=" text-muted-foreground md:text-xl">
+                    OK, it's a joke. NaPani is just a Project Management software. Don't expect miracles. This app won't fix your team's drama. It'll just document it. Use wisely (or don't!).
+                  </p>
             </div>
           </div>
         </section>

@@ -57,8 +57,8 @@ const groups = [
     label: "Teams",
     teams: [
       {
-        label: "Acme Inc.",
-        value: "acme-inc",
+        label: "Pearson Specter Litt.",
+        value: "Pearson Specter Litt.",
       },
       {
         label: "Monsters Inc.",
@@ -172,7 +172,7 @@ export default function TeamSwitcher({ className }: TeamSwitcherProps) {
           <div className="space-y-4 py-2 pb-4">
             <div className="space-y-2">
               <Label htmlFor="name">Team name</Label>
-              <Input id="name" placeholder="Acme Inc." />
+              <Input id="name" placeholder="Pearson Specter Litt." />
             </div>
             <div className="space-y-2">
               <Label htmlFor="plan">Subscription plan</Label>

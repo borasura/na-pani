@@ -78,12 +78,12 @@ const data = {
   },
   teams: [
     {
-      name: "Acme Inc",
+      name: "Pearson Specter Litt.",
       logo: GalleryVerticalEnd,
-      plan: "Enterprise",
+      plan: "Firm",
     },
     {
-      name: "Acme Corp.",
+      name: "NaPani Corp.",
       logo: AudioWaveform,
       plan: "Startup",
     },
