@@ -31,15 +31,21 @@ import { DataTableToolbar } from "./data-table-toolbar"
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
+  isProjectNameVisible: boolean
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
+  isProjectNameVisible,
 }: DataTableProps<TData, TValue>) {
+
+  console.log("data-table for task - ")
+  console.log(data[0])
+
   const [rowSelection, setRowSelection] = React.useState({})
   const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({})
+    React.useState<VisibilityState>({'project_name': isProjectNameVisible,})
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   )
@@ -69,7 +75,7 @@ export function DataTable<TData, TValue>({
 
   return (
     <div className="space-y-4">
-      <DataTableToolbar table={table} />
+      <DataTableToolbar table={table} newTaskEnabled={!isProjectNameVisible} />
       <div className="rounded-md border">
         <Table>
           <TableHeader>

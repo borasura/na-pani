@@ -5,8 +5,8 @@ import { ColumnDef } from "@tanstack/react-table"
 import { Badge } from "@/components/ui/badge"
 import { Checkbox } from "@/components/ui/checkbox"
 
-import { labels, priorities, statuses } from "../data/data"
-import { Task } from "../data/schema"
+import { labels, priorities, statuses } from "./data/data"
+import { Task } from "./data/schema"
 import { DataTableColumnHeader } from "./data-table-column-header"
 import { DataTableRowActions } from "./data-table-row-actions"
 
@@ -169,6 +169,24 @@ export const columns: ColumnDef<Task>[] = [
             {/* {row.getValue("due_date")?.toString()} */
               formatDateWithMonthName(row.getValue("due_date"))            
             } 
+          </span>
+        </div>
+      )
+    },
+  },
+  {
+    accessorKey: "project_name",
+    header: ({ column }) => (
+      <DataTableColumnHeader column={column} title="Project Name" />
+    ),
+    cell: ({ row }) => {
+      const label = labels.find((label) => label.value === row.original.label)
+
+      return (
+        <div className="flex space-x-2">
+          {label && <Badge variant="outline">{label.label}</Badge>}
+          <span className="max-w-[200px] truncate font-medium">
+          {row.getValue("project_name")}
           </span>
         </div>
       )

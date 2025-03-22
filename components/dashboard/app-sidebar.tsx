@@ -157,8 +157,8 @@ const data = {
 }
 
 export function AppSidebar({projects, userProfile, ...props }: React.ComponentProps<typeof Sidebar>) {
-  console.log("Inside App Sidebar, received projects - ", projects)
-  console.log(projects)
+  //console.log("Inside App Sidebar, received projects - ", projects)
+  //console.log(projects)
   return (
     <Sidebar collapsible="icon" {...props}>
       <SidebarHeader>

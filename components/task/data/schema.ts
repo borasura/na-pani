@@ -1,3 +1,4 @@
+import { projectEntrypointsSubscribe } from "next/dist/build/swc/generated-native"
 import { z } from "zod"
 
 // We're keeping a simple non-relational schema here.
@@ -18,6 +19,7 @@ export const taskSchema = z.object({
   is_deleted: z.boolean().default(false),
   assigned_to_id: z.string().uuid().optional(),
   assigned_to_username: z.string().optional(),
+  project_name: z.string().optional(),
 })
 
 export type Task = z.infer<typeof taskSchema>

@@ -2,7 +2,11 @@ import prisma from "@/lib/prisma";
 
 export class TaskDAO {
     // Get all tasks for a project
+
+    // TODO Bug - this function returns all tasks when project id is null
     static async getTasksByProjectId(project_id: string) {
+
+        console.log("Inside getTasksByProjectID. Project ID is " + project_id)
          
         const tasks_results = await prisma.tasks.findMany({
             where: { project_id },
@@ -40,6 +44,7 @@ export class TaskDAO {
             };
         });
 
+        console.log("Returning tasks " + flattnedTasks.length)
         return flattnedTasks;
         
     }
