@@ -4,10 +4,14 @@ import * as React from "react"
 import {
   AudioWaveform, Bot,
   Command,
+  Folder,
+  Forward,
   Frame,
   GalleryVerticalEnd,
   Map,
-  PieChart, SquareTerminal
+  MoreHorizontal,
+  PieChart, SquareTerminal,
+  Trash2
 } from "lucide-react"
 
 import { NavUser } from "./nav-user"
@@ -21,9 +25,11 @@ import {
   SidebarGroupLabel,
   SidebarHeader,
   SidebarMenu,
+  SidebarMenuAction,
   SidebarMenuButton,
   SidebarMenuItem,
   SidebarRail,
+  useSidebar,
 } from "@/components/ui/sidebar"
 
 import { usePathname } from "next/navigation"
@@ -43,8 +49,9 @@ import { Badge } from "@/components/ui/badge"
 import { Input } from "@/components/ui/input"
 import {
   DropdownMenu,
-  DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger
+  DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu"
+import ConfirmDeleteDialog from "./delete-dialog"
 
 
 // This is sample data.
@@ -186,13 +193,13 @@ const userData = {
   notifications: 5,
 }
 
-const userProjects = [
-  { id: "proj1", name: "Website Redesign", color: "#4f46e5", status: "Execution", unread: true },
-  { id: "proj2", name: "Mobile App Development", color: "#0ea5e9", status: "Planning" },
-  { id: "proj3", name: "Marketing Campaign", color: "#f59e0b", status: "Execution" },
-  { id: "proj4", name: "Product Launch", color: "#10b981", status: "Planning" },
-  { id: "proj5", name: "Customer Research", color: "#8b5cf6", status: "Closed" },
-]
+// const userProjects = [
+//   { id: "proj1", name: "Website Redesign", color: "#4f46e5", status: "Execution", unread: true },
+//   { id: "proj2", name: "Mobile App Development", color: "#0ea5e9", status: "Planning" },
+//   { id: "proj3", name: "Marketing Campaign", color: "#f59e0b", status: "Execution" },
+//   { id: "proj4", name: "Product Launch", color: "#10b981", status: "Planning" },
+//   { id: "proj5", name: "Customer Research", color: "#8b5cf6", status: "Closed" },
+// ]
 
 const taskFilters = [
   { id: "high", name: "High Priority", color: "bg-red-500" },
@@ -202,12 +209,37 @@ const taskFilters = [
   { id: "overdue", name: "Overdue", color: "bg-rose-500" },
 ]
 
+const handleDelete = async () => {
+  try {
+    // Call your API or server function to delete the project
+    // const response = await fetch(`/api/projects/${projectId}`, {
+    //   method: "DELETE",
+    // });
+
+    // if (!response.ok) {
+    //   throw new Error("Failed to delete project");
+    // }
+
+    // Handle success, maybe show a notification or update the UI
+    alert("Project deleted successfully");
+  } catch (error) {
+    // Handle error, show a notification, etc.
+    alert("Failed to delete project");
+  }
+};
+
 export function AppSidebar({projects, userProfile, ...props }: React.ComponentProps<typeof Sidebar>) {
   //console.log("Inside App Sidebar, received projects - ", projects)
   //console.log(projects)
+
+    const userProjects = projects
     const pathname = usePathname()
     const [searchQuery, setSearchQuery] = React.useState("")
     const [isExpanded, setIsExpanded] = React.useState(true)
+
+    const [isDialogOpen, setDialogOpen] = React.useState(false);
+
+    const { isMobile } = useSidebar()
   
     // Filter projects based on search query
     const filteredProjects = userProjects.filter((project) =>
@@ -352,18 +384,50 @@ export function AppSidebar({projects, userProfile, ...props }: React.ComponentPr
                 <SidebarMenu>
                   {filteredProjects.map((project) => (
                     <SidebarMenuItem key={project.id}>
-                      <Link href={`/projects/${project.id}`} passHref legacyBehavior>
+                      <Link href={`/dashboard/projects/${project.id}`} passHref legacyBehavior>
                         <SidebarMenuButton
-                          isActive={pathname === `/projects/${project.id}`}
+                          isActive={pathname === `/dashboard/projects/${project.id}`}
                           className="flex items-center justify-between w-full"
                         >
                           <div className="flex items-center">
-                            <div className="mr-2 h-3 w-3 rounded-full" style={{ backgroundColor: project.color }} />
+                            <div className="mr-2 h-3 w-3 rounded-full" style={{ backgroundColor: project.color_code }} />
                             <span className="truncate">{project.name}</span>
                           </div>
                           {project.unread && <div className="h-1.5 w-1.5 rounded-full bg-primary"></div>}
                         </SidebarMenuButton>
                       </Link>
+                      <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <SidebarMenuAction showOnHover>
+                  <MoreHorizontal />
+                  <span className="sr-only">More</span>
+                </SidebarMenuAction>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent
+                className="w-48 rounded-lg"
+                side={isMobile ? "bottom" : "right"}
+                align={isMobile ? "end" : "start"}
+              >
+                <DropdownMenuItem>
+                  <Folder className="text-muted-foreground" />
+                  <a href={`/dashboard/projects/${project.id}/tasks`}>
+                {/* <item.icon /> */}
+                <span>View Project</span>
+              </a>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Forward className="text-muted-foreground" />
+                  <span>Share Project</span>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => setDialogOpen(true)}>
+                  <Trash2 className="text-muted-foreground" />
+                  <span>Delete Project</span>
+                  
+                </DropdownMenuItem>               
+                
+              </DropdownMenuContent>
+            </DropdownMenu>
                     </SidebarMenuItem>
                   ))}
                   {filteredProjects.length === 0 && (
@@ -371,10 +435,13 @@ export function AppSidebar({projects, userProfile, ...props }: React.ComponentPr
                   )}
                 </SidebarMenu>
               </SidebarGroupContent>
+              <ConfirmDeleteDialog isOpen={isDialogOpen} onClose={() => setDialogOpen(false)}
+                  onConfirm={handleDelete}
+                  />
             </SidebarGroup>
 
-            {/* Favorites Section */}
-            <SidebarGroup>
+            {/* Favorites Section TODO - Implement this later*/}
+            {/* <SidebarGroup>
               <SidebarGroupLabel className="flex items-center justify-between">
                 <span>Favorites</span>
                 <Button variant="ghost" size="icon" className="h-5 w-5">
@@ -401,7 +468,7 @@ export function AppSidebar({projects, userProfile, ...props }: React.ComponentPr
                   </SidebarMenuItem>
                 </SidebarMenu>
               </SidebarGroupContent>
-            </SidebarGroup>
+            </SidebarGroup> */}
           </ScrollArea>
       </SidebarContent>
       <SidebarFooter>
