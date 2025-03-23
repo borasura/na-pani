@@ -43,9 +43,10 @@ export function DataTable<TData, TValue>({
   console.log("data-table for task - ")
   console.log(data[0])
 
+  // TODO - Set Description visibility to false. Remove it complete in future
   const [rowSelection, setRowSelection] = React.useState({})
   const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>({'project_name': isProjectNameVisible,})
+    React.useState<VisibilityState>({'project_name': isProjectNameVisible, 'description': false})
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   )
@@ -120,6 +121,7 @@ export function DataTable<TData, TValue>({
                   className="h-24 text-center"
                 >
                   No results.
+                  {/* TODO - get this view from the new design */}
                 </TableCell>
               </TableRow>
             )}
