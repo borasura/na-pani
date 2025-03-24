@@ -720,8 +720,26 @@ export async function createProject(name: string, description: string | null, st
   console.log("Created Project permissions")
 
   
-  revalidatePath("dashboard/")
-  return
+  //revalidatePath("dashboard/")
+  return project.id
+}
+
+interface ProjectPermissionInput {
+  project_id: string;
+  user_id: string;
+  role: string;
+}
+
+export async function createProjectPermissions(permissions: ProjectPermissionInput[]) {
+  try {
+    const createdPermissions = await prisma.project_permissions.createMany({
+      data: permissions,
+    });
+    return createdPermissions; // Optionally return the result of createMany
+  } catch (error) {
+    console.error('Error creating project permissions:', error);
+    throw error; // Rethrow the error to be handled by the caller
+  }
 }
 
 // Create a new task priority, color_code, created_by
@@ -845,7 +863,7 @@ export async function getUsers(search: string | null) {
     });
   }
 
-console.log("Returning users " + JSON.stringify(users))
+//console.log("Returning users " + JSON.stringify(users))
 return users
   
 }
