@@ -228,6 +228,11 @@ const handleDelete = async () => {
   }
 };
 
+/**
+ * 
+ * @param param0 The counts next to My Tasks, My Projects, Notifications need to be fixed
+ * @returns 
+ */
 export function AppSidebar({projects, userProfile, ...props }: React.ComponentProps<typeof Sidebar>) {
   //console.log("Inside App Sidebar, received projects - ", projects)
   //console.log(projects)
@@ -277,6 +282,20 @@ export function AppSidebar({projects, userProfile, ...props }: React.ComponentPr
                         <div className="flex items-center">
                           <CheckCircle className="mr-2 h-4 w-4" />
                           <span>My Tasks</span>
+                        </div>
+                        <Badge variant="outline">12</Badge>
+                      </SidebarMenuButton>
+                    </Link>
+                  </SidebarMenuItem>
+                  <SidebarMenuItem>
+                    <Link href="/dashboard/projects" passHref legacyBehavior>
+                      <SidebarMenuButton
+                        isActive={pathname === "/dashboard/projects"}
+                        className="flex items-center justify-between w-full"
+                      >
+                        <div className="flex items-center">
+                          <Folder className="mr-2 h-4 w-4" />
+                          <span>My Projects</span>
                         </div>
                         <Badge variant="outline">12</Badge>
                       </SidebarMenuButton>

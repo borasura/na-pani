@@ -217,7 +217,13 @@ const getStatusColor = (status: string) => {
   }
 }
 
-export default function ProjectsOverview() {
+/**
+ * 
+ * @param param0 TODO Needs Attention and Starred - both are not implemented. This needs to be fixed.
+ * @returns 
+ */
+
+export default function ProjectsOverview({ projects }) {
   const [searchQuery, setSearchQuery] = useState("")
   const [viewMode, setViewMode] = useState("grid")
   const [statusFilter, setStatusFilter] = useState("all")
@@ -422,7 +428,7 @@ export default function ProjectsOverview() {
                       <div className="text-xs text-muted-foreground">Tasks</div>
                     </div>
                     <div className="rounded-md bg-muted p-2">
-                      <div className="text-lg font-semibold text-green-600">{project.tasks.completed}</div>
+                      <div className="text-lg font-semibold text-green-600">{project.tasks.done}</div>
                       <div className="text-xs text-muted-foreground">Done</div>
                     </div>
                     <div className="rounded-md bg-muted p-2">
@@ -469,13 +475,13 @@ export default function ProjectsOverview() {
               <CardFooter className="pt-2">
                 <div className="flex w-full gap-2">
                   <Button variant="outline" className="flex-1" asChild>
-                    <Link href={`/projects/${project.id}/tasks`}>
+                    <Link href={`/dashboard/projects/${project.id}/tasks`}>
                       <CheckCircle className="mr-2 h-4 w-4" />
                       Tasks
                     </Link>
                   </Button>
                   <Button className="flex-1" asChild>
-                    <Link href={`/projects/${project.id}`}>
+                    <Link href={`/dashboard/projects/${project.id}`}>
                       <ArrowUpRight className="mr-2 h-4 w-4" />
                       Overview
                     </Link>
@@ -537,7 +543,7 @@ export default function ProjectsOverview() {
                   <div className="flex flex-col items-center md:items-start gap-1">
                     <div className="text-xs text-muted-foreground">Tasks</div>
                     <div className="text-sm">
-                      <span className="font-medium">{project.tasks.completed}</span>
+                      <span className="font-medium">{project.tasks.done}</span>
                       <span className="text-muted-foreground">/{project.tasks.total}</span>
                       {project.tasks.overdue > 0 && (
                         <span className="ml-2 text-red-600">{project.tasks.overdue} overdue</span>
@@ -569,10 +575,10 @@ export default function ProjectsOverview() {
 
                   <div className="flex gap-2 ml-auto">
                     <Button variant="outline" size="sm" asChild>
-                      <Link href={`/projects/${project.id}/tasks`}>Tasks</Link>
+                      <Link href={`/dashboard/projects/${project.id}/tasks`}>Tasks</Link>
                     </Button>
                     <Button size="sm" asChild>
-                      <Link href={`/projects/${project.id}`}>Overview</Link>
+                      <Link href={`/dashboard/projects/${project.id}`}>Overview</Link>
                     </Button>
                   </div>
                 </div>

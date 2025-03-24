@@ -21,7 +21,7 @@ export default async function DashboardLayout({
     //TODO - wrap this in promiseall
 
     console.log("Inside dashboard layout")
-    console.log(projects)
+    console.log(projects[0])
     console.log(userProfile)
     
     return (

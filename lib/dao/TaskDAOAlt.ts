@@ -156,6 +156,107 @@ export async function getProjects(userId: string){
       }));
 }
 
+export async function getProjectsOverviewForCurrentUser(){
+  
+  const user_id = await getUserId();
+  const currentDate = new Date();
+
+  const projects = await prisma.projects.findMany({
+    where: {
+      project_permissions: {
+        some: {
+          user_id: user_id,  // Filter based on user_id in the project_permissions
+        },
+      },
+    },
+    include: {
+      project_permissions: {
+        include: {
+          users: {
+            select: {
+              id: true,
+              username: true,
+            },
+          },
+        },
+      },
+    },
+  });
+
+  const formattedProjects = await Promise.all(
+    projects.map(async (project) => {
+      const totalTasks = await prisma.tasks.count({
+        where: {
+          project_id: project.id,
+        },
+      });
+
+      const doneTasks = await prisma.tasks.count({
+        where: {
+          project_id: project.id,
+          status: 'Done',
+        },
+      });
+
+      const inProgressTasks = await prisma.tasks.count({
+        where: {
+          project_id: project.id,
+          status: 'In Progress',
+        },
+      });
+
+      const blockedTasks = await prisma.tasks.count({
+        where: {
+          project_id: project.id,
+          status: 'Blocked',
+        },
+      });
+
+      const overdueTasks = await prisma.tasks.count({
+        where: {
+          project_id: project.id,
+          due_date: {
+            lt: currentDate,
+          },
+        },
+      });
+
+      const progress = totalTasks > 0 ? Math.round((doneTasks / totalTasks) * 100) : 0;
+
+      const timeDifference = project.end_date ? project.end_date.getTime() - currentDate.getTime() : 0;
+      const daysRemaining = project.end_date ? Math.ceil(timeDifference / (1000 * 3600 * 24)) : null;
+
+      return {
+        id: project.id,
+        name: project.name,
+        description: project.description,
+        color: project.color_code,
+        status: project.status,
+        priority: project.priority,
+        progress: progress,
+        start_date: project.start_date,
+        end_date: project.end_date,
+        days_remaining: daysRemaining,
+        tasks: {
+          total: totalTasks,
+          done: doneTasks,
+          in_progress: inProgressTasks,
+          blocked: blockedTasks,
+          overdue: overdueTasks,
+        },
+        team: project.project_permissions.map((permission) => ({
+          id: permission.users.id,
+          name: permission.users.username,
+          role: permission.role,
+        })),
+      };
+    })
+  );
+
+  return formattedProjects;
+}
+
+
 export async function getProjectById(id: string){
   //return await prisma.projects.findMany({ where: {}});
 
