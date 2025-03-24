@@ -176,6 +176,14 @@ export function SidebarNavigation() {
               </SidebarGroupLabel>
               <SidebarGroupContent>
                 <SidebarMenu>
+                    <SidebarMenuItem key='highpriority'>
+                      <Link href={`dashboard/tasks?filters=%5B%7B"id"%3A"priority"%2C"value"%3A%5B"High"%5D%7D%5D`} passHref legacyBehavior>
+                        <SidebarMenuButton className="flex items-center">
+                          <div className={`mr-2 h-3 w-3 rounded-full bg-red-500`} />
+                          <span>High Priority</span>
+                        </SidebarMenuButton>
+                      </Link>
+                    </SidebarMenuItem>
                   {taskFilters.map((filter) => (
                     <SidebarMenuItem key={filter.id}>
                       <Link href={`/tasks/filter/${filter.id}`} passHref legacyBehavior>

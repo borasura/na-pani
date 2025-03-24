@@ -25,8 +25,12 @@ import {
   TableRow,
 } from "@/components/ui/table"
 
+import { useSearchParams, useRouter } from "next/navigation";
+
 import { DataTablePagination } from "./data-table-pagination"
 import { DataTableToolbar } from "./data-table-toolbar"
+import { useEffect } from "react";
+import { log } from "console";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -44,6 +48,9 @@ export function DataTable<TData, TValue>({
     []
   )
   const [sorting, setSorting] = React.useState<SortingState>([])
+
+  const searchParams = useSearchParams();
+  const router = useRouter();
 
   const table = useReactTable({
     data,
@@ -66,6 +73,48 @@ export function DataTable<TData, TValue>({
     getFacetedRowModel: getFacetedRowModel(),
     getFacetedUniqueValues: getFacetedUniqueValues(),
   })
+
+  // Update URL params when filters or sorting change
+  useEffect(() => {
+    log("Updating URL params", sorting, columnFilters);
+    const params = new URLSearchParams();
+    if (sorting.length > 0) {
+      params.set("sort", JSON.stringify(sorting));
+    } else {
+      params.delete("sort");
+    }
+    if (columnFilters.length > 0) {
+      params.set("filters", JSON.stringify(columnFilters));
+    } else {
+      params.delete("filters");
+    }
+
+    router.replace(`?${params.toString()}`, { scroll: false }); // Avoid scroll reset
+  }, [sorting, columnFilters, router]);
+
+  // Initialize filters and sorting from URL params on mount
+  useEffect(() => {
+    const sortParam = searchParams.get("sort");
+    const filtersParam = searchParams.get("filters");
+
+    console.log("Inside useeffect on mount");
+    console.log("SortParam are " + sortParam)
+    console.log("filtersParam are " + filtersParam)
+    if (sortParam) {
+      try {
+        setSorting(JSON.parse(sortParam));
+      } catch (e) {
+        console.error("Invalid sort parameter:", e);
+      }
+    }
+    if (filtersParam) {
+      try {
+        setColumnFilters(JSON.parse(filtersParam));
+      } catch (e) {
+        console.error("Invalid filters parameter:", e);
+      }
+    }
+  }, [searchParams]);
 
   return (
     <div className="space-y-4">
