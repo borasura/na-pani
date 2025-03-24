@@ -336,6 +336,7 @@ export function AppSidebar({projects, userProfile, ...props }: React.ComponentPr
             </SidebarGroup>
 
             {/* Task Filters Section */}
+            {/* TODO - Put these filters in a constants and util functions */}
             <SidebarGroup>
               <SidebarGroupLabel className="flex items-center justify-between">
                 <span>Quick Filters</span>
