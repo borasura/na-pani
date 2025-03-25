@@ -16,7 +16,7 @@ import {
   Star,
   Users,
 } from "lucide-react"
-import { format } from "date-fns"
+import { format, isValid } from "date-fns"
 
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
@@ -405,9 +405,13 @@ export default function ProjectsOverview({ projects }) {
                   <div className="flex justify-between items-center text-sm">
                     <div className="flex items-center gap-1 text-muted-foreground">
                       <Calendar className="h-3.5 w-3.5" />
-                      <span>
+                      {/* <span>
                         {format(project.start_date, "MMM d")} - {format(project.end_date, "MMM d, yyyy")}
-                      </span>
+                      </span> */}
+                      <span>
+                      {isValid(project.start_date) ? format(project.start_date, "MMM d") : 'N/A'}{' '}-{' '}
+                      {isValid(project.end_date) ? format(project.end_date, "MMM d, yyyy") : 'N/A'}
+                    </span>
                     </div>
                     {project.days_remaining > 0 ? (
                       <div className="flex items-center gap-1">
