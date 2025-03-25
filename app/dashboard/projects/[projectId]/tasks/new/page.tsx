@@ -2,10 +2,10 @@
 
 import type React from "react"
 
-import { useState } from "react"
+import { useEffect, useState, useCallback } from "react"
 import { useRouter, useParams } from "next/navigation"
 import Link from "next/link"
-import { ArrowLeft, Calendar, Check, ChevronsUpDown, Loader2, Plus, X } from "lucide-react"
+import { ArrowLeft, Calendar, Check, ChevronsUpDown, Loader2, Plus, X, Search } from "lucide-react"
 import { format } from "date-fns"
 
 import { Button } from "@/components/ui/button"
@@ -20,6 +20,9 @@ import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
+import { createTask, getUsers } from "@/lib/dao/TaskDAOAlt"
+import { debounce } from "lodash"
+import { CommandLoading } from "../../../new/command"
 
 // Mock data for team members
 const teamMembers = [
@@ -42,6 +45,44 @@ const availableTags = [
   { id: "tag8", name: "Planning", color: "#f43f5e" },
 ]
 
+// Types for team members
+type TeamMember = {
+    id: string
+    name: string
+    email: string
+    role: string
+    avatar: string
+  }
+  
+  type TeamMemberWithPermission = TeamMember & {
+    permission: "editor" | "commenter" | "viewer"
+  }
+
+  
+const fetchTeamMembers = async (query = "", page = 1, limit = 5): Promise<TeamMember[]> => {
+  // Simulate API delay
+  //await new Promise((resolve) => setTimeout(resolve, 800))
+
+  const allMembers = await getUsers(query)
+  console.log(">>>>>>>>>>>>>>>> Inside fetchTeamMembers")
+  console.log(allMembers)
+ 
+  // Filter by query if provided
+  const filtered = query
+    ? allMembers.filter(
+        (member) =>
+          member.username.toLowerCase().includes(query.toLowerCase()) ||
+          member.email.toLowerCase().includes(query.toLowerCase()) ||
+          member.role.toLowerCase().includes(query.toLowerCase()),
+      )
+    : allMembers
+
+  // Paginate results
+  const start = (page - 1) * limit
+  const end = start + limit
+  return filtered.slice(start, end)
+}
+
 export default function NewTaskPage() {
   const router = useRouter()
   const params = useParams()
@@ -58,7 +99,56 @@ export default function NewTaskPage() {
     dueDate: new Date(new Date().setDate(new Date().getDate() + 7)),
     assignee: "",
     selectedTags: [] as string[],
+    owner: "" as string,
+    ownerDetails: null as TeamMember | null,
   })
+
+  const [potentialOwners, setPotentialOwners] = useState<TeamMember[]>([])
+  const [isLoadingOwners, setIsLoadingOwners] = useState(false)
+  const [ownerSearch, setOwnerSearch] = useState("")
+
+  // Fetch initial potential owners
+    useEffect(() => {
+      const loadInitialOwners = async () => {
+        setIsLoadingOwners(true)
+        try {
+          const owners = await fetchTeamMembers()
+          setPotentialOwners(owners)
+        } catch (error) {
+          console.error("Error loading potential owners:", error)
+        } finally {
+          setIsLoadingOwners(false)
+        }
+      }
+  
+      loadInitialOwners()
+    }, [])
+
+    // Debounced search for owners
+      const debouncedOwnerSearch = useCallback(
+        debounce(async (query: string) => {
+          setIsLoadingOwners(true)
+          try {
+            const owners = await fetchTeamMembers(query)
+            setPotentialOwners(owners)
+          } catch (error) {
+            console.error("Error searching owners:", error)
+          } finally {
+            setIsLoadingOwners(false)
+          }
+        }, 300),
+        [],
+      )
+
+      // Handle owner search
+        useEffect(() => {
+          if (ownerSearch) {
+            debouncedOwnerSearch(ownerSearch)
+          }
+          return () => {
+            debouncedOwnerSearch.cancel()
+          }
+        }, [ownerSearch, debouncedOwnerSearch])
 
   // Form validation
   const [errors, setErrors] = useState<Record<string, string>>({})
@@ -86,10 +176,15 @@ export default function NewTaskPage() {
 
     try {
       // In a real app, this would be an API call to create the task
-      await new Promise((resolve) => setTimeout(resolve, 1500))
+      //await new Promise((resolve) => setTimeout(resolve, 1500))
 
+        console.log(formData)
+        await createTask(formData.title, formData.description, formData.status, formData.dueDate, projectId, formData.priority, "", formData.owner); 
+            console.log("Created new task ")
+            
+    // TODOU - create task API
       // Redirect to tasks page after successful creation
-      router.push(`/projects/${projectId}/tasks`)
+      router.push(`/dashboard/projects/${projectId}/tasks`)
     } catch (error) {
       console.error("Error creating task:", error)
       setErrors({
@@ -99,6 +194,18 @@ export default function NewTaskPage() {
       setIsSubmitting(false)
     }
   }
+
+    // Handle owner selection
+    const handleOwnerSelect = async (memberId: string) => {
+        const member = potentialOwners.find((m) => m.id === memberId)
+        if (member) {
+          setFormData({
+            ...formData,
+            owner: memberId,
+            ownerDetails: member,
+          })
+        }
+      }
 
   // Handle tag selection
   const toggleTag = (tagId: string) => {
@@ -225,7 +332,7 @@ export default function NewTaskPage() {
                 </Popover>
               </div>
 
-              <div className="space-y-2">
+              {/* <div className="space-y-2">
                 <Label htmlFor="assignee">Assignee</Label>
                 <Popover>
                   <PopoverTrigger asChild>
@@ -286,6 +393,82 @@ export default function NewTaskPage() {
                     </Command>
                   </PopoverContent>
                 </Popover>
+              </div> */}
+
+              <div className="space-y-2">
+                <Label htmlFor="owner">
+                Assignee <span className="text-destructive">*</span>
+                </Label>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <Button
+                      variant="outline"
+                      role="combobox"
+                      className={`w-full justify-between ${errors.owner ? "border-destructive" : ""}`}
+                      id="owner"
+                    >
+                      {formData.ownerDetails ? (
+                        <div className="flex items-center">
+                          <Avatar className="h-6 w-6 mr-2">
+                            <AvatarImage src={formData.ownerDetails.avatar} alt={formData.ownerDetails.username} />
+                            <AvatarFallback>{formData.ownerDetails.username.charAt(0)}</AvatarFallback>
+                          </Avatar>
+                          {formData.ownerDetails.username}
+                        </div>
+                      ) : (
+                        "Select Task Assignee"
+                      )}
+                      <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                    </Button>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-[300px] p-0">
+                    <Command>
+                      <div className="flex items-center border-b px-3">
+                        <Search className="mr-2 h-4 w-4 shrink-0 opacity-50" />
+                        <CommandInput
+                          placeholder="Search team members..."
+                          className="h-9 border-0 focus:ring-0"
+                          value={ownerSearch}
+                          onValueChange={setOwnerSearch}
+                        />
+                      </div>
+                      <CommandList>
+                        {isLoadingOwners ? (
+                          <CommandLoading>
+                            <div className="flex items-center justify-center p-4">
+                              <Loader2 className="h-4 w-4 animate-spin mr-2" />
+                              <span>Loading users...</span>
+                            </div>
+                          </CommandLoading>
+                        ) : (
+                          <>
+                            <CommandEmpty>No team member found.</CommandEmpty>
+                            <CommandGroup>
+                              {potentialOwners.map((member) => (
+                                <CommandItem
+                                  key={member.id}
+                                  value={member.username}
+                                  onSelect={() => handleOwnerSelect(member.id)}
+                                >
+                                  <Avatar className="h-6 w-6 mr-2">
+                                    <AvatarImage src={member.avatar} alt={member.username} />
+                                    <AvatarFallback>{member.username.charAt(0)}</AvatarFallback>
+                                  </Avatar>
+                                  <div className="flex-1">
+                                    <p>{member.username}</p>
+                                    <p className="text-xs text-muted-foreground">{member.email}</p>
+                                  </div>
+                                  {formData.owner === member.id && <Check className="ml-2 h-4 w-4" />}
+                                </CommandItem>
+                              ))}
+                            </CommandGroup>
+                          </>
+                        )}
+                      </CommandList>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
+                {errors.owner && <p className="text-sm text-destructive">{errors.owner}</p>}
               </div>
 
               <div className="space-y-2">
@@ -369,4 +552,6 @@ export default function NewTaskPage() {
     </div>
   )
 }
+
+
 
