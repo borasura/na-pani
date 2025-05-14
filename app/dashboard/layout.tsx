@@ -34,9 +34,9 @@ export default async function DashboardLayout({
                         <Separator orientation="vertical" className="mr-2 h-4" />
                         <NextBreadcrumb
           homeElement={'Home'}
-          separator={<span> | </span>}
+        //   separator={<span> '' </span>}
           activeClasses='text-amber-500'
-          containerClasses='flex py-5 bg-gradient-to-r from-purple-600 to-blue-600' 
+        //   containerClasses='flex py-5 bg-gradient-to-r from-purple-600 to-blue-600' 
           listClasses='hover:underline mx-2 font-bold'
           capitalizeLinks
         />
