@@ -387,6 +387,9 @@ export default function ProjectsOverview({ projects }) {
                     <Badge variant="outline" className={getStatusColor(project.status)}>
                       {project.status}
                     </Badge>
+                    <Badge variant="outline" style={{ borderColor: getStatusColor(project.status), color: getStatusColor(project.status) }}>
+                    {project.status}
+                    </Badge>
                     <Badge variant="outline" className={getPriorityColor(project.priority)}>
                       {project.priority} Priority
                     </Badge>

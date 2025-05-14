@@ -47,14 +47,14 @@ const NextBreadcrumb = ({homeElement, separator, containerClasses, listClasses, 
         <div>
         <Breadcrumb>
             <BreadcrumbList>
-                <BreadcrumbItem className="hidden md:block">
+                {/* <BreadcrumbItem className="hidden md:block">
                     <BreadcrumbLink href="/">
                         Home
                     </BreadcrumbLink>
-                </BreadcrumbItem>
+                </BreadcrumbItem> */}
                 {/* <BreadcrumbItem className="hidden md:block">
                 </BreadcrumbItem> */}
-                {(pathNames.length > 0) ? <BreadcrumbSeparator className="hidden md:block" />: ''}
+                {/* {(pathNames.length > 0) ? <BreadcrumbSeparator className="hidden md:block" />: ''} */}
                 {
                     pathNames.map( (link, index) => {
                         const href = `/${pathNames.slice(0, index + 1).join('/')}`

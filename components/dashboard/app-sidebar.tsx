@@ -52,6 +52,7 @@ import {
   DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu"
 import ConfirmDeleteDialog from "./delete-dialog"
+import { Value } from "@radix-ui/react-select"
 
 
 // This is sample data.
@@ -202,11 +203,11 @@ const userData = {
 // ]
 
 const taskFilters = [
-  { id: "high", name: "High Priority", color: "bg-red-500" },
-  { id: "medium", name: "Medium Priority", color: "bg-amber-500" },
-  { id: "low", name: "Low Priority", color: "bg-blue-500" },
-  { id: "blocked", name: "Blocked", color: "bg-purple-500" },
-  { id: "overdue", name: "Overdue", color: "bg-rose-500" },
+  { id: "high", name: "High Priority", color: "bg-red-500", value: "High" },
+  { id: "medium", name: "Medium Priority", color: "bg-amber-500", value: "Medium" },
+  { id: "low", name: "Low Priority", color: "bg-blue-500", value: "Low"},
+  // { id: "blocked", name: "Blocked", color: "bg-purple-500", value: "Blocked" },
+  // { id: "overdue", name: "Overdue", color: "bg-rose-500", value: "Overdue" },
 ]
 
 const handleDelete = async () => {
@@ -346,18 +347,18 @@ export function AppSidebar({projects, userProfile, ...props }: React.ComponentPr
               </SidebarGroupLabel>
               <SidebarGroupContent>
                 <SidebarMenu>
-                  <SidebarMenuItem key='highpriority'>
+                  {/* <SidebarMenuItem key='highpriority'>
                     <Link href={`/dashboard/tasks?filters=%5B%7B"id"%3A"priority"%2C"value"%3A%5B"High"%5D%7D%5D`} passHref legacyBehavior>
                       <SidebarMenuButton className="flex items-center">
                         <div className={`mr-2 h-3 w-3 rounded-full bg-red-500`} />
                         <span>High Priority</span>
                       </SidebarMenuButton>
                     </Link>
-                  </SidebarMenuItem>
-
+                  </SidebarMenuItem> */}
+    
                   {taskFilters.map((filter) => (
                     <SidebarMenuItem key={filter.id}>
-                      <Link href={`/tasks/filter/${filter.id}`} passHref legacyBehavior>
+                      <Link href={`/dashboard/tasks?filters=%5B%7B"id"%3A"priority"%2C"value"%3A%5B"${filter.value}"%5D%7D%5D`} passHref legacyBehavior>
                         <SidebarMenuButton className="flex items-center">
                           <div className={`mr-2 h-3 w-3 rounded-full ${filter.color}`} />
                           <span>{filter.name}</span>
@@ -365,6 +366,8 @@ export function AppSidebar({projects, userProfile, ...props }: React.ComponentPr
                       </Link>
                     </SidebarMenuItem>
                   ))}
+
+
                   <SidebarMenuItem>
                     <Link href="/tasks/due-today" passHref legacyBehavior>
                       <SidebarMenuButton className="flex items-center">
