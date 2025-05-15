@@ -472,14 +472,14 @@ export default function EditProjectPage() {
 
   return (
     <div className="container mx-auto p-4 max-w-4xl">
-      <div className="flex items-center gap-2 mb-6">
+      {/* <div className="flex items-center gap-2 mb-6">
         <Button variant="ghost" size="icon" asChild disabled={isProcessing}>
           <Link href={`/dashboard/projects/${projectId}/tasks`}>
             <ArrowLeft className="h-4 w-4" />
           </Link>
         </Button>
         <div className="text-sm text-muted-foreground">Back to Project</div>
-      </div>
+      </div> */}
 
       <div className="space-y-6">
         <div className="flex justify-between items-start">
@@ -487,6 +487,7 @@ export default function EditProjectPage() {
             <h1 className="text-3xl font-bold">Edit Project</h1>
             <p className="text-muted-foreground mt-1">Changes to name/description save on Enter or blur. Other fields save instantly.</p>
           </div>
+          <Button type="button" variant="outline" onClick={() => router.back()} disabled={isProcessing}>Back</Button>
           <AlertDialog>
             <AlertDialogTrigger asChild>
               <Button variant="destructive" size="sm" disabled={isDeleting || isProcessing}>
@@ -513,6 +514,7 @@ export default function EditProjectPage() {
               </AlertDialogFooter>
             </AlertDialogContent>
           </AlertDialog>
+          
         </div>
 
         {errors.form && <div className="bg-destructive/15 text-destructive px-4 py-3 rounded-md mb-4">{errors.form}</div>}
@@ -786,9 +788,7 @@ export default function EditProjectPage() {
             </CardContent>
           </Card>
 
-          <div className="flex justify-end gap-4">
-            <Button type="button" variant="outline" onClick={() => router.back()} disabled={isProcessing}>Cancel</Button>
-          </div>
+          
         </div> 
       </div>
     </div>

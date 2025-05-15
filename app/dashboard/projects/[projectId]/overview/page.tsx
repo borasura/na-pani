@@ -1,8 +1,8 @@
 import { getAttentionNeededTasks, getProjectById, getProjectStatsById, getRecentActivities, getRecentActivitiesByProject } from '@/lib/dao/TaskDAOAlt';
 
-import ProjectHeader from './project-header';
-import ProjectInfoCards from "./project-info-cards";
-import ProjectTabs from "./project-tabs";
+import ProjectHeader from './components/project-header';
+import ProjectInfoCards from "./components/project-info-cards";
+import ProjectTabs from "./components/project-tabs";
 
 async function getProjectDetails(id: string) {
   //const data = await TaskDAO.getTasksByProjectId('7f04e41f-87a8-4561-8fa8-01de820931aa');
