@@ -1,13 +1,9 @@
-import ClientComponent from "@/components/client-component";
 import { auth } from "@/lib/auth";
 import { getProjectsForCurrentUser, getUsers } from "@/lib/dao/TaskDAOAlt";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
-import ProjectCards from "./project-cards";
-
+import ProjectCards from "./components/project-cards";
 import { NewProject } from './components/new-project'
-import { UserSelectCombobox }  from "@/components/PersonCombobox";
-import { AutocompleteExample } from "./autocomplete-example";
 
 
 export default async function Page() {
@@ -45,37 +41,8 @@ export default async function Page() {
             <NewProject />
           </div>
           <ProjectCards proj={projects} />
-          {/* <UserSelectCombobox 
-        initialUsers={initialUsers}  */}
-       {/* <AutocompleteExample initialUsers={initialUsers}/> */}
-        </div>
-        {/* <div className="grid auto-rows-min gap-4 md:grid-cols-3">
-          <div className="aspect-video rounded-xl bg-muted/50">
-            <div className='mt-10 text-center'>
-              <h1 className='text-2xl font-bold underline'>Welcome to the dashboard</h1>
-              <ul>
-                <li>Name: {user.name}</li>
-                <li>Email: {user.email}</li>
-              </ul>
-              <ClientComponent />
-            </div>
-          </div>
-          <div className="aspect-video rounded-xl bg-muted/50">
-            <ul>
-              {
-                projects.map((project, index) => (
-                  <li key={index}>
-                    {project.name}
-                  </li>
-                ))
-              }
-            </ul>
-          </div>
-          <div className="aspect-video rounded-xl bg-muted/50" >
-            
-          </div>
-        </div> */}
 
+        </div>
       </div>
     </>
   )

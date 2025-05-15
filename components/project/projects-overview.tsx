@@ -266,10 +266,17 @@ export default function ProjectsOverview({ projects }) {
           <h1 className="text-3xl font-bold">Projects</h1>
           <p className="text-muted-foreground mt-1">Manage and monitor all your projects</p>
         </div>
+        <Link href="/dashboard/projects/new" passHref>
         <Button>
           <Plus className="mr-2 h-4 w-4" />
           New Project
         </Button>
+        </Link>
+        
+        {/* <Button asChild>
+          <Plus className="mr-2 h-4 w-4" />          
+          <Link href="/new">New Project</Link>
+        </Button> */}
       </div>
 
       {/* Filters and Search */}

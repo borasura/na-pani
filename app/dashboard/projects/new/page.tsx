@@ -67,93 +67,7 @@ const fetchTeamMembers = async (query = "", page = 1, limit = 5): Promise<TeamMe
   const allMembers = await getUsers(query)
   console.log(">>>>>>>>>>>>>>>> Inside fetchTeamMembers")
   console.log(allMembers)
-  // Mock data
-  // const allMembers = [
-  //   {
-  //     id: "user1",
-  //     username: "Alex Johnson",
-  //     email: "alex@example.com",
-  //     role: "Project Manager",
-  //     avatar: "/placeholder.svg?height=32&width=32",
-  //   },
-  //   {
-  //     id: "user2",
-  //     username: "Sam Taylor",
-  //     email: "sam@example.com",
-  //     role: "Designer",
-  //     avatar: "/placeholder.svg?height=32&width=32",
-  //   },
-  //   {
-  //     id: "user3",
-  //     username: "Jordan Lee",
-  //     email: "jordan@example.com",
-  //     role: "Developer",
-  //     avatar: "/placeholder.svg?height=32&width=32",
-  //   },
-  //   {
-  //     id: "user4",
-  //     username: "Casey Morgan",
-  //     email: "casey@example.com",
-  //     role: "Content Writer",
-  //     avatar: "/placeholder.svg?height=32&width=32",
-  //   },
-  //   {
-  //     id: "user5",
-  //     username: "Riley Smith",
-  //     email: "riley@example.com",
-  //     role: "QA Tester",
-  //     avatar: "/placeholder.svg?height=32&width=32",
-  //   },
-  //   {
-  //     id: "user6",
-  //     username: "Taylor Kim",
-  //     email: "taylor@example.com",
-  //     role: "Marketing Specialist",
-  //     avatar: "/placeholder.svg?height=32&width=32",
-  //   },
-  //   {
-  //     id: "user7",
-  //     username: "Morgan Chen",
-  //     email: "morgan@example.com",
-  //     role: "Product Manager",
-  //     avatar: "/placeholder.svg?height=32&width=32",
-  //   },
-  //   {
-  //     id: "user8",
-  //     username: "Jamie Wilson",
-  //     email: "jamie@example.com",
-  //     role: "Backend Developer",
-  //     avatar: "/placeholder.svg?height=32&width=32",
-  //   },
-  //   {
-  //     id: "user9",
-  //     username: "Avery Rodriguez",
-  //     email: "avery@example.com",
-  //     role: "UX Researcher",
-  //     avatar: "/placeholder.svg?height=32&width=32",
-  //   },
-  //   {
-  //     id: "user10",
-  //     username: "Quinn Patel",
-  //     email: "quinn@example.com",
-  //     role: "Frontend Developer",
-  //     avatar: "/placeholder.svg?height=32&width=32",
-  //   },
-  //   {
-  //     id: "user11",
-  //     username: "Blake Thompson",
-  //     email: "blake@example.com",
-  //     role: "Data Analyst",
-  //     avatar: "/placeholder.svg?height=32&width=32",
-  //   },
-  //   {
-  //     id: "user12",
-  //     username: "Cameron Wright",
-  //     email: "cameron@example.com",
-  //     role: "DevOps Engineer",
-  //     avatar: "/placeholder.svg?height=32&width=32",
-  //   },
-  // ]
+  
 
   // Filter by query if provided
   const filtered = query
@@ -341,12 +255,9 @@ export default function NewProjectPage() {
       }))
 
       await createProjectPermissions(memberPermissions);
-      // formData.selectedTeamMembers.forEach((member) => {
-      //   console.log(member)
-      //   await createProjectPermission(newProjectID, member.id, member.permission);
-      // })
-      router.push("/projects")
-      //TODO ideally push to the new project page
+      // TODO Redirect to Project over view page with valid onboarding hints
+      router.push("/dashboard/projects/" + newProjectID + "/tasks")
+
     } catch (error) {
       console.error("Error creating project:", error)
       setErrors({
