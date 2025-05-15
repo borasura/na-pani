@@ -41,3 +41,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 2. Onboarding flow - ensure proper onboarding flow for new users
 3. Onboarding flow - include tool tips for first time user
 4. 
+
+
+## BUGS TO FIX
+1. When new project is created do not create an owner record in permissions as the owner is already captured at the Project level. 
