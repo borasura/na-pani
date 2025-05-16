@@ -25,7 +25,7 @@ export default function RecentActivitySection({ items }: RecentActivitySectionPr
             content={item.content}
             project={item.project}
             task={item.task}
-            time={item.time}
+            time={item.time}  
             avatar={item.avatar}
           />
         ))}

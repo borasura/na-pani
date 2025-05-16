@@ -14,7 +14,7 @@ import {
   import PerformanceSection from "./components/PerformanceSection";
   import UpcomingDeadlinesSection from "./components/UpcomingDeadlinesSection";
   import TeamWorkloadSection from "./components/TeamWorkloadSection";
-import { getAttentionNeededTasksForCurrentUser } from "@/lib/dao/TaskDAOAlt";
+import { getAttentionNeededTasksForCurrentUser, getRecentActivitiesForCurrentUser } from "@/lib/dao/TaskDAOAlt";
   
   // Data (In a real app, this would come from an A
 //   const attentionItemsData = [
@@ -59,8 +59,21 @@ import { getAttentionNeededTasksForCurrentUser } from "@/lib/dao/TaskDAOAlt";
 //       priority: "Medium",
 //     },
 //   ];
+
+
+// //     {
+//     id: 'ca1ed088-079c-47cc-8346-c3b1154735e6',
+//     type: 'task_history',
+//     content: "Changed priority from 'High' to 'Medium'",
+//     username: 'Louis Litt',
+//     email: 'louis@test.com',
+//     created_date: 2025-05-16T07:52:27.813Z,
+//     task: 'Security Measures',
+//     project: 'Data Privacy Compliance'
+//   },
+// //   ]
   
-  const activityItemsData = [
+  const activityItemsData1 = [
     {
       id: "1",
       username: "Sarah Johnson",
@@ -126,12 +139,20 @@ import { getAttentionNeededTasksForCurrentUser } from "@/lib/dao/TaskDAOAlt";
     console.log(data)
     return data
   }
+
+  async function getActivityItemsData(){
+    const data = await getRecentActivitiesForCurrentUser()
+    console.log(data)
+    return data
+  }
   
   export default async function DashboardPage() {
     // In a real application, you would fetch this data using Prisma or another data source.
     // For demonstration, we're using static data.
 
     const attentionItemsData = await getAttentionItemsData();
+
+    const activityItemsData = await getActivityItemsData();
   
     return (
       <div className="flex min-h-screen w-full flex-col">

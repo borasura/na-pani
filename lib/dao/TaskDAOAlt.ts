@@ -7,6 +7,7 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 
 import { logger } from "@/lib/logger";
+import { formatDistanceToNow } from "date-fns";
 const log = logger.child({ module: "TaskDAOAlt" });
 
 export async function getUserId() {
@@ -694,6 +695,134 @@ export async function getRecentActivitiesByProject   (project_id: string){
 
   return sortedActivities;
 }
+
+export async function getRecentActivitiesForCurrentUser(){
+  const user_id = await getUserId()
+  return getRecentActivitiesForUser(user_id)
+}
+
+export async function getRecentActivitiesForUser (user_id: string){
+
+  console.log("getRecentActivitiesByUser ")
+  const comments = await prisma.comments.findMany({
+    where: {
+      tasks: {
+        assigned_to: user_id,
+      },
+    },
+    select: {
+      id: true,
+      content: true,
+      users: {
+        select: {
+          username: true,
+          email: true,
+        },
+      },
+      updated_at: true,
+      tasks: {
+        select: {
+          title: true,
+          projects: {
+            select: {
+              name: true,
+            },
+          },
+        }
+
+      }
+    },
+    orderBy: {
+      updated_at: 'desc',
+    },
+    take: 4,
+  });
+
+  // console.log("Found comments")
+  // console.log(comments)
+  // console.log(comments[0].tasks.projects.name)
+
+  
+
+  const history = await prisma.tasks_history.findMany({
+    where: {
+      tasks: {
+        assigned_to: user_id,
+      },
+    },
+    select: {
+      id: true,
+      change_type: true,
+      previous_values: true,
+      new_values: true,
+      created_at: true,
+      users: {
+        select: {
+          username: true,
+          email: true,
+        },
+      },
+      tasks: {
+        select: {
+          title: true,
+          projects: {
+            select: {
+              name: true,
+            },
+          },
+        },
+      },
+    },
+    orderBy: {
+      created_at: 'desc',
+    },
+    take: 4,
+  });
+
+  const formattedComments = comments.map(comment => ({
+    id: comment.id,
+    type: 'comment',
+    content: comment.content,
+    username: comment.users.username,
+    email: comment.users?.email,
+    created_date: comment.updated_at,
+    task: comment.tasks.title,
+    project: comment.tasks.projects.name,
+    created_at: comment.updated_at,   
+    time: formatDistanceToNow(comment.updated_at),
+    avatar: "https://placehold.co/32x32/E0E0E0/B0B0B0?text=EW",
+  }));
+
+  console.log("Found comments " + comments.length)
+
+  const formattedHistory = history.map((item) => ({
+    id: item.id,
+    type: 'task_history',
+    content: `Changed ${item.change_type} from '${item.previous_values}' to '${item.new_values}'`,
+    username: item.users.username,
+    email: item.users?.email,
+    // change_type: item.change_type,
+    // new_values: item.new_values,
+    // previous_values: item.previous_values,
+    created_date: item.created_at,
+    task: item.tasks.title,
+    project: item.tasks.projects.name,
+    created_at: item.created_at,
+    time: formatDistanceToNow(item.created_at),
+    avatar: "https://placehold.co/32x32/E0E0E0/B0B0B0?text=EW",
+  }));
+
+  const combinedActivities = [...formattedComments, ...formattedHistory];
+
+  const sortedActivities = combinedActivities
+    .sort((a, b) => b.created_date.getTime() - a.created_date.getTime())
+    .slice(0, 10);
+  
+    console.log("Returning sorted activities - " + sortedActivities.length)
+    //console.log(sortedActivities)
+  return sortedActivities;
+}
+
 // Get a single task by ID
 export async function getTaskById(taskId: string) {
     return await prisma.tasks.findUnique({ where: { id: taskId } });
