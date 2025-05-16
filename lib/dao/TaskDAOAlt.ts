@@ -483,6 +483,130 @@ export async function getAttentionNeededTasks (project_id: string){
 
 }
 
+export async function getAttentionNeededTasksForCurrentUser(){
+  const user_id = await getUserId()
+  return getAttentionNeededTasksByUserId(user_id)
+}
+
+export async function getAttentionNeededTasksByUserId (user_id: string){
+  
+  const currentDate = new Date();
+  const oneWeekAgo = new Date();
+  oneWeekAgo.setDate(currentDate.getDate() - 7);
+
+  const pastDueTasks = await prisma.tasks.findMany({
+    where: {
+      assigned_to: user_id,
+      is_deleted: false,
+      due_date: {
+        lt: currentDate,
+      },
+    },
+    select: {
+      id: true,
+      project_id: true,
+      title: true,
+      description: true,
+      status: true,
+      priority: true,
+      color_code: true,
+      due_date: true,
+      updated_at: true,
+      projects: {  
+        select: {
+          name: true,
+        },  
+      },
+    },
+    orderBy: {
+      due_date: 'asc',
+    },
+    take: 2,
+  });
+ 
+  const noUpdatesTasks = await prisma.tasks.findMany({
+    where: {
+      assigned_to: user_id,
+      is_deleted: false,
+      updated_at: {
+        lt: oneWeekAgo,
+      },
+    },
+    select: {
+      id: true,
+      project_id: true,
+      title: true,
+      description: true,
+      status: true,
+      priority: true,
+      color_code: true,
+      due_date: true,
+      updated_at: true,
+      projects: {  
+        select: {
+          name: true,
+        },  
+      },
+    },
+    orderBy: {
+      updated_at: 'asc',
+    },
+    take: 2,
+  });
+
+  const blockedTasks = await prisma.tasks.findMany({
+    where: {
+      assigned_to: user_id,
+      is_deleted: false,
+      status: 'Blocked',
+    },
+    select: {
+      id: true,
+      project_id: true,
+      title: true,
+      description: true,
+      status: true,
+      priority: true,
+      color_code: true,
+      due_date: true,
+      updated_at: true,
+      projects: {  
+        select: {
+          name: true,
+        },  
+      },
+    },
+    orderBy: [
+      {
+        priority: 'desc',
+      },
+    ],
+    take: 2,
+  });
+
+  const formatTasks = (tasks, issue) =>
+    tasks.map((task) => ({
+      id: task.id,
+      project_id: task.project_id,
+      title: task.title,
+      description: task.description,
+      project: task.projects.name,
+      status: task.status,
+      priority: task.priority,
+      color_code: task.color_code,
+      due_date: task.due_date,
+      updated_at: task.updated_at,
+      issue,
+    }));
+  
+  return [
+    ...formatTasks(pastDueTasks, 'Past due date'),
+    ...formatTasks(blockedTasks, 'Blocked'),
+    ...formatTasks(noUpdatesTasks, 'No updates'),    
+  ]; 
+
+}
+
 export async function getRecentActivitiesByProject   (project_id: string){
 
   console.log("getRecentActivitiesByProject ")
