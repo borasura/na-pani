@@ -2,9 +2,9 @@
 
 import type React from "react"
 import { useState, useEffect, useCallback } from "react"
-import { useRouter, useParams } from "next/navigation"
+import { useRouter, useParams, usePathname } from "next/navigation"
 import Link from "next/link"
-import { ArrowLeft, Calendar, Check, ChevronsUpDown, Loader2, Plus, Save, Search, Trash2, X, AlertCircle } from "lucide-react"
+import { ArrowLeft, Calendar, Check, ChevronsUpDown, Loader2, Plus, Save, Search, Trash2, X, AlertCircle, Settings, Folder } from "lucide-react"
 import { format } from "date-fns"
 import { debounce } from "lodash"
 
@@ -470,7 +470,14 @@ export default function EditProjectPage() {
     )
   }
 
+    // const pathname = usePathname();
+  
+    // // Extract project ID from the URL (e.g., /dashboard/projects/[id]/overview)
+    // const projectId = pathname.split('/')[3]; // index 3 = [id]
+
   return (
+
+    
     <div className="container mx-auto p-4 max-w-4xl">
       {/* <div className="flex items-center gap-2 mb-6">
         <Button variant="ghost" size="icon" asChild disabled={isProcessing}>
@@ -487,7 +494,15 @@ export default function EditProjectPage() {
             <h1 className="text-3xl font-bold">Edit Project</h1>
             <p className="text-muted-foreground mt-1">Changes to name/description save on Enter or blur. Other fields save instantly.</p>
           </div>
-          <Button type="button" variant="outline" onClick={() => router.back()} disabled={isProcessing}>Back</Button>
+          {/* <Link>
+            <Button type="button" variant="outline" onClick={() => router.back()} disabled={isProcessing}>Back</Button>
+          </Link> */}
+          <Link href={`/dashboard/projects/${projectId}/overview`}>
+          <Button variant="outline" disabled={isProcessing}>
+            <Folder className="mr-2 h-4 w-4" />
+            Project Overview
+          </Button>
+          </Link>
           <AlertDialog>
             <AlertDialogTrigger asChild>
               <Button variant="destructive" size="sm" disabled={isDeleting || isProcessing}>

@@ -98,17 +98,17 @@ export default function ProjectLayout({ children }: { children: React.ReactNode 
   const activeTab = getActiveTab()
 
   return (
-    <div className="container mx-auto p-4 space-y-6 max-w-full">
+    <div className="container mx-auto pl-4 space-y-1 max-w-full">
       {/* Back button and project header */}
       <div className="flex flex-col space-y-4">
-        <div className="flex items-center gap-2">
+        {/* <div className="flex items-center gap-2">
           <Button variant="ghost" size="icon" asChild>
             <Link href="/projects">
               <ArrowLeft className="h-4 w-4" />
             </Link>
           </Button>
           <div className="text-sm text-muted-foreground">Back to Projects</div>
-        </div>
+        </div> */}
 
         <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
           {/* <div className="flex items-start gap-3">
