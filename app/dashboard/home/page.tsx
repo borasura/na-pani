@@ -15,6 +15,7 @@ import {
   import UpcomingDeadlinesSection from "./components/UpcomingDeadlinesSection";
   import TeamWorkloadSection from "./components/TeamWorkloadSection";
 import { getAttentionNeededTasksForCurrentUser, getRecentActivitiesForCurrentUser } from "@/lib/dao/TaskDAOAlt";
+import { getPerformanceMetricsForCurrentUser } from "@/lib/dao/PerformanceDAO";
   
   // Data (In a real app, this would come from an A
 //   const attentionItemsData = [
@@ -146,6 +147,13 @@ import { getAttentionNeededTasksForCurrentUser, getRecentActivitiesForCurrentUse
     return data
   }
   
+  async function getPerformanceData(){
+    const data = await getPerformanceMetricsForCurrentUser()
+    console.log(data)
+    return data
+  }
+  
+  
   export default async function DashboardPage() {
     // In a real application, you would fetch this data using Prisma or another data source.
     // For demonstration, we're using static data.
@@ -153,6 +161,8 @@ import { getAttentionNeededTasksForCurrentUser, getRecentActivitiesForCurrentUse
     const attentionItemsData = await getAttentionItemsData();
 
     const activityItemsData = await getActivityItemsData();
+
+    const perfData = await getPerformanceData()
   
     return (
       <div className="flex min-h-screen w-full flex-col">
@@ -187,14 +197,14 @@ import { getAttentionNeededTasksForCurrentUser, getRecentActivitiesForCurrentUse
           </div>
   
           {/* Main Content Grid */}
-          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
+          <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-8">
             <NeedsAttentionSection items={attentionItemsData} />
             <RecentActivitySection items={activityItemsData} />
           </div>
   
           {/* Lower Content Grid */}
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            <PerformanceSection />
+            <PerformanceSection data={perfData} />
             <UpcomingDeadlinesSection items={deadlineItemsData} />
             <TeamWorkloadSection items={workloadItemsData} />
           </div>

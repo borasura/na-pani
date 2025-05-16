@@ -9,7 +9,7 @@ interface RecentActivitySectionProps {
 
 export default function RecentActivitySection({ items }: RecentActivitySectionProps) {
   return (
-    <Card className="lg:col-span-3">
+    <Card className="lg:col-span-4">
       <CardHeader>
         <CardTitle>Recent Activity</CardTitle>
         <CardDescription>Latest updates across your projects</CardDescription>

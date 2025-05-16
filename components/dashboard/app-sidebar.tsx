@@ -266,14 +266,22 @@ export function AppSidebar({projects, userProfile, ...props }: React.ComponentPr
               <SidebarGroupLabel>My Items</SidebarGroupLabel>
               <SidebarGroupContent>
                 <SidebarMenu>
+                                    
                   <SidebarMenuItem>
                     <Link href="/dashboard/home" passHref legacyBehavior>
-                      <SidebarMenuButton isActive={pathname === "/dashboard/home"} className="flex items-center">
-                        <Home className="mr-2 h-4 w-4" />
-                        <span>Home</span>
+                      <SidebarMenuButton
+                        isActive={pathname === "/dashboard/home"}
+                        className="flex items-center justify-between w-full"
+                      >
+                        <div className="flex items-center">
+                          <Home className="mr-2 h-4 w-4" />
+                          <span>Home</span>
+                        </div>
+                        
                       </SidebarMenuButton>
                     </Link>
                   </SidebarMenuItem>
+
                   <SidebarMenuItem>
                     <Link href="/dashboard/tasks" passHref legacyBehavior>
                       <SidebarMenuButton
@@ -316,22 +324,39 @@ export function AppSidebar({projects, userProfile, ...props }: React.ComponentPr
                       </SidebarMenuButton>
                     </Link>
                   </SidebarMenuItem>
+
                   <SidebarMenuItem>
                     <Link href="/dashboard/calendar" passHref legacyBehavior>
-                      <SidebarMenuButton isActive={pathname === "/dashboard/calendar"} className="flex items-center">
-                        <Calendar className="mr-2 h-4 w-4" />
-                        <span>Calendar</span>
+                      <SidebarMenuButton
+                        isActive={pathname === "/dashboard/calendar"}
+                        className="flex items-center justify-between w-full"
+                      >
+                        <div className="flex items-center">
+                          <Calendar className="mr-2 h-4 w-4" />
+                          <span>Calendar</span>
+                        </div>
+                        
                       </SidebarMenuButton>
                     </Link>
                   </SidebarMenuItem>
+
                   <SidebarMenuItem>
-                    <Link href="/team" passHref legacyBehavior>
-                      <SidebarMenuButton isActive={pathname === "/team"} className="flex items-center">
-                        <Users className="mr-2 h-4 w-4" />
-                        <span>Team</span>
+                    <Link href="/dashboard/team" passHref legacyBehavior>
+                      <SidebarMenuButton
+                        isActive={pathname === "/dashboard/team"}
+                        className="flex items-center justify-between w-full"
+                      >
+                        <div className="flex items-center">
+                          <Users className="mr-2 h-4 w-4" />
+                          <span>Team</span>
+                        </div>
+                        
                       </SidebarMenuButton>
                     </Link>
                   </SidebarMenuItem>
+
+
+                  
                 </SidebarMenu>
               </SidebarGroupContent>
             </SidebarGroup>

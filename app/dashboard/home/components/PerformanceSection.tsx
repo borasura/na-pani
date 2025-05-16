@@ -1,68 +1,94 @@
-// src/components/dashboard/PerformanceSection.tsx
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Progress } from "@/components/ui/progress";
+import {
+  Card,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardContent,
+} from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ArrowUpRight } from "lucide-react";
+import PerformanceMetric from "./PerformanceMetric";
 
-interface PerformanceMetricProps {
-  label: string;
-  valueText: string;
-  progressValue: number;
+const sampData = {
+  "onTimeCompletion": {
+    "percent": 92,
+    "insight": "Excellent discipline"
+  },
+  "overdueTasks": {
+    "count": 3,
+    "percent": 12,
+    "insight": "A few tasks need attention"
+  },
+  "completedThisMonth": {
+    "count": 18,
+    "percent": 60,
+    "trend": "+15%",
+    "insight": "Up from last month"
+  },
+  "avgCompletionTime": {
+    "value": 2.4,
+    "percent": 80,
+    "insight": "Faster than team average"
+  },
+  "activeTasks": {
+    "count": 12,
+    "percent": 50,
+    "insight": "Balanced workload"
+  },
+  "collaboration": {
+    "percent": 47,
+    "insight": "Solid collaboration rate"
+  }
 }
 
-function PerformanceMetric({ label, valueText, progressValue }: PerformanceMetricProps) {
-  return (
-    <div className="space-y-2">
-      <div className="flex items-center justify-between text-sm">
-        <div className="font-medium">{label}</div>
-        <div>{valueText}</div>
-      </div>
-      <Progress value={progressValue} />
-    </div>
-  );
-}
+export default function PerformanceSection({data}) {
 
-export default function PerformanceSection() {
-  // Data for this section could also be passed as props if dynamic
-  const performanceData = {
-    tasksCompleted: { label: "Tasks Completed", valueText: "24/32", progress: 75 },
-    onTimeCompletion: { label: "On-time Completion", valueText: "92%", progress: 92 },
-    responseTime: { label: "Response Time", valueText: "85%", progress: 85 },
-    completedThisMonth: { value: "18", increasePercent: "15%" },
-  };
+
+  
 
   return (
     <Card>
       <CardHeader>
         <CardTitle>Your Performance</CardTitle>
-        <CardDescription>Task completion metrics</CardDescription>
+        <CardDescription>Last 30 days overview</CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
         <PerformanceMetric
-          label={performanceData.tasksCompleted.label}
-          valueText={performanceData.tasksCompleted.valueText}
-          progressValue={performanceData.tasksCompleted.progress}
+          label="On-Time Completion"
+          valueText={`${data.onTimeCompletion.percent}%`}
+          progressValue={data.onTimeCompletion.percent}
+          insight={data.onTimeCompletion.insight}
         />
         <PerformanceMetric
-          label={performanceData.onTimeCompletion.label}
-          valueText={performanceData.onTimeCompletion.valueText}
-          progressValue={performanceData.onTimeCompletion.progress}
+          label="Overdue Tasks"
+          valueText={`${data.overdueTasks.count}`}
+          progressValue={data.overdueTasks.percent}
+          insight={data.overdueTasks.insight}
         />
         <PerformanceMetric
-          label={performanceData.responseTime.label}
-          valueText={performanceData.responseTime.valueText}
-          progressValue={performanceData.responseTime.progress}
+          label="Tasks Completed This Month"
+          valueText={`${data.completedThisMonth.count} (${data.completedThisMonth.trend})`}
+          progressValue={data.completedThisMonth.percent}
+          insight={data.completedThisMonth.insight}
         />
-        <div className="pt-4">
-          <div className="text-sm font-medium">Completed This Month</div>
-          <div className="mt-1 flex items-center gap-2">
-            <div className="text-2xl font-bold">{performanceData.completedThisMonth.value}</div>
-            <Badge variant="outline" className="text-xs font-normal">
-              <ArrowUpRight className="mr-1 h-3 w-3" />
-              {performanceData.completedThisMonth.increasePercent} increase
-            </Badge>
-          </div>
-        </div>
+        <PerformanceMetric
+          label="Avg. Completion Time"
+          valueText={`${data.avgCompletionTime.value} days`}
+          progressValue={data.avgCompletionTime.percent}
+          insight={data.avgCompletionTime.insight}
+        />
+        <PerformanceMetric
+          label="Active Tasks"
+          valueText={`${data.activeTasks.count}`}
+          progressValue={data.activeTasks.percent}
+          insight={data.activeTasks.insight}
+        />
+        <PerformanceMetric
+          label="Collaboration Index"
+          valueText={`${data.collaboration.percent}%`}
+          progressValue={data.collaboration.percent}
+          insight={data.collaboration.insight}
+        />
       </CardContent>
     </Card>
   );
